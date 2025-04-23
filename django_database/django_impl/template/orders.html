@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+        <div id="Orders">
+            <hr style="border-top: dotted 1px;" class="line" />
+            {%if not order%}
+            <div>NO ORDERS</div>
+            {%else %}
+          {% for i in order %}
+            <div class="OrdersTab">
+                <p>i.id</p>
+                <p>i.created</p>
+                <p>i.deliveryP</p>
+                <p>i.restaurant</p>
+            </div>
+          {% endfor %}
+          {%endif%}
+          <hr style="border-top: dotted 1px;" class="line" />
+        </div>
+    </body>
+</html>

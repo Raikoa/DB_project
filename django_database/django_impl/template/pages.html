@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+        <img src="{{restaurant.img}}" id="RestBanner" />
+        <div id="FoodBar">
+            {% for i in restaurant.menu %}
+                <div class="FoodTab Items">
+                    {% load static %}
+                    <img src= "{{i.pic}}"  class="display"/>
+                    <p>{{i.name}}</p>
+                    <p>{{i.price}}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

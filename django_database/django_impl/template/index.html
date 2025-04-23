@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Delivery APP</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+        <div id="TopBar">
+            <div id="Sign">
+                <h2>Delivery App</h2>
+               
+            </div>
+            <h3>Hello {{Role}} {{Username}}</h3>
+            <table id="options">
+                <tr>
+                    <td>Account info</td>
+                    <td>Chat</td>
+                    {% if Role == 'customer'%}
+                    <td id="Favorite" data-id="{{userid}}">Favorite</td>
+                    <td id="order" data-id="{{userid}}">My orders</td>
+                    <td data-id="{{userid}}">My Cart</td>
+                    {% endif %}
+                    
+                    {% if Role == 'delivery'%}
+                    <td>Orders Avaliable</td>
+                    <td>Current order</td>
+                    {% endif %}
+                    
+                </tr>
+            </table>
+        </div>
+        {%if Role == 'customer' %}
+        <div id="MenuBar">
+            <div id="ResTop">Restaurants</div>
+            <div id="Menus">
+             
+                {% for i in Test %}
+                <div class="restaurant_tab" data-id="{{ i.id }}">
+                    {% load static %}
+                    <img src= "{{i.img}}"  class="display"/>
+                    <p>{{i.name}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+            
+        </div>
+        {%endif%}
+        {% if Role == 'vendor'%}
+        <div id="MenuBar">
+            <div id="ResTop">Orders Incoming</div>
+            <div id="Menus">
+             
+            </div>
+        </div>
+        </div>
+        {% endif %}
+    </body>
+</html>

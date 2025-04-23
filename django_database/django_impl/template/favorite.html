@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+        <div id="Menus">
+            {%if not favs %}
+            <h1>NO FAVORITES</h1>
+            {% else %}
+            {% for i in favs %}
+            <div class="restaurant_tab" data-id="{{ i.id }}">
+                {% load static %}
+                <img src= "{{i.img}}"  class="display"/>
+                <p>{{i.name}}</p>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </body>
+</html>
