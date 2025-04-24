@@ -15,14 +15,30 @@
             {%else %}
           {% for i in order %}
             <div class="OrdersTab">
-                <p>i.id</p>
-                <p>i.created</p>
-                <p>i.deliveryP</p>
-                <p>i.restaurant</p>
+                <p>{{i.id}}</p>
+                <p>{{i.created}}</p>
+                <p>{{i.deliveryP}}</p>
+                <p>{{i.restaurant}}</p>
+                <p class="Showitems" data-items = '{{i.items|safe|escapejs}}'>Items</p>
+                <p>{{i.destination}}</p>
+                <p>{{i.time}}</p>
+                <p>{{i.price}}</p>
+                <p>{{i.status}}</p>
             </div>
+            
           {% endfor %}
           {%endif%}
           <hr style="border-top: dotted 1px;" class="line" />
+        </div>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Items</h2>
+              <div id="modalContent">
+
+              </div>
+               
+            </div>
         </div>
     </body>
 </html>

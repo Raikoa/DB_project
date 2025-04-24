@@ -24,5 +24,33 @@ document.addEventListener("DOMContentLoaded", function(){
                 window.location.href = "/" + "order" + "/" + parseInt(userID)
             })
         }
+        let ShowItemModal = document.querySelectorAll(".Showitems")
+        if(ShowItemModal){
+            let mo = document.querySelector("#myModal")
+            let co = document.querySelector("#modalContent")
+            let close = document.querySelector(".close")
+            close.addEventListener("click", function(){
+                mo.style.display = "none"
+            })
+            ShowItemModal.forEach(Mod => {
+                Mod.addEventListener("click", function(){
+                    const items = el.dataset.items; 
+                    co.innerHTML = ""; 
+
+                    items.forEach(item => {
+                    const p = document.createElement("p");
+                    p.textContent = item;
+                    co.appendChild(p);
+                    });
+                    mo.style.display = "flex"
+                })
+
+            })
+            window.onclick = (e) => {
+                if (e.target == mo) {
+                  mo.style.display = "none";
+                }
+              };
+        }
     
 })

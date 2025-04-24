@@ -59,12 +59,12 @@
              {% else %}
              {% for i in Orders %}
              <div class="OrdersTab" data-id="{{i.id}}">
-                <p>i.id</p>
-                <p>i.items</p>
-                <p>i.price</p>
-                <p>i.created</p>
-                <p>i.customer</p>
-                <p>i.delivery</p>
+                <p>{{i.id}}</p>
+                <p>{{i.items}}</p>
+                <p>{{i.price}}</p>
+                <p>{{i.created}}</p>
+                <p>{{i.customer}}</p>
+                <p>{{i.delivery}}</p>
              </div>
              {%endfor%}
              {%endif%}
