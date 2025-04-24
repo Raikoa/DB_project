@@ -1,5 +1,9 @@
 from django.db import models
 from datetime import timedelta
+
+def default_duration():
+    return timedelta(0)
+
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -92,7 +96,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=100, default="Pending")
     destination = models.CharField(max_length=100, default="-")
-    time = models.DurationField(default=timedelta())
+    time = models.DurationField(default=default_duration)
 
     class Meta:
         db_table = "order"
