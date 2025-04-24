@@ -136,8 +136,11 @@ def orderUser(request, userid):
             "items": foods,
             "price": o.price,
             "created": o.created_at,
+            "time": o.time,
+            "destination": o.destination,
             "deliveryP": deli,
-            "restaurant": rest,    
+            "restaurant": rest,   
+            "status": o.status, 
         }
         UserOrders.append(ord)
     return render(request, "orders.html", {'order':UserOrders})
