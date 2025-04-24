@@ -52,8 +52,23 @@
         {% if Role == 'vendor'%}
         <div id="MenuBar">
             <div id="ResTop">Orders Incoming</div>
-            <div id="Menus">
-             
+            <div id="Orders">
+            <hr style="border-top: dotted 1px;" class="line" />
+             {% if not Orders%}
+             <h1>NO ORDERS YET</h1>
+             {% else %}
+             {% for i in Orders %}
+             <div class="OrdersTab" data-id="{{i.id}}">
+                <p>i.id</p>
+                <p>i.items</p>
+                <p>i.price</p>
+                <p>i.created</p>
+                <p>i.customer</p>
+                <p>i.delivery</p>
+             </div>
+             {%endfor%}
+             {%endif%}
+             <hr style="border-top: dotted 1px;" class="line" />
             </div>
         </div>
         </div>

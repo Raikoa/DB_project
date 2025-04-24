@@ -30,6 +30,7 @@ def give_exp_func():
             },
         ]
     return data
+
 def front(request):
     data = give_exp_func()
     test_user = Vendor.objects.first()
@@ -46,13 +47,24 @@ def front(request):
         pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [test_user.store])
         order_inc = []
         for o in pending:
+            itemId = o.items.split(",")
+            itms = []
+            for i in itemId:
+                item = Item.objects.raw("SELECT * FROM item WHERE id = %s", [i])
+                itms.append({
+                    "name": item.name,
+                    "price":item.price,
+                    "desc": item.desc,
+                }) 
             order_inc.append({
                 "id": o.id,
-                "items": [],
+                "items": itms,
                 'price': o.price,
                 "created": o.created_at,
-                "customer": o.user_id
+                "customer": o.user_id,
+                "delivery": o.delivery_person_id,
             })
+        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_inc})
 
     return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id})
 
