@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+        <form id="test_roles">
+        <input type="radio" id="cust" name="role" value="customer">
+        <label for="cust">Customer</label><br>
+        <input type="radio" id="Vendor" name="role" value="vendor">
+        <label for="Vendor">Vendor</label><br>
+        <input type="radio" id="DeliP" name="role" value="delivery">
+        <label for="DeliP">Delivery person</label>
+        <input type="submit" value="Submit" />
+        </form>
+    </body>
+</html>

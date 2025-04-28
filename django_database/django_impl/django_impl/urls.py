@@ -23,5 +23,10 @@ urlpatterns = [
     path('index/', views.front),
     path('pages/<int:id>/', views.page, name='pages'),
     path('<int:userid>/favorite/', views.fav),
-    path("order/<int:userid>", views.orderUser)
+    path("order/<int:userid>", views.orderUser),
+    #path("login/", views.login)
+    path("deliveryDetails/<int:DeliID>/<int:OrderID>", views.ShowOrderDetails),
+    path("takeorder/<int:orderid>/<int:deliID>", views.TakeOrder),
+    path('vendor/orders/<int:Rid>', views.vendor_orders_api),
+    path('CurrentDelivery/<int:deliID>', views.ShowCurrentOrder),
 ]

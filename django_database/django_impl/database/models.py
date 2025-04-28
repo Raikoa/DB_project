@@ -1,5 +1,9 @@
 from django.db import models
 from datetime import timedelta
+
+def default_duration():
+    return timedelta(0)
+
 class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
@@ -86,13 +90,13 @@ class Item(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    delivery_person = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deliveries')
+    delivery_person = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deliveries', null=True, blank=True)
     items = models.CharField(max_length=100)  # Could later become ManyToMany if needed
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=100, default="Pending")
     destination = models.CharField(max_length=100, default="-")
-    time = models.DurationField(default=timedelta())
+    time = models.DurationField(default=default_duration)
 
     class Meta:
         db_table = "order"

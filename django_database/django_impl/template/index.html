@@ -25,8 +25,8 @@
                     {% endif %}
                     
                     {% if Role == 'delivery'%}
-                    <td>Orders Avaliable</td>
-                    <td>Current order</td>
+                    
+                    <td id="CurrentOrder" data-user="{{userid}}">Current order</td>
                     {% endif %}
                     
                 </tr>
@@ -52,8 +52,45 @@
         {% if Role == 'vendor'%}
         <div id="MenuBar">
             <div id="ResTop">Orders Incoming</div>
-            <div id="Menus">
-             
+            <hr style="border-top: dotted 1px;" class="line" />
+            <div id="Orders" data-id = '{{userid}}'>
+             {% if not Orders%}
+             <h1>NO ORDERS YET</h1>
+             {% else %}
+             {% for i in Orders %}
+             <div class="OrdersTab" data-id="{{i.id}}">
+                <p>{{i.id}}</p>
+                <p>{{i.items}}</p>
+                <p>{{i.price}}</p>
+                <p>{{i.created}}</p>
+                <p>{{i.customer}}</p>
+                <p>{{i.delivery}}</p>
+             </div>
+             {%endfor%}
+             {%endif%}
+            </div>
+        </div>
+        </div>
+        {% endif %}
+        {% if Role == 'delivery'%}
+        <div id="MenuBar">
+            <div id="ResTop">Orders Avaliable</div>
+            <div id="deliverys">
+            <hr style="border-top: dotted 1px;" class="line" />
+             {% if not Orders%}
+             <h1>NO ORDERS YET</h1>
+             {% else %}
+             {% for i in Orders %}
+             <div class="OrdersTab" data-id="{{i.id}}" data-user = "{{userid}}">
+                <p>{{i.id}}</p>
+                <p>{{i.created}}</p>
+                <p>{{i.customer}}</p>
+                <p>{{i.restaurant}}</p>
+              
+             </div>
+             {%endfor%}
+             {%endif%}
+             <hr style="border-top: dotted 1px;" class="line" />
             </div>
         </div>
         </div>
