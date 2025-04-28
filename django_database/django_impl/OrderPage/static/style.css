@@ -118,20 +118,24 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #order:hover{
+#Favorite:hover, #order:hover, #CurrentOrder:hover{
     background-color: navajowhite;
     cursor: pointer;
 }
 
 
-#OrdersTab{
+.OrdersTab{
     display: flex;
     gap: 10px;
     width: 100%;
     border-bottom: dotted 2px gray;
 }
 
-#Orders{
+.OrdersTab:hover{
+    cursor: pointer;
+}
+
+#Orders, #deliverys{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,3 +178,20 @@
     cursor: pointer;
   }
   
+  #detailsPage{
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+  }
+
+  .detailsTab{
+    display: flex;
+    flex-direction:column ;
+    overflow: auto;
+    border-bottom: dotted 2px black;
+  }
+
+  .ShowCurrentOrderItems{
+    width: 200px;
+  }
+
