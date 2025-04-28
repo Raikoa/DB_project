@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+        <div id="VendorArea">
+        {% for d in details %}
+        <div class="detailsVendorTab">
+        <p>{{d.id}}</p>
+        {%for i in d.items%}
+        <p>{{i.name}} : {{i.price}}</p>
+        {% endfor %}
+        <p>{{d.price}}</p>
+        <p>{{d.created}}</p>
+        <p>{{d.customer}}</p>
+        <p>{{d.delivery}}</p>
+        </div>
+        {%if complete %}
+        <button id="CompleteFoodBtn" data-orderId="{{ d.id }}" data-user = "{{vendor}}">Take Order</button>
+        {% endif %}
+        {% endfor %}
+        </div>
+    </body>
+</html>

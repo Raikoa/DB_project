@@ -1,7 +1,7 @@
 # your_project/routing.py
 from django.urls import re_path
-from . import consumers
+from OrderPage import consumer # type: ignore
 
 websocket_urlpatterns = [
-    re_path(r'ws/orders/$', consumers.OrderConsumer.as_asgi()),
+    re_path(r'ws/orders/$', consumer.OrderConsumer.as_asgi()),
 ]
