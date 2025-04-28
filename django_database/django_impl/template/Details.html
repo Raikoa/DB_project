@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+    </head>
+    <body>
+      <hr style="border-top: dotted 1px;" class="line" />
+      <div id="detailsPage">
+        
+      {% for d in detail%}
+      <div class="detailsTab">
+      <p>{{d.id}}</p>
+      <button class="ShowCurrentOrderItems" data-items = '{{d.items|safe}}'>Items</button>
+      <p>{{d.price}}</p>
+      <p>{{d.created}}</p>
+      <p>{{d.restaurant}}</p>
+      <p>{{d.customer}}</p>
+      <p>{{d.destination}}</p>
+      <p>{{d.rest_dest}}</p>
+      </div>
+      {% if CanTake %}
+      <button id="TakeOrderBtn" data-order-id="{{ d.id }}" data-user = "{{deliP}}">Take Order</button>
+      {%endif%}
+      {%endfor%}
+    
+    </div>
+    <div id="DeliModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Items</h2>
+        <div id="DelimodalContent">
+
+        </div>
+         
+      </div>
+  </div>
+    </body>
+</html>

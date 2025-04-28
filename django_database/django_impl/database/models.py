@@ -90,7 +90,7 @@ class Item(models.Model):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
-    delivery_person = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deliveries')
+    delivery_person = models.ForeignKey(User, on_delete=models.CASCADE, related_name='deliveries', null=True, blank=True)
     items = models.CharField(max_length=100)  # Could later become ManyToMany if needed
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
