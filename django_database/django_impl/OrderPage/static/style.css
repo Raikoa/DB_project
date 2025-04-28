@@ -178,13 +178,13 @@
     cursor: pointer;
   }
   
-  #detailsPage{
+  #detailsPage, #VenderArea{
     display: flex;
     flex-direction: column;
     gap: 5px
   }
 
-  .detailsTab{
+  .detailsTab, .detailsVendorTab{
     display: flex;
     flex-direction:column ;
     overflow: auto;

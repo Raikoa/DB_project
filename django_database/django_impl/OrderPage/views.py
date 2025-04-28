@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.templatetags.static import static
 from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User # type: ignore
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from channels.layers import get_channel_layer # type: ignore
 from asgiref.sync import async_to_sync
@@ -148,16 +148,13 @@ def orderUser(request, userid):
     
     UserOrders = []
     for o in orders:
-        orderItemsId = o.items.split(",")
-        foods = []
-        for id in orderItemsId:
-            food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
-            foods.append({"name":food.name, "price": food.price})
+      
+        
         rest = Restaurant.objects.raw("SELECT name FROM restaurant WHERE Rid = %s", [o.restaurant_id])
         deli = DeliveryP.objects.raw("SELECT u.name FROM delivery_person dp JOIN user u ON dp.user_id = u.user_id WHERE dp.user_id = %s", [o.delivery_person_id])
         ord = {
             "id": o.id,
-            "items": foods,
+            
             "price": o.price,
             "created": o.created_at,
             "time": o.time,
@@ -273,3 +270,40 @@ def ShowCurrentOrder(request, deliID):
         CurrentOrders.append(details)
 
     return render(request, "Details.html", {'detail': CurrentOrders, "deliP": deliID, "CanTake":False})
+
+
+def ShowVendorOrder(request, Oid, VendorID):
+    order = list(Order.objects.raw("SELECT * FROM 'order' WHERE id=%s",[Oid]))[0]
+    orderItemsId = order.items.split(",")
+    foods = []
+    for id in orderItemsId:
+        food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
+
+        foods.append({"name":food.name, "price": food.price})
+    customer = Customer.objects.get(user_id = order.user_id)
+    
+    details = {
+        "id": order.id,
+        "items": foods,
+        "price": order.price,
+        "created": order.created_at,
+        "customer": customer.name,
+        "delivery": order.delivery_person_id
+        
+    }
+    return render(request, "VendorOrder.html", {"details": [details], "complete": True, "vendor": VendorID})
+
+
+def PrepOrder(request, Oid):
+    if request.method == 'POST':
+     
+        try:
+            order = Order.objects.get(id=Oid)
+            order.status = 'on route'
+            order.save()
+            return JsonResponse({'success': True})
+        except order.DoesNotExist:
+            return JsonResponse({'error': 'Order not found'}, status=404)
+            
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
