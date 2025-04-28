@@ -15,6 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import path
 from OrderPage import views # type: ignore
 
@@ -29,4 +30,6 @@ urlpatterns = [
     path("takeorder/<int:orderid>/<int:deliID>", views.TakeOrder),
     path('vendor/orders/<int:Rid>', views.vendor_orders_api),
     path('CurrentDelivery/<int:deliID>', views.ShowCurrentOrder),
+    path("VendorOrderDetails/<int:Oid>/<int:VendorID>", views.ShowVendorOrder),
+    path("PrepareOrder/<int:Oid>", views.PrepOrder)
 ]

@@ -15,3 +15,6 @@ application = ProtocolTypeRouter({
         )
     ),
 })
+
+print("ASGI Application Loaded")
+print(OrderPage.routing.websocket_urlpatterns)

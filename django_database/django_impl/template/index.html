@@ -18,9 +18,10 @@
                 <tr>
                     <td>Account info</td>
                     <td>Chat</td>
+                    <td id="order" data-id="{{userid}}">History</td>
                     {% if Role == 'customer'%}
                     <td id="Favorite" data-id="{{userid}}">Favorite</td>
-                    <td id="order" data-id="{{userid}}">My orders</td>
+                    
                     <td data-id="{{userid}}">My Cart</td>
                     {% endif %}
                     
@@ -58,7 +59,7 @@
              <h1>NO ORDERS YET</h1>
              {% else %}
              {% for i in Orders %}
-             <div class="OrdersTab" data-id="{{i.id}}">
+             <div class="OrdersTab" data-id="{{i.id}}" data-user = "{{userid}}">
                 <p>{{i.id}}</p>
                 <p>{{i.items}}</p>
                 <p>{{i.price}}</p>
