@@ -150,12 +150,54 @@ document.addEventListener("DOMContentLoaded", function(){
 
         let vendorOrder = document.getElementById("Orders")
         if(vendorOrder){
-            const socket = new WebSocket('ws://' + window.location.host + '/ws/orders/');
+            const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+            const socket = new WebSocket(protocol + window.location.host + "/ws/orders/");
+            socket.onopen = function(e) {
+                console.log("WebSocket connection established.");
+            }
             socket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
                 console.log('Update received:', data.message);
                 loadOrders(vendorOrder.getAttribute("data-id"));
             };
+            socket.onerror = function(error) {
+                console.error("WebSocket Error:", error);
+            }
+            let orders = document.querySelectorAll(".OrdersTab")
+            orders.forEach(order => {
+                order.addEventListener("click", function(){
+                    let oid = this.dataset.id
+                    window.location.href = "/VendorOrderDetails/" + oid + "/" + this.dataset.user
+
+                })
+            })
+        }
+        let completeOrder = document.querySelectorAll('.CompleteFoodBtn')
+        if(completeOrder){
+            completeOrder.forEach(btn => {
+               
+                btn.addEventListener("click", function(){
+                    let oid = this.orderId
+                    fetch('PrepareOrder/' + oid, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Order completed!');
+                            button.disabled = true;
+                            button.textContent = 'Order finished';
+                        } else {
+                            alert('Failed to complete order');
+                        }
+                        window.location.href = "/index"
+                    });
+                })
+            })
         }
     
 })
