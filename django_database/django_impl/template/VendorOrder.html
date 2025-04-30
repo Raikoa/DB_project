@@ -21,7 +21,7 @@
         <p>{{d.delivery}}</p>
         </div>
         {%if complete %}
-        <button id="CompleteFoodBtn" data-orderId="{{ d.id }}" data-user = "{{vendor}}">Take Order</button>
+        <button class="CompleteFoodBtn" data-order-id="{{ d.id }}" data-user = "{{vendor}}">Take Order</button>
         {% endif %}
         {% endfor %}
         </div>
