@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.templatetags.static import static
-from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User # type: ignore
+from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox # type: ignore
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from channels.layers import get_channel_layer # type: ignore
@@ -38,8 +38,9 @@ def give_exp_func():
 
 def front(request):
     data = give_exp_func()
-    #test_user = DeliveryP.objects.first()
-    test_user= Vendor.objects.first()
+    test_user = DeliveryP.objects.first()
+    #test_user = Customer.objects.first()
+    #test_user= Vendor.objects.first()
     #user = request.user
 
     role = None
@@ -49,7 +50,13 @@ def front(request):
         role = 'vendor'
     elif isinstance(test_user, DeliveryP):
         role = 'delivery'
-
+    messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.user_id])
+    msg = []
+    for m in messages:
+        msg.append({
+            "message": m.message,
+            "timestamp": m.timestamp
+        })
     if role == 'delivery':
         avaliable = Order.objects.raw("SELECT * FROM 'order' WHERE status = 'not started'")
         order_queue = []
@@ -63,7 +70,7 @@ def front(request):
          
               
             })
-        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_queue})
+        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_queue, 'msg': msg})
     
     if role == 'vendor':
         pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [test_user.store_id])
@@ -88,9 +95,9 @@ def front(request):
                 "customer": Customer_obj.name,
                 "delivery": o.delivery_person_id,
             })
-        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_inc})
+        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_inc, 'msg': msg})
 
-    return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id})
+    return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg})
 
 
 def page(request, id):
@@ -144,14 +151,14 @@ def fav(request, userid):
 
 
 def orderUser(request, userid):
-    orders = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status='completed'", [userid])
+    orders = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status='Complete'", [userid])
     
     UserOrders = []
     for o in orders:
       
         
-        rest = Restaurant.objects.raw("SELECT name FROM restaurant WHERE Rid = %s", [o.restaurant_id])
-        deli = DeliveryP.objects.raw("SELECT u.name FROM delivery_person dp JOIN user u ON dp.user_id = u.user_id WHERE dp.user_id = %s", [o.delivery_person_id])
+        rest = Restaurant.objects.get(Rid=o.restaurant_id)
+        
         ord = {
             "id": o.id,
             
@@ -159,12 +166,12 @@ def orderUser(request, userid):
             "created": o.created_at,
             "time": o.time,
             "destination": o.destination,
-            "deliveryP": deli,
-            "restaurant": rest,   
+            "deliveryP": o.delivery_person_id,
+            "restaurant": rest.name,   
             "status": o.status, 
         }
         UserOrders.append(ord)
-    return render(request, "orders.html", {'order':UserOrders})
+    return render(request, "orders.html", {'order':UserOrders, 'user': userid})
 
 def login(request):
     return render(request)
@@ -190,9 +197,10 @@ def ShowOrderDetails(request, OrderID, DeliID):
         "restaurant": restaurant_name,
         "customer": customer.name,
         "destination": order.destination,
-        "rest_dest": restaurant_address
+        "rest_dest": restaurant_address,
+        "cust_id": order.user_id
     }
-    return render(request, "Details.html", {'detail': [details], "deliP": DeliID, "CanTake": True})
+    return render(request, "Details.html", {'detail': [details], "deliP": DeliID, "CanTake": True, 'CanComplete': False})
 
 @csrf_exempt
 def TakeOrder(request,orderid, deliID):
@@ -244,7 +252,7 @@ def vendor_orders_api(request,Rid):
 
 
 def ShowCurrentOrder(request, deliID):
-    Current = Order.objects.raw("SELECT * FROM 'order' WHERE delivery_person_id = %s AND status = 'pending'", [deliID]) 
+    Current = Order.objects.raw("SELECT * FROM 'order' WHERE delivery_person_id = %s AND status = 'pending' OR status='on route' OR status='Food Done'", [deliID]) 
     CurrentOrders = []
     for c in Current:
         foods = []
@@ -257,6 +265,10 @@ def ShowCurrentOrder(request, deliID):
         restaurant_name = restaurant.name
         restaurant_address = restaurant.address
         customer = Customer.objects.get(user_id = c.user_id)
+        if c.status == "on route":
+            canStartNav = False
+        else:
+            canStartNav = True
         details = {
         "id": c.id,
         "items": json.dumps(foods),
@@ -265,11 +277,14 @@ def ShowCurrentOrder(request, deliID):
         "restaurant": restaurant_name,
         "customer": customer.name,
         "destination": c.destination,
-        "rest_dest": restaurant_address
+        "rest_dest": restaurant_address,
+        "cust_id": c.user_id,
+        "status": c.status,
+        "canStartNav": canStartNav
         }
         CurrentOrders.append(details)
 
-    return render(request, "Details.html", {'detail': CurrentOrders, "deliP": deliID, "CanTake":False})
+    return render(request, "Details.html", {'detail': CurrentOrders, "deliP": deliID, "CanTake":False, "CanComplete":True})
 
 
 def ShowVendorOrder(request, Oid, VendorID):
@@ -293,13 +308,13 @@ def ShowVendorOrder(request, Oid, VendorID):
     }
     return render(request, "VendorOrder.html", {"details": [details], "complete": True, "vendor": VendorID})
 
-
+@csrf_exempt
 def PrepOrder(request, Oid):
     if request.method == 'POST':
      
         try:
             order = Order.objects.get(id=Oid)
-            order.status = 'on route'
+            order.status = 'Food Done'
             order.save()
             return JsonResponse({'success': True})
         except order.DoesNotExist:
@@ -307,3 +322,60 @@ def PrepOrder(request, Oid):
             
     return JsonResponse({'error': 'Invalid method'}, status=405)
 
+@csrf_exempt
+def CompOrder(request, Orderid, Userid):
+    if request.method == 'POST':
+     
+        try:
+            order = Order.objects.get(id=Orderid)
+            delivery = order.delivery_person
+            order.status = "Complete"
+            order.save()
+            
+            channel_layer = get_channel_layer()
+            async_to_sync(channel_layer.group_send)(
+            f"user_{Userid}",
+        {
+            'type': 'send_order_complete',
+            'message': f"Your order #{Orderid} has been marked as completed by delivery {delivery}"
+        }
+            )
+            Inbox.objects.create(message = f"Your order #{Orderid} has been marked as completed by delivery {delivery}", user_id = Userid)
+
+            return JsonResponse({'success': True})
+        except order.DoesNotExist:
+            return JsonResponse({'error': 'Order not found'}, status=404)
+            
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+
+def updateInbox(request, userid):
+    msgs = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [userid])
+    data = []
+    for m in msgs:
+            data.append({
+            "message": m.message,
+            "timestamp": m.timestamp
+        })
+
+    return JsonResponse(data)
+
+
+
+def ViewInbox(request, userid):
+    msgs = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [userid])
+    data = []
+    for m in msgs:
+            data.append({
+            "message": m.message,
+            "timestamp": m.timestamp
+        })
+            
+    return render(request, "inbox.html", {"msg": data})
+
+
+def StartNav(request, Oid):
+    o = Order.objects.get(id=Oid)
+    o.status = "on route"
+    o.save()
+    return render(request, "Navigation.html", {"orderID": Oid})

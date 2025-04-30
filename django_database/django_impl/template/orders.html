@@ -8,13 +8,13 @@
         <script src="{% static 'script.js' %}"></script>
     </head>
     <body>
-        <div id="Orders">
+        <div id="OrdersHistory">
             <hr style="border-top: dotted 1px;" class="line" />
             {%if not order%}
             <div>NO ORDERS</div>
             {%else %}
           {% for i in order %}
-            <div class="OrdersTab">
+            <div class="OrdersTab" data-order = "{{i.id}}" data-user="{{user}}">
                 <p>{{i.id}}</p>
                 <p>{{i.created}}</p>
                 <p>{{i.deliveryP}}</p>

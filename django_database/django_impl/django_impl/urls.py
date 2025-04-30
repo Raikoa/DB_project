@@ -31,5 +31,9 @@ urlpatterns = [
     path('vendor/orders/<int:Rid>', views.vendor_orders_api),
     path('CurrentDelivery/<int:deliID>', views.ShowCurrentOrder),
     path("VendorOrderDetails/<int:Oid>/<int:VendorID>", views.ShowVendorOrder),
-    path("PrepareOrder/<int:Oid>", views.PrepOrder)
+    path("PrepareOrder/<int:Oid>", views.PrepOrder),
+    path("CompleteOrder/<int:Orderid>/<int:Userid>", views.CompOrder),
+    path("UpdateInbox/<int:userid>", views.updateInbox),
+    path("Inbox/<int:userid>", views.ViewInbox),
+    path("Navi/<int:Oid>", views.StartNav)
 ]

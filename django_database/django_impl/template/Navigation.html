@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <!--for leaflet.js css-->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><!--for leaflet.js code, for the map stuff-->
+    </head>
+    <body>
+    <div id="NavMap" data-order = "{{orderID}}">
+    </div>
+    <p id="locationDisplay">Location: waiting...</p>
+    </body>
+</html>

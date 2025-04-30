@@ -21,10 +21,16 @@
       <p>{{d.customer}}</p>
       <p>{{d.destination}}</p>
       <p>{{d.rest_dest}}</p>
+      
       </div>
       {% if CanTake %}
       <button id="TakeOrderBtn" data-order-id="{{ d.id }}" data-user = "{{deliP}}">Take Order</button>
       {%endif%}
+      {% if CanComplete %}
+      <button class="BeginNav" data-order="{{ d.id }}" data-customer = "{{d.cust_id}}">Begin Navigation</button>
+      <button class="CompleteOrderBtn" data-order-id="{{ d.id }}" data-user = "{{deliP}}" data-customer = "{{d.cust_id}}">Complete Order</button>
+      {%endif%}
+ 
       {%endfor%}
     
     </div>
