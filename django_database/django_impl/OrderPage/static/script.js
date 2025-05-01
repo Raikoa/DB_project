@@ -291,6 +291,12 @@ document.addEventListener("DOMContentLoaded", function(){
                 console.log("WebSocket connection established.");
                 const orderId = navMap.dataset.order; 
                 initMap()
+                const [ResLat, RestLng] = navMap.dataset.address.split(',').map(Number);
+                console.log(ResLat, RestLng)
+                let Restmarker = L.marker([ResLat, RestLng])
+                .addTo(map)
+                .bindPopup("Restaurant Location")
+                .openPopup();
                 getLocale(orderId);
             }
         }
