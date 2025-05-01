@@ -2,6 +2,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from database.models import Order # type: ignore
+from channels.db import database_sync_to_async
 
 class OrderConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -59,10 +60,15 @@ class DeliveryTracker(AsyncWebsocketConsumer):
         if data['type'] == 'location.update':
             latitude = data['latitude']
             longitude = data['longitude']
-            Orderid = data['oid']
+            order_id = data['oid']
             print(f"Received location: {latitude}, {longitude}")
-            order = Order.objects.get(id = Orderid)
-            order.location = latitude + ":" + longitude
-            order.save()
+            await self.update_order_location(order_id, latitude, longitude)
+
+    @database_sync_to_async
+    def update_order_location(self, order_id, lat, lng):
+        order = Order.objects.get(id=order_id)
+        order.location = f"{lat}:{lng}"
+        order.save()
+
     async def disconnect(self, close_code):
         pass

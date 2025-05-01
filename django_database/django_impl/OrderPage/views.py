@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render
 from django.templatetags.static import static
 from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox # type: ignore
@@ -6,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from channels.layers import get_channel_layer # type: ignore
 from asgiref.sync import async_to_sync
 import json
+from geopy.geocoders import Nominatim # type: ignore
+from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 # Create your views here.
 def give_exp_func():
     data = [
@@ -38,8 +41,8 @@ def give_exp_func():
 
 def front(request):
     data = give_exp_func()
-    test_user = DeliveryP.objects.first()
-    #test_user = Customer.objects.first()
+    #test_user = DeliveryP.objects.first()
+    test_user = Customer.objects.first()
     #test_user= Vendor.objects.first()
     #user = request.user
 
@@ -96,19 +99,28 @@ def front(request):
                 "delivery": o.delivery_person_id,
             })
         return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_inc, 'msg': msg})
-
-    return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg})
+    
+    if role == 'customer':
+       restaurants  = Restaurant.objects.raw("SELECT * FROM restaurant")
+       data = []
+       for r in restaurants:
+           data.append({
+               "id": r.Rid,
+                "name": r.name,
+                "address": r.address,
+                "img": static(r.picture),
+           })
+       return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg})
 
 
 def page(request, id):
-    data = give_exp_func()
-    restaurant = next((r for r in data if r["id"] == id), None)
-    rest = Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id])
-    menu  = Item.objects.raw("SELECT * FROM item WHERE store = %s", id)
+    
+    rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
+    menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s", [id])
     menus = []
     for i in menu:
         menus.append({"name": i.name,"price": i.price, "desc": i.desc,"pic": static(i.picture)})
-    tag = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON r.tag_id = t.id WHERE r.restaurant_id = %s;", [id])
+    tag = Tag.objects.raw("SELECT t.id, t.name FROM tag t JOIN restaurant_tag r ON r.tag_id = t.id WHERE r.restaurant_id = %s;", [id])
     tags = []
     for t in tag:
         tags.append(t.name)
@@ -121,7 +133,7 @@ def page(request, id):
     "address": rest.address,
     "img": static(rest.picture),
     }
-    return render(request, "pages.html", {"restaurant": restaurant})
+    return render(request, "pages.html", {"restaurant": restaurant_info})
 
 def fav(request, userid):
     rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])
@@ -378,4 +390,46 @@ def StartNav(request, Oid):
     o = Order.objects.get(id=Oid)
     o.status = "on route"
     o.save()
-    return render(request, "Navigation.html", {"orderID": Oid})
+    Rest = Restaurant.objects.get(Rid = o.restaurant_id)
+    coords = get_coordinates(Rest.address)
+    if(coords):
+        Rest.latitude = coords[0]
+        Rest.longitude = coords[1]
+        Rest.save()
+    
+    return render(request, "Navigation.html", {"orderID": Oid, "RestAddress":coords})
+
+
+def get_coordinates(address):
+    newAddr = force_trim_to_road_name(address)
+    print(f"[DEBUG] Attempting to geocode address: {newAddr}")
+    geolocator = Nominatim(user_agent="DjangoUberApp") 
+    try:
+        location = geolocator.geocode(newAddr)
+        if location:
+            print(f"[DEBUG] Geocoding success: {location.raw}")
+            return (location.latitude, location.longitude)
+        else:
+            print("[ERROR] Address not found")
+            return None
+    except GeocoderTimedOut:
+        print("[ERROR] Geocoding timed out")
+        return None
+    except GeocoderServiceError as e:
+        print(f"[ERROR] Geocoder service error: {e}")
+        return None
+    
+
+
+def force_trim_to_road_name(address): #force address to match specifications
+
+    # Remove leading postal code if any (3 to 5 digits)
+    address = re.sub(r'^\d{3,5}', '', address)
+
+    # Match pattern: 市 + 區 + 路(可含一/二段)
+    match = re.match(r'.*?市.*?區.*?路[一二三四五六七八九十]?(段)?', address)
+    if match:
+        return match.group(0)
+
+    # If not match, return as-is (may be already trimmed or malformed)
+    return address

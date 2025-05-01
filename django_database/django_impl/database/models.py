@@ -38,6 +38,8 @@ class Restaurant(models.Model):
     picture = models.CharField(max_length=100, blank=True)
     address = models.CharField(max_length=100, default="-")
     desc = models.TextField(default="-")
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     class Meta:
         db_table = "restaurant"
 
