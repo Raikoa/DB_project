@@ -118,7 +118,7 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #order:hover, #CurrentOrder:hover{
+#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover{
     background-color: navajowhite;
     cursor: pointer;
 }
@@ -195,3 +195,7 @@
     width: 200px;
   }
 
+#NavMap{
+    height: 400px; 
+    width: 100%;
+}
