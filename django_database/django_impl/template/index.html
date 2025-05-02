@@ -18,6 +18,27 @@
                 <tr>
                     <td>Account info</td>
                     <td>Chat</td>
+                    <td id="msgToggle">Inbox</td>
+                    <!--
+                    <span id="msgCount" style="color: red; font-weight: bold;">
+                        ({{ msg|length }})
+                    </span>-->
+                    <div id="InboxDropdown" class="dropdown" style="display: none; position: absolute; top: 100%; right: 0; background: white; border: 1px solid #ccc; width: 250px; z-index: 1000;">
+                        <ul style="list-style: none; padding: 10px; margin: 0;" id="msgArea">
+                            {% for m in msg|slice:":5" %}
+                                <li style="padding: 5px 0; border-bottom: 1px solid #eee;">
+                                    {{ m.message }}
+                                    <br><small>{{ m.timestamp }}</small>
+                                </li>
+                            {% empty %}
+                                <li>No new messages.</li>
+                            {% endfor %}
+                        </ul>
+                        <div style="text-align: center; padding: 5px;">
+                            <button id="viewAll" data-user="{{userid}}">View All</button>
+                        </div>
+                    </div>
+
                     <td id="order" data-id="{{userid}}">History</td>
                     {% if Role == 'customer'%}
                     <td id="Favorite" data-id="{{userid}}">Favorite</td>
@@ -36,7 +57,7 @@
         {%if Role == 'customer' %}
         <div id="MenuBar">
             <div id="ResTop">Restaurants</div>
-            <div id="Menus">
+            <div id="Menus" data-user = '{{userid}}''>
              
                 {% for i in Test %}
                 <div class="restaurant_tab" data-id="{{ i.id }}">

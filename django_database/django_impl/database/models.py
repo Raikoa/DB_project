@@ -38,6 +38,8 @@ class Restaurant(models.Model):
     picture = models.CharField(max_length=100, blank=True)
     address = models.CharField(max_length=100, default="-")
     desc = models.TextField(default="-")
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     class Meta:
         db_table = "restaurant"
 
@@ -97,6 +99,15 @@ class Order(models.Model):
     status = models.CharField(max_length=100, default="Pending")
     destination = models.CharField(max_length=100, default="-")
     time = models.DurationField(default=default_duration)
-
+    location = models.TextField(default="-")
     class Meta:
         db_table = "order"
+
+class Inbox(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'inbox'
