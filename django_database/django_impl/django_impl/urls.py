@@ -35,5 +35,7 @@ urlpatterns = [
     path("CompleteOrder/<int:Orderid>/<int:Userid>", views.CompOrder),
     path("UpdateInbox/<int:userid>", views.updateInbox),
     path("Inbox/<int:userid>", views.ViewInbox),
-    path("Navi/<int:Oid>", views.StartNav)
+    path("Navi/<int:Oid>", views.StartNav),
+    path('your_django_cart_view/', views.your_django_cart_view, name='your_django_cart_view'),
+    path("cart/", views.view_cart),
 ]

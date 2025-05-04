@@ -399,3 +399,5 @@ function initMap() {
 
     marker = L.marker([0, 0]).addTo(map);//set a default marker
 }
+
+
