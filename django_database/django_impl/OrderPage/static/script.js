@@ -4,6 +4,8 @@ const interval = 5 * 1000;
 let deliverySocket;
 let map;
 let marker;
+let routePolyline;
+let fallbackPolyline;
 document.addEventListener("DOMContentLoaded", function(){
         
         let tabs = document.querySelectorAll(".restaurant_tab")
@@ -299,6 +301,208 @@ document.addEventListener("DOMContentLoaded", function(){
                 .openPopup();
                 getLocale(orderId);
             }
+            deliverySocket.onmessage = function(e){
+                const data = JSON.parse(e.data);
+                if (data.type === 'route.update') {
+                    
+                        
+                        if (routePolyline) map.removeLayer(routePolyline);
+                        if (fallbackPolyline) map.removeLayer(fallbackPolyline);
+                        if (distanceLabel) map.removeLayer(distanceLabel);
+                        if (data.route && data.route.length > 0) {
+                            console.log(data.route)
+                            routePolyline = L.polyline(data.route, { color: 'red' }).addTo(map);
+                        }
+                        if (data.fallback_line && data.fallback_line.length > 0) {
+                            fallbackPolyline = L.polyline(data.fallback_line, { color: 'gray', dashArray: '5, 5' }).addTo(map);
+                            const midIndex = Math.floor(data.fallback_line.length / 2);
+                            const midPoint = data.fallback_line[midIndex];
+                            distanceLabel = L.marker(midPoint, {
+                                icon: L.divIcon({
+                                    className: 'distance-label',
+                                    html: `<div style="background: white; padding: 2px 6px; border-radius: 4px; border: 1px solid #ccc;">${data.distance_km} km</div>`
+                                })
+                            }).addTo(map);
+                        }
+                }
+            }
+        }
+
+        let addRest = document.getElementById("AddRest")
+        if(addRest){
+            user = addRest.getAttribute("data-user")
+            addRest.addEventListener("click", function(){
+                let mo = document.getElementById("RestFormModal")
+                let close = document.querySelector(".close")
+                if(close){
+                    close.addEventListener("click", function(){
+                    mo.style.display = "none"
+                })
+                }
+                if(mo){
+                    mo.style.display = "flex"
+                }
+                window.onclick = (e) => {
+                    if (e.target == mo) {
+                      mo.style.display = "none";
+                    }
+                  };
+            })
+            let RestSubmit = document.getElementById("RestSubmit")
+            if(RestSubmit){
+                RestSubmit.addEventListener("click", function(e){
+                    e.preventDefault()
+                    const form = document.getElementById("RestModalForm");
+                    const formData = new FormData(form);
+                    fetch("/AddRestaurant/" + parseInt(user)  , {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken") 
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json(); 
+                    })
+                    .then(data => {
+                        console.log("Success:", data);
+                        alert("Restaurant added successfully!");
+                        window.location.href="/index"
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                })
+            }
+        }
+        let VendorMenu = document.getElementById("Menu")
+        if(VendorMenu){
+            VendorMenu.addEventListener("click", function(){
+                window.location.href = "/Menu/" + parseInt(VendorMenu.dataset.id)
+            })
+        }
+        let Additems = document.getElementById("AddItems")
+        if(Additems){
+            Rid = Additems.dataset.rid
+            Additems.addEventListener("click", function(){
+                let mo = document.getElementById("ItemFormModal")
+                let close = document.querySelector(".close")
+                if(close){
+                    close.addEventListener("click", function(){
+                    mo.style.display = "none"
+                })
+                }
+                if(mo){
+                    mo.style.display = "flex"
+                }
+                window.onclick = (e) => {
+                    if (e.target == mo) {
+                      mo.style.display = "none";
+                    }
+                  };
+            })
+            let ItemSubmit = document.getElementById("ItemSubmit")
+            if(ItemSubmit){
+                ItemSubmit.addEventListener("click", function(e){
+                    e.preventDefault()
+                    const form = document.getElementById("ItemModalForm");
+                    const formData = new FormData(form);
+                    fetch("/AddMenu/" + parseInt(Rid)  , {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken") 
+                        },
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json(); 
+                    })
+                    .then(data => {
+                        console.log("Success:", data);
+                        alert("Item added successfully!");
+                        window.location.reload();
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+                })
+            }
+        }
+        let click = 1
+        let manageItem = document.getElementById("ManageItems")
+        if(manageItem){
+            manageItem.addEventListener("click", function(){
+                let btns = document.querySelectorAll(".buttonbar")
+                if(btns){
+                    btns.forEach(b => {
+
+                        if(click % 2 == 0){
+                            b.style.display = "None"
+                        }else{
+                             b.style.display = "block"
+                        }
+                        
+                    })
+                }
+                click = click + 1
+            })
+            let updatestatus = document.querySelectorAll(".UpdateStat")
+            
+            if(updatestatus.length > 0){
+                updatestatus.forEach(u => {
+                    let id = u.dataset.id
+                 
+                    u.addEventListener("click", function(){
+                        fetch("/UpdateMenu/" + parseInt(id)  , {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": getCookie("csrftoken") 
+                            },
+                        })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Network response was not ok");
+                            return response.json(); 
+                        })
+                        .then(data => {
+                            console.log("Success:", data);
+                            alert("status Changed!");
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
+                    })
+                    
+                })
+            }
+            let DeleteBtn = document.querySelectorAll(".Remove")
+            if(DeleteBtn.length > 0){
+                DeleteBtn.forEach(d => {
+                    let id = d.dataset.id
+                    d.addEventListener("click", function(){
+                        fetch("/DeleteMenu/" + parseInt(id)  , {
+                            method: "POST",
+                            headers: {
+                                "X-CSRFToken": getCookie("csrftoken") 
+                            },
+                        })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Network response was not ok");
+                            return response.json(); 
+                        })
+                        .then(data => {
+                            console.log("Success:", data);
+                            alert("Item deleted!");
+                            window.location.reload();
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
+                    })
+                })
+            }
         }
 })
 
@@ -363,12 +567,14 @@ function getLocale(OrderId){
         const now = Date.now();
         marker.setLatLng([latitude, longitude]); //move marker
         map.setView([latitude, longitude]); //recenter map
-        console.log("updated")
+        
         if (now - lastSent > interval) {
             lastSent = now;
+            console.log("updated")
             const locationDisplay = document.getElementById("locationDisplay");
             locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, lastUpdated: ${new Date(lastSent).toLocaleTimeString()}`;
             sendLocationToBackend(latitude, longitude, OrderId);
+            
         }
     }, error => {
         console.error(error);
@@ -399,3 +605,4 @@ function initMap() {
 
     marker = L.marker([0, 0]).addTo(map);//set a default marker
 }
+

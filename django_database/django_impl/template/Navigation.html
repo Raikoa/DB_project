@@ -8,6 +8,8 @@
         <script src="{% static 'script.js' %}"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <!--for leaflet.js css-->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><!--for leaflet.js code, for the map stuff-->
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
     <div id="NavMap" data-order = "{{orderID}}" data-address = "{{ RestAddress.0 }},{{ RestAddress.1 }}">
