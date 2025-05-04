@@ -13,7 +13,7 @@
             {% for i in restaurant.menu %}
                 <div class="FoodTab Items">
                     {% load static %}
-                    <img src= "{{i.pic}}"  class="display"/>
+                    <img src= "{{i.pic.url}}"  class="display"/>
                     <p>{{i.name}}</p>
                     <p>{{i.price}}</p>
                 </div>
