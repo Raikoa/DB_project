@@ -121,6 +121,10 @@ foodTabs.forEach(tab => {
     });
 });
 
+document.getElementById('checkoutBtn').addEventListener('click', function() {
+    window.location.href = '/index/';
+});
+
 //End of Cart Functions End of Cart Functions
 //End of Cart Functions End of Cart Functions
 //End of Cart Functions End of Cart Functions

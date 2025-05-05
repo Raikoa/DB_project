@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Your Cart</title>
+
 </head>
 <body>
     <h1>Your Shopping Cart</h1>
@@ -16,5 +17,8 @@
         <p>Your cart is empty.</p>
     {% endif %}
     <a href="/pages/1/">Continue Shopping</a>
+    <a href="/checkout/">Place Order</a>
+    {% load static %}
+    <script src="{% static 'addToCart.js' %}"></script>
 </body>
 </html>

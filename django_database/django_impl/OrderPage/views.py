@@ -1,5 +1,8 @@
 import re
-from django.shortcuts import render
+import uuid
+from django.db import connection
+from datetime import datetime
+from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox # type: ignore
 from django.http import HttpResponse, JsonResponse
@@ -57,6 +60,9 @@ def front(request):
         role = 'vendor'
     elif isinstance(test_user, DeliveryP):
         role = 'delivery'
+
+    request.session['uid'] = test_user.user_id
+
     messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.user_id])
     msg = []
     for m in messages:
@@ -118,7 +124,8 @@ def front(request):
 
 
 def page(request, id):
-    
+
+    request.session['rid'] = id
     rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
     menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s", [id])
     menus = []
@@ -164,6 +171,45 @@ def view_cart(request):
     cart_data_from_session = request.session.get('cart', [])
     context = {'cart_items': cart_data_from_session}
     return render(request, "cart.html", context)
+
+def contShop(request):
+    rid = request.session.get('rid')
+    return redirect('/pages/1/')
+
+def checkout(request):
+    last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
+    lastid = int(last[0].id)
+    oid = lastid + 1
+    rid = int(request.session.get('rid'))
+    uid = int(request.session.get('uid'))
+    cart_data = request.session.get('cart', [])
+    dtime = 0
+    price = 0
+    amount = 0
+    for i in cart_data:
+        p = int(i['price'])
+        q = int(i['quantity'])
+        amount += q
+        price += p * q
+    placetime = datetime.now()
+    dest = 'address'
+    status = 'on route'
+    location = '22.6300545:120.2639648'
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO "order" (id, items, price, created_at, user_id, restaurant_id, destination, status, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (oid, amount, price, placetime, uid, rid, dest, status, dtime, location))
+    if request.method == 'POST':
+        try:
+            cart_data = json.loads(request.body)
+            # ... process the order ...
+
+            # Clear the cart data from the session
+            if 'cart' in request.session:
+                del request.session['cart']
+
+            return JsonResponse({'status': 'success', 'message': 'Order placed successfully'})
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    return redirect('/pages/1/')
 
 def fav(request, userid):
     rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])
