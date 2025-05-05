@@ -1,9 +1,12 @@
 # yourapp/consumers.py
+import base64
 import os
+from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 import osmnx as ox
 from django.http import JsonResponse
+import requests
 from database.models import Order, Restaurant# type: ignore
 from channels.db import database_sync_to_async
 import osmnx as ox
@@ -17,8 +20,9 @@ _graph_cache = None
 _graph_lock = Lock()
 
 def load_graph_once():
-    graph_dir = os.path.join(settings.BASE_DIR, 'django_impl', 'osm')
+    graph_dir = os.path.join(settings.BASE_DIR, 'osm')
     graph_path = os.path.join(graph_dir, 'taiwan_drive.graphml')
+    print(graph_path)
     global _graph_cache
     with _graph_lock:
         if _graph_cache is None:
@@ -170,3 +174,32 @@ def interpolate_line(start, end, steps=10):
         )
         for i in range(steps + 1)
     ]
+
+
+class MapConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        await self.accept()
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+
+        if data["type"] == "request_map":
+            order_id = data["order_id"]
+            order = await sync_to_async(Order.objects.get)(id=order_id)
+            location = order.location
+            if location is None:
+                await self.send(text_data=json.dumps({
+                "type": "error",
+                "message": "No location found for the order."
+                }))
+                return
+            lat, lng = map(str.strip, location.split(":"))
+            print(lat, lng) 
+
+            await self.send(text_data=json.dumps({
+                    "type": "map",
+                    "lat": lat,
+                    "lng": lng,
+            }))
+
+            

@@ -119,7 +119,7 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover{
+#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover{
     background-color: navajowhite;
     cursor: pointer;
 }
@@ -247,3 +247,9 @@
     text-align: center;
     border-radius: 10px;
 }
+
+
+#street-view {
+    height: 100vh;
+    width: 100%;
+  }

@@ -45,8 +45,8 @@ def give_exp_func():
 def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
-    #test_user = Customer.objects.first()
-    test_user= Vendor.objects.get(user_id = 4)
+    test_user = Customer.objects.first()
+    #test_user= Vendor.objects.get(user_id = 4)
     #user = request.user
 
     role = None
@@ -120,7 +120,7 @@ def front(request):
                "id": r.Rid,
                 "name": r.name,
                 "address": r.address,
-                "img": static(r.picture),
+                "img": r.picture,
            })
        return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg})
 
@@ -143,7 +143,7 @@ def page(request, id):
     "desc": rest.desc,
     "menu": menus,
     "address": rest.address,
-    "img": static(rest.picture),
+    "img": rest.picture,
     }
     return render(request, "pages.html", {"restaurant": restaurant_info})
 
@@ -573,3 +573,38 @@ def deleteItem(request, ItemId):
         except Item.DoesNotExist:
             return JsonResponse({"status": "error", "message": "Item not found"}, status=404)
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def ShowUserCurrent(request,user):
+    CurrentOrder = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status != 'Complete'", [user]) 
+    ors = []
+    for c in CurrentOrder:
+        foods = []
+        orderItemsId = c.items.split(",")
+        for id in orderItemsId:
+            food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
+
+            foods.append({"name":food.name, "price": food.price})
+        restaurant = Restaurant.objects.get(Rid=c.restaurant_id)
+        restaurant_name = restaurant.name
+   
+  
+        
+        details = {
+        "id": c.id,
+        "items": json.dumps(foods),
+        "price": c.price,
+        "created": c.created_at,
+        "restaurant": restaurant_name,
+        "delivery": c.delivery_person_id,
+        "destination": c.destination,
+        
+        "status": c.status,
+        }
+        ors.append(details)
+    return render(request, "UserOrderDetails.html",{"details": ors, "user": user})
+
+
+
+def ShowTracker(request, order):
+    return render(request, "Tracker.html", {"orderid": order})
