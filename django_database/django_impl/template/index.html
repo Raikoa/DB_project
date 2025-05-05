@@ -44,7 +44,7 @@
                     <td id="order" data-id="{{userid}}">History</td>
                     {% if Role == 'customer'%}
                     <td id="Favorite" data-id="{{userid}}">Favorite</td>
-                    
+                    <td id="UserCurrentOrder" data-user="{{userid}}">My order</td>
                     <td data-id="{{userid}}">My Cart</td>
                     {% endif %}
                     {% if Role == 'vendor' %}
@@ -65,7 +65,7 @@
              
                 {% for i in Test %}
                 <div class="restaurant_tab" data-id="{{ i.id }}">
-                    {% load static %}
+                   
                     <img src= "{{i.img.url}}"  class="display"/>
                     <p>{{i.name}}</p>
                 </div>

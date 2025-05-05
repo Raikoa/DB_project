@@ -43,6 +43,8 @@ urlpatterns = [
     path("Menu/<int:user>", views.ViewMenu),
     path("UpdateMenu/<int:ItemId>", views.UpdateStatus),
     path("DeleteMenu/<int:ItemId>", views.deleteItem),
+    path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
+    path("Tracker/<int:order>", views.ShowTracker),
 ]
 
 

@@ -6,6 +6,10 @@ let map;
 let marker;
 let routePolyline;
 let fallbackPolyline;
+let distanceLabel;
+let lastPosition = null;
+let googleMap;
+let osmb;
 document.addEventListener("DOMContentLoaded", function(){
         
         let tabs = document.querySelectorAll(".restaurant_tab")
@@ -151,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         }
         let ShowModal = document.querySelectorAll(".ShowCurrentOrderItems")
-  
+       
         if(ShowModal.length > 0){
             let mo = document.querySelector("#DeliModal")
             let co = document.querySelector("#DelimodalContent")
@@ -320,7 +324,14 @@ document.addEventListener("DOMContentLoaded", function(){
                             distanceLabel = L.marker(midPoint, {
                                 icon: L.divIcon({
                                     className: 'distance-label',
-                                    html: `<div style="background: white; padding: 2px 6px; border-radius: 4px; border: 1px solid #ccc;">${data.distance_km} km</div>`
+                                    html: `<div style="background: white; 
+                                    padding: 4px 8px; 
+                                    border-radius: 6px; 
+                                    border: 1px solid #ccc; 
+                                    font-size: 14px;
+                                    font-weight: bold;
+                                    box-shadow: 0 1px 5px rgba(0,0,0,0.3);
+                                    white-space: nowrap;">${data.distance.toFixed(2)} km</div>`
                                 })
                             }).addTo(map);
                         }
@@ -503,7 +514,116 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 })
             }
+            
         }
+        let ShowUserOrder = document.getElementById("UserCurrentOrder")
+            
+            if(ShowUserOrder){
+                ShowUserOrder.addEventListener("click", function(){
+                    window.location.href = "/ShowUserCurrentOrder/" + parseInt(ShowUserOrder.dataset.user)
+                })
+            }
+            let tracker = document.querySelectorAll(".trackBtn")
+            if(tracker.length > 0){
+                tracker.forEach(track => {
+                    track.addEventListener("click", function(){
+                       
+                        let orderid = track.dataset.id
+                        window.location.href = "/Tracker/" + parseInt(orderid)
+                        
+                    })
+                })
+            }
+            let ShowUserCurrentItem = document.querySelectorAll(".ShowCurrentOrderUserItems")
+            if(ShowUserCurrentItem.length > 0){
+                let mo = document.querySelector("#UserOrderModal")
+                let co = document.querySelector("#UserOrdermodalContent")
+                let close = mo.querySelector(".close");
+            if(close){
+            
+                close.addEventListener("click", function(){
+                
+                mo.style.display = "none"
+            })
+            }
+   
+            ShowUserCurrentItem.forEach(Mod => {
+            Mod.addEventListener("click", function(){
+                
+                const items = JSON.parse(this.dataset.items); 
+               
+             
+                co.innerHTML = ""; 
+
+                items.forEach(item => {
+                const p = document.createElement("p");
+                p.textContent = item.name + ":" + item.price;
+                co.appendChild(p);
+                });
+                mo.style.display = "flex"
+            })
+
+            })
+            window.onclick = (e) => {
+            if (e.target == mo) {
+              mo.style.display = "none";
+            }
+            };
+            }
+            let trackerImage = document.getElementById("trackerImage")
+            if(trackerImage){
+                let orderid = trackerImage.dataset.order
+                let socket = new WebSocket("ws://" + window.location.host + "/ws/map/");
+                console.log("socket connected")
+                        socket.onmessage = function(e) {
+                            const data = JSON.parse(e.data);
+                            if (data.type === "error") {
+                                alert(data.message);  
+                            } else if (data.type === "map") {
+                                
+                                console.log(data.lat)
+                                console.log(data.lng)
+                                trackerImage.setAttribute("data-lat", data.lat)
+                                trackerImage.setAttribute("data-lng", data.lng)
+                                
+                                osmb = new OSMBuildings({
+                                    container: 'trackerImage',
+                                    position: { latitude: parseFloat(data.lat), longitude: parseFloat(data.lng) }, 
+                                    zoom: 17,
+                                    minZoom: 15,
+                                    maxZoom: 20,
+                                    state: true,
+                                    tilt: 40,
+                                    rotation: 300,
+                                    effects: ['shadows'],
+                                    tileSource: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                    attribution: '© Data <a href="https://openstreetmap.org/copyright/">OpenStreetMap</a> © Map <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>'
+                                });
+                                osmb.addMapTiles('https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png');
+
+                                osmb.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/59fcc2e8/tile/{z}/{x}/{y}.json');
+                                const pos = osmb.project([lng, lat]);
+                                const marker = document.getElementById('3Dmarker');
+                                if (pos) {
+                                marker.style.left = pos.x + 'px';
+                                marker.style.top = pos.y + 'px';
+                                }
+                                let rotation = 300;
+                                setInterval(() => {
+                                rotation = (rotation + 1) % 360;
+                                osmb.setRotation(rotation);
+                                }, 100);
+                                
+                            }
+                        };
+                        socket.onopen = function() {
+                            console.log("socket sent")
+                            socket.send(JSON.stringify({
+                                type: "request_map",
+                                order_id: orderid  
+                            }));
+                        };
+            }
 })
 
 function getCookie(name) {
@@ -559,7 +679,7 @@ function loadNewInbox(id){
     });
 }
 
-
+/*
 function getLocale(OrderId){
     
     navigator.geolocation.watchPosition(pos => {
@@ -582,7 +702,44 @@ function getLocale(OrderId){
         enableHighAccuracy: true,//more precise location
         maximumAge: 0 //always use new data and not old data from cache
     });
+    navigator.geolocation.getCurrentPosition(pos => {
+        const { latitude, longitude } = pos.coords;
+        const now = Date.now();
+        marker.setLatLng([latitude, longitude]);
+        map.setView([latitude, longitude]);
+        console.log("getCurrentPosition update");
+
+        const locationDisplay = document.getElementById("locationDisplay");
+        locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, lastUpdated: ${new Date(now).toLocaleTimeString()}`;
+        sendLocationToBackend(latitude, longitude, OrderId);
+        lastSent = now; 
+    }, error => {
+        console.error("getCurrentPosition error", error);
+    }, {
+        enableHighAccuracy: true,
+        timeout: 15000
+    });
+    setInterval(() => {
+        navigator.geolocation.getCurrentPosition(pos => {
+            const { latitude, longitude } = pos.coords;
+            const now = Date.now();
+            marker.setLatLng([latitude, longitude]);
+            map.setView([latitude, longitude]);
+            console.log("Forced getCurrentPosition update");
+
+            const locationDisplay = document.getElementById("locationDisplay");
+            locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, lastUpdated: ${new Date(now).toLocaleTimeString()}`;
+            sendLocationToBackend(latitude, longitude, OrderId);
+            lastSent = now; 
+        }, error => {
+            console.error("getCurrentPosition error", error);
+        }, {
+            enableHighAccuracy: true,
+            timeout: 15000
+        });
+    }, 30000); 
 }
+*/
 
 function sendLocationToBackend(lat, lang, Oid){
     if (deliverySocket.readyState === WebSocket.OPEN) {
@@ -605,4 +762,156 @@ function initMap() {
 
     marker = L.marker([0, 0]).addTo(map);//set a default marker
 }
+
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; 
+    const toRad = angle => angle * Math.PI / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 +
+              Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+              Math.sin(dLon / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+}
+
+function isRedundant(pos) {
+    if (!lastPosition) return false;
+    const { latitude, longitude } = pos.coords;
+    const { latitude: lastLat, longitude: lastLng } = lastPosition.coords;
+    const distance = getDistance(latitude, longitude, lastLat, lastLng);
+    return distance < 10; 
+}
+
+function handleLocation(pos, OrderId) {
+    const now = Date.now();
+
+    if (isRedundant(pos)) {
+        console.log(" Ignoring redundant update");
+        return;
+    }
+
+    const { latitude, longitude, accuracy } = pos.coords;
+    if (accuracy > 50) {
+        console.log(" Skipping due to poor accuracy:", accuracy);
+        return;
+    }
+
+    lastPosition = pos;
+    lastSent = now;
+
+    marker.setLatLng([latitude, longitude]);
+    map.setView([latitude, longitude]);
+
+    const locationDisplay = document.getElementById("locationDisplay");
+    locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;
+
+    sendLocationToBackend(latitude, longitude, OrderId);
+}
+
+function getLocale(OrderId) {
+    navigator.geolocation.getCurrentPosition(pos => {
+        console.log(" Initial location fix");
+        handleLocation(pos, OrderId);
+    }, error => {
+        console.error("getCurrentPosition error", error);
+    }, {
+        enableHighAccuracy: true,
+        timeout: 15000
+    });
+
+    setInterval(() => {
+        navigator.geolocation.getCurrentPosition(pos => {
+            console.log("Periodic location request");
+            handleLocation(pos, OrderId);
+        }, error => {
+            console.error("getCurrentPosition error", error);
+        }, {
+            enableHighAccuracy: true,
+            timeout: 15000
+        });
+    }, 30000);
+}
+
+
+function initStreetView(){
+    const lat = parseFloat(document.getElementById("trackerImage").dataset.lat);
+    const lng = parseFloat(document.getElementById("trackerImage").dataset.lng);
+
+    const location = { lat, lng };
+
+   
+    const panorama = new google.maps.StreetViewPanorama(
+        document.getElementById("street-view"),
+        {
+            position: location,
+            pov: {
+                heading: 34,
+                pitch: 10
+            },
+            zoom: 1
+        }
+    );
+
+    
+}
+
+/*
+function initGoogleMap() {
+    const lat = parseFloat(document.getElementById("trackerImage").dataset.lat);
+    const lng = parseFloat(document.getElementById("trackerImage").dataset.lng);
+    googleMap = new google.maps.Map(document.getElementById("Googlemap"), {
+      center: { lat: lat, lng: lng }, 
+      zoom: 18,
+      heading: 320,
+      tilt: 45, // required for 3D buildings
+      mapId: "8e0a97af9386fef", // default mapId with 3D support
+      mapTypeId: 'roadmap',
+      disableDefaultUI: false,
+    });
+  
+    // Optional: animate rotation
+    let heading = 320;
+    setInterval(() => {
+      heading += 1;
+      map.setHeading(heading);
+    }, 100);
+  }*/
+/*
+    function initAllMaps() {
+        const tracker = document.getElementById("trackerImage");
+        const lat = parseFloat(tracker.dataset.lat);
+        const lng = parseFloat(tracker.dataset.lng);
+        const location = { lat, lng };
+    
+        const panorama = new google.maps.StreetViewPanorama(
+            document.getElementById("street-view"),
+            {
+                position: location,
+                pov: {
+                    heading: 34,
+                    pitch: 10
+                },
+                zoom: 1
+            }
+        );
+    
+     
+        const googleMap = new google.maps.Map(document.getElementById("Googlemap"), {
+            center: location,
+            zoom: 18,
+            heading: 320,
+            tilt: 45,
+            mapId: "8e0a97af9386fef", 
+            mapTypeId: 'roadmap'
+        });
+    
+    
+        let heading = 320;
+        setInterval(() => {
+            heading = (heading + 1) % 360;
+            googleMap.setHeading(heading);
+        }, 100);
+    }*/
+
 
