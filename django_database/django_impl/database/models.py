@@ -114,3 +114,14 @@ class Inbox(models.Model):
 
     class Meta:
         db_table = 'inbox'
+
+
+
+class VideoFrame(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='RouteVideo')
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+    captured_at = models.DateTimeField(auto_now_add=True)
+    frame = models.ImageField(upload_to='VideoFrames/', blank=True)
+    class Meta:
+        db_table = "videoframe"

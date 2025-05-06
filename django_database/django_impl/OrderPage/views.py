@@ -1,9 +1,11 @@
 import datetime
 import os
 import re
+from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.templatetags.static import static
-from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox # type: ignore
+import requests
+from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox, VideoFrame # type: ignore
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from channels.layers import get_channel_layer # type: ignore
@@ -45,8 +47,8 @@ def give_exp_func():
 def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
-    test_user = Customer.objects.first()
-    #test_user= Vendor.objects.get(user_id = 4)
+    #test_user = Customer.objects.first()
+    test_user= Vendor.objects.get(user_id = 4)
     #user = request.user
 
     role = None
@@ -608,3 +610,5 @@ def ShowUserCurrent(request,user):
 
 def ShowTracker(request, order):
     return render(request, "Tracker.html", {"orderid": order})
+
+

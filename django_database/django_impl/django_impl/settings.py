@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "database",
     'OrderPage',
     'channels'
-]
+] 
 
 
 ASGI_APPLICATION = 'django_impl.asgi.application'
