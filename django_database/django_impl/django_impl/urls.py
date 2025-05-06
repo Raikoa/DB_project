@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', views.front),
+    path('index/', views.front ,name='index'),
     path('pages/<int:id>/', views.page, name='pages'),
     path('your_django_cart_view/', views.your_django_cart_view, name='your_django_cart_view'),
     path("cart/", views.view_cart),
@@ -43,6 +43,10 @@ urlpatterns = [
     path("UpdateInbox/<int:userid>", views.updateInbox),
     path("Inbox/<int:userid>", views.ViewInbox),
     path("Navi/<int:Oid>", views.StartNav),
+
+    path("login/", views.login_view ,name="login"),
+
+    path("Navi/<int:Oid>", views.StartNav),
     path("AddRestaurant/<int:user>", views.AddRestaurant),
     path("AddMenu/<int:Rid>", views.AddMenuItems),
     path("Menu/<int:user>", views.ViewMenu),
@@ -50,6 +54,7 @@ urlpatterns = [
     path("DeleteMenu/<int:ItemId>", views.deleteItem),
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
+
     path("Navi/<int:Oid>", views.StartNav),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
