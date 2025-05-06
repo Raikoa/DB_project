@@ -35,16 +35,19 @@ class DeliveryP(User):
 class Restaurant(models.Model):
     Rid = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    picture = models.CharField(max_length=100, blank=True)
+    picture = models.ImageField(upload_to='restaurant_pics/', blank=True)
     address = models.CharField(max_length=100, default="-")
     desc = models.TextField(default="-")
+    opening_time = models.TimeField(null=True, blank=True)
+    closing_time = models.TimeField(null=True, blank=True)
     latitude = models.FloatField(null=True)
     longitude = models.FloatField(null=True)
+    status = models.CharField(max_length=20, default="closed")
     class Meta:
         db_table = "restaurant"
 
 class Vendor(User):
-    store = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='vendors')
+    store = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='vendors', null=True)
 
     class Meta:
         db_table = "vendor"
@@ -84,8 +87,8 @@ class Item(models.Model):
     name = models.CharField(max_length=100)
     price = models.IntegerField()
     desc = models.TextField()
-    picture = models.CharField(max_length=100, blank=True)
-
+    picture = models.ImageField(upload_to='item_pics/', blank=True)
+    avaliable = models.BooleanField(default=True)
     class Meta:
         db_table = "item"
 
@@ -111,3 +114,14 @@ class Inbox(models.Model):
 
     class Meta:
         db_table = 'inbox'
+
+
+
+class VideoFrame(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='RouteVideo')
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
+    captured_at = models.DateTimeField(auto_now_add=True)
+    frame = models.ImageField(upload_to='VideoFrames/', blank=True)
+    class Meta:
+        db_table = "videoframe"

@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.http import HttpResponse
 from django.urls import path
 from OrderPage import views # type: ignore
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,4 +43,17 @@ urlpatterns = [
     path("UpdateInbox/<int:userid>", views.updateInbox),
     path("Inbox/<int:userid>", views.ViewInbox),
     path("Navi/<int:Oid>", views.StartNav),
-]
+    path("AddRestaurant/<int:user>", views.AddRestaurant),
+    path("AddMenu/<int:Rid>", views.AddMenuItems),
+    path("Menu/<int:user>", views.ViewMenu),
+    path("UpdateMenu/<int:ItemId>", views.UpdateStatus),
+    path("DeleteMenu/<int:ItemId>", views.deleteItem),
+    path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
+    path("Tracker/<int:order>", views.ShowTracker),
+    path("Navi/<int:Oid>", views.StartNav),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

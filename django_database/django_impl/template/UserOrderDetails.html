@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    </head>
+    <body>
+      <hr style="border-top: dotted 1px;" class="line" />
+      <div id="OrderdetailsPage">
+        {% for d in details%}
+        <div class="detailsTab">
+        <p>{{d.id}}</p>
+        <button class="ShowCurrentOrderUserItems" data-items = '{{d.items|safe}}'>Items</button>
+        <p>{{d.price}}</p>
+        <p>{{d.created}}</p>
+        <p>{{d.restaurant}}</p>
+        <p>{{d.delivery}}</p>
+        <p>{{d.destination}}</p>
+        <p>{{d.status}}</p>
+        
+        </div>
+        <button class="trackBtn" data-id = "{{d.id}}" data-user="{{user}}">Track Order Progress</button>
+        {%endfor%}
+      
+    </div>
+    <div id="UserOrderModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Items</h2>
+        <div id="UserOrdermodalContent">
+
+        </div>
+         
+      </div>
+  </div>
+    </body>
+</html>

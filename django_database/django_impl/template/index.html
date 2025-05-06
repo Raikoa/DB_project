@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
         {% load static %}
         <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
         <div id="TopBar">
@@ -42,10 +44,12 @@
                     <td id="order" data-id="{{userid}}">History</td>
                     {% if Role == 'customer'%}
                     <td id="Favorite" data-id="{{userid}}">Favorite</td>
-                    
+                    <td id="UserCurrentOrder" data-user="{{userid}}">My order</td>
                     <td data-id="{{userid}}">My Cart</td>
                     {% endif %}
-                    
+                    {% if Role == 'vendor' %}
+                    <td data-id="{{userid}}" id="Menu">My Menu</td>
+                    {% endif %}
                     {% if Role == 'delivery'%}
                     
                     <td id="CurrentOrder" data-user="{{userid}}">Current order</td>
@@ -61,8 +65,8 @@
              
                 {% for i in Test %}
                 <div class="restaurant_tab" data-id="{{ i.id }}">
-                    {% load static %}
-                    <img src= "{{i.img}}"  class="display"/>
+                   
+                    <img src= "{{i.img.url}}"  class="display"/>
                     <p>{{i.name}}</p>
                 </div>
                 {% endfor %}
@@ -72,6 +76,48 @@
         </div>
         {%endif%}
         {% if Role == 'vendor'%}
+        {% if NoRes %}
+        <div id="MenuBar">
+            <div id="ResTop">Orders Incoming</div>
+            <hr style="border-top: dotted 1px;" class="line" />
+            <div id="Orders" data-id = '{{userid}}'>
+                <p>Add your restaurant</p>
+                <button id="AddRest" data-user = "{{userid}}">Add Restaurant</button>
+            </div>
+        </div>
+        <div id="RestFormModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Add Restaurant</h2>
+              <form id="RestModalForm" method="POST" enctype="multipart/form-data">
+                <label for="RestName">Restaurant Name</label>
+                <input type="text" name="RestName" required>
+                <label for="RestDesc">Restaurant Description</label>
+                <input type="text" name="RestDesc">
+                <label for="RestAddress">Restaurant Address</label>
+                <input type="text" name="RestAddress" required>
+                <label for="RestPic">Restaurant Picture</label>
+                <input type="file" name="RestPic">
+                <label for="OpeningTime">Opening Time</label>
+                <input type="time" name="OpeningTime" required>
+                <label for="ClosingTime">Closing Time</label>
+                <input type="time" name="ClosingTime" required>
+                
+                <label for="ResTags">Tags</label>
+                <div name="ResTags" id="ResTags">
+                    {% for t in Tags %}
+                    <div>
+                      <input type="checkbox" name="ResTags" value="{{ t.id }}" id="tag_{{ t.id }}">
+                      <label for="tag_{{ t.id }}">{{ t.Name }}</label>
+                    </div>
+                  {% endfor %}
+                </div>
+                <button id="RestSubmit" type="submit">Submit</button>
+              </form>
+               
+            </div>
+        </div>
+        {% else %}
         <div id="MenuBar">
             <div id="ResTop">Orders Incoming</div>
             <hr style="border-top: dotted 1px;" class="line" />
@@ -89,7 +135,8 @@
                 <p>{{i.delivery}}</p>
              </div>
              {%endfor%}
-             {%endif%}
+             {% endif %}
+             {% endif %}
             </div>
         </div>
         </div>

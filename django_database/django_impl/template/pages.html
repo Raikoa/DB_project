@@ -6,14 +6,16 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
         {% load static %}
         <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
-        <img src="{{restaurant.img}}" id="RestBanner" />
+        <img src="{{restaurant.img.url}}" id="RestBanner" />
         <div id="FoodBar">
             {% for i in restaurant.menu %}
-                <div class="FoodTab Items" style="cursor: pointer;">
-                    {% load static %}
-                    <img src= "{{i.pic}}"  class="display"/>
+                <div class="FoodTab Items">
+
+                    <img src= "{{i.pic.url}}"  class="display"/>
                     <p>{{i.name}}</p>
                     <p>{{i.price}}</p>
                 </div>
