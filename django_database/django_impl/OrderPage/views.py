@@ -1,7 +1,12 @@
+import datetime
+import os
 import re
 from django.shortcuts import render, redirect
+from django.core.files.base import ContentFile
+from django.shortcuts import render
 from django.templatetags.static import static
-from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox # type: ignore
+import requests
+from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox, VideoFrame # type: ignore
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from channels.layers import get_channel_layer # type: ignore
@@ -9,6 +14,7 @@ from asgiref.sync import async_to_sync
 import json
 from geopy.geocoders import Nominatim # type: ignore
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
+
 from .form import UserRegistrationForm, UserLoginForm
 # Create your views here.
 
@@ -82,6 +88,15 @@ def front(request):
         return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_queue, 'msg': msg})
     
     if role == 'vendor':
+        tags = Tag.objects.raw("SELECT * FROM tag")
+        T_tags = []
+        for t in tags:
+            T_tags.append({
+                "id":t.id,
+                "Name":t.name,
+            })
+        if test_user.store_id is None:
+            return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg, "NoRes": True, "Tags": T_tags})
         pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [test_user.store_id])
         order_inc = []
         for o in pending:
@@ -104,7 +119,7 @@ def front(request):
                 "customer": Customer_obj.name,
                 "delivery": o.delivery_person_id,
             })
-        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_inc, 'msg': msg})
+        return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'Orders':order_inc, 'msg': msg, "NoRes": False, "Tags": T_tags})
     
     if role == 'customer':
        restaurants  = Restaurant.objects.raw("SELECT * FROM restaurant")
@@ -114,7 +129,7 @@ def front(request):
                "id": r.Rid,
                 "name": r.name,
                 "address": r.address,
-                "img": static(r.picture),
+                "img": r.picture,
            })
        return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg})
 
@@ -122,10 +137,10 @@ def front(request):
 def page(request, id):
     
     rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
-    menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s", [id])
+    menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s and avaliable = True", [id])
     menus = []
     for i in menu:
-        menus.append({"name": i.name,"price": i.price, "desc": i.desc,"pic": static(i.picture)})
+        menus.append({"name": i.name,"price": i.price, "desc": i.desc,"pic": i.picture})
     tag = Tag.objects.raw("SELECT t.id, t.name FROM tag t JOIN restaurant_tag r ON r.tag_id = t.id WHERE r.restaurant_id = %s;", [id])
     tags = []
     for t in tag:
@@ -137,7 +152,7 @@ def page(request, id):
     "desc": rest.desc,
     "menu": menus,
     "address": rest.address,
-    "img": static(rest.picture),
+    "img": rest.picture,
     }
     return render(request, "pages.html", {"restaurant": restaurant_info})
 
@@ -482,3 +497,168 @@ def force_trim_to_road_name(address): #force address to match specifications
 
     # If not match, return as-is (may be already trimmed or malformed)
     return address
+
+@csrf_exempt
+def AddRestaurant(request, user):
+    print("Path:", request.path)
+    print("User param:", user)
+    if request.method == "POST":
+        name = request.POST.get("RestName")
+        desc = request.POST.get("RestDesc")
+        address = request.POST.get("RestAddress")
+        pic_file = request.FILES.get("RestPic")
+        #if pic_file:
+         #   filename = pic_file.name
+         #   filepath = os.path.join("static/assets", filename)
+          #  with open(filepath, 'wb+') as destination:
+           #     for chunk in pic_file.chunks():
+           #         destination.write(chunk)
+           #         pic_path = f"assets/{filename}"
+        #else:
+           # pic_path = ""
+        opening = request.POST.get("OpeningTime")
+        closing = request.POST.get("ClosingTime")
+        tag_ids = request.POST.getlist("ResTags")
+        opening_time = datetime.datetime.strptime(opening, "%H:%M").time()
+        closing_time = datetime.datetime.strptime(closing, "%H:%M").time()
+        if Restaurant.objects.filter(name=name, address=address).exists():
+            return JsonResponse({
+                "status": "error",
+                "message": "A restaurant with the same name and address already exists."
+            }, status=400)
+        restaurant = Restaurant.objects.create(
+            name=name,
+            desc=desc,
+            address=address,
+            picture=pic_file, #replace this if saving to static
+            opening_time=opening_time,
+            closing_time=closing_time
+        )
+        print(user)
+        vendor = Vendor.objects.get(user_id = user)
+        vendor.store = restaurant
+        vendor.save()
+        for t in tag_ids:
+            tag = Tag.objects.get(id = t)
+            RestaurantTag.objects.create(
+                restaurant = restaurant,
+                tag = tag,
+            )
+        return JsonResponse({
+            "status": "success",
+            "restaurant_id": restaurant.Rid
+        })
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def AddMenuItems(request, Rid):
+    if request.method == "POST":
+        name = request.POST.get("ItemName")
+        desc = request.POST.get("ItemDesc")
+        price = request.POST.get("ItemPrice")
+        pic = request.FILES.get("ItemPic")
+        rest = Restaurant.objects.get(Rid=Rid)
+        if Item.objects.filter(name=name, store=Rid).exists():
+            return JsonResponse({
+                "status": "error",
+                "message": "A Item with the same name and RId already exists."
+            }, status=400)
+        it = Item.objects.create(
+            name = name,
+            price = price,
+            desc = desc,
+            picture = pic,
+            store = rest,
+        )
+        return JsonResponse({
+            "status": "success",
+            "restaurant_id": it.id
+        })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def ViewMenu(request, user):
+    vendor = Vendor.objects.get(user_id = user)
+    Rid = vendor.store_id
+    items = Item.objects.raw("SELECT * FROM item WHERE store_id = %s", [Rid])
+    itms = []
+    for i in items:
+
+        itms.append({
+            "id": i.id,
+            "name": i.name,
+            "price":i.price,
+            "desc": i.desc,
+            "picture": i.picture,
+            "avaliable": i.avaliable
+        })
+
+    return render(request, "Menu.html", {"items": itms, "Rid": Rid})
+
+
+
+@csrf_exempt
+def UpdateStatus(request, ItemId):
+    if request.method == "POST":
+        It = Item.objects.get(id = ItemId)
+        if It.avaliable:
+            It.avaliable = False
+            It.save()
+        else:
+            It.avaliable = True
+            It.save()
+        return JsonResponse({
+            "status": "success",
+            "avaliable": It.avaliable
+        })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@csrf_exempt
+def deleteItem(request, ItemId):
+    if request.method == "POST":
+        try:
+            item = Item.objects.get(id=ItemId)
+            item.delete()
+            return JsonResponse({"status": "success"})
+        except Item.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Item not found"}, status=404)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def ShowUserCurrent(request,user):
+    CurrentOrder = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status != 'Complete'", [user])
+    ors = []
+    for c in CurrentOrder:
+        foods = []
+        orderItemsId = c.items.split(",")
+        for id in orderItemsId:
+            food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
+
+            foods.append({"name":food.name, "price": food.price})
+        restaurant = Restaurant.objects.get(Rid=c.restaurant_id)
+        restaurant_name = restaurant.name
+
+
+
+        details = {
+        "id": c.id,
+        "items": json.dumps(foods),
+        "price": c.price,
+        "created": c.created_at,
+        "restaurant": restaurant_name,
+        "delivery": c.delivery_person_id,
+        "destination": c.destination,
+
+        "status": c.status,
+        }
+        ors.append(details)
+    return render(request, "UserOrderDetails.html",{"details": ors, "user": user})
+
+
+
+def ShowTracker(request, order):
+    return render(request, "Tracker.html", {"orderid": order})
+
+
