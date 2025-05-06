@@ -5,14 +5,17 @@ const cartItemCountSpan = document.getElementById('cartItemCount');
 let cartItemCount = 0; // Initialize cart count
 let cartItems = []; // Array to store food items, quantity, and price
 const placeOrderLink = document.querySelector('a[href="/checkout/"]');
-
+console.log(placeOrderLink)
 function updateCartButton() {
-    if (cartItemCount > 0) {
+    if (cartItemCount > 0 && viewCartBtn) {
         viewCartBtn.style.display = 'inline-block'; // Show the button
         cartItemCountSpan.textContent = cartItemCount; // Update the count
     } else {
-        viewCartBtn.style.display = 'none'; // Hide the button if cart is empty
-        cartItemCountSpan.textContent = 0;
+        if(viewCartBtn){
+            viewCartBtn.style.display = 'none'; // Hide the button if cart is empty
+        cartItemCountSpan.textContent = "0";
+        }
+
     }
 }
 
@@ -31,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
-viewCartBtn.addEventListener('click', () => {
+if(viewCartBtn){
+    viewCartBtn.addEventListener('click', () => {
     // Store the cartItems in local storage before navigating
     // localStorage.setItem('cart', JSON.stringify(cartItems));
     // In addToOrder() or when going to /cart/
@@ -55,6 +58,9 @@ viewCartBtn.addEventListener('click', () => {
     });
 
 });
+
+}
+
 
 function showQuantityPopup(foodItem) {
     currentFoodItem = foodItem;
@@ -127,11 +133,14 @@ foodTabs.forEach(tab => {
     });
 });
 
+if(placeOrderLink){
 placeOrderLink.addEventListener('click', function(event) {
     event.preventDefault();
-    localStorage.removeItem('cart');
-    window.location.href = '/index/';
+    localStorage.clear();
+    window.location.href = '/checkout/';
 });
+}
+
 
 //End of Cart Functions End of Cart Functions
 //End of Cart Functions End of Cart Functions
