@@ -21,7 +21,7 @@ from OrderPage import views # type: ignore
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index/', views.front),
+    path('index/', views.front ,name='index'),
     path('pages/<int:id>/', views.page, name='pages'),
     path('<int:userid>/favorite/', views.fav),
     path("order/<int:userid>", views.orderUser),
@@ -35,5 +35,7 @@ urlpatterns = [
     path("CompleteOrder/<int:Orderid>/<int:Userid>", views.CompOrder),
     path("UpdateInbox/<int:userid>", views.updateInbox),
     path("Inbox/<int:userid>", views.ViewInbox),
-    path("Navi/<int:Oid>", views.StartNav)
+    path("Navi/<int:Oid>", views.StartNav),
+
+    path("login/", views.login_view ,name="login"),
 ]
