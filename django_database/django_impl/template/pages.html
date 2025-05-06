@@ -14,12 +14,31 @@
         <div id="FoodBar">
             {% for i in restaurant.menu %}
                 <div class="FoodTab Items">
-                
+
                     <img src= "{{i.pic.url}}"  class="display"/>
                     <p>{{i.name}}</p>
                     <p>{{i.price}}</p>
                 </div>
             {% endfor %}
         </div>
+        <button id="viewCartBtn" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #4CAF50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; cursor: pointer; border-radius: 5px; z-index: 100;">
+            View Cart (<span id="cartItemCount">0</span>)
+        </button>
+        <div id="quantityPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; border: 1px solid #ccc; padding: 20px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h3>Select Quantity</h3>
+            <p id="foodName"></p>
+            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <button onclick="decreaseQuantity()">-</button>
+                <input type="number" id="quantity" value="1" min="1" style="width: 50px; text-align: center; margin: 0 10px;">
+                <button onclick="increaseQuantity()">+</button>
+            </div>
+            <button onclick="addToOrder()">Add to Cart</button>
+            <button onclick="closePopup()">Cancel</button>
+        </div>
+
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'addToCart.css' %}">
+        {% load static %}
+        <script src="{% static 'addToCart.js' %}"></script>
     </body>
 </html>

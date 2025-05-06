@@ -25,6 +25,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.front),
     path('pages/<int:id>/', views.page, name='pages'),
+    path('your_django_cart_view/', views.your_django_cart_view, name='your_django_cart_view'),
+    path("cart/", views.view_cart),
+    path("contShop/", views.contShop),
+    path('checkout/', views.checkout),
+    path('orderplaced/', views.orderplaced),
     path('<int:userid>/favorite/', views.fav),
     path("order/<int:userid>", views.orderUser),
     #path("login/", views.login)
@@ -45,8 +50,9 @@ urlpatterns = [
     path("DeleteMenu/<int:ItemId>", views.deleteItem),
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
- 
+    path("Navi/<int:Oid>", views.StartNav),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 
 
 if settings.DEBUG:

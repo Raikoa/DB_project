@@ -1,6 +1,10 @@
 import datetime
 import os
 import re
+import uuid
+from django.db import connection
+from datetime import datetime
+from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.templatetags.static import static
@@ -8,6 +12,7 @@ import requests
 from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox, VideoFrame # type: ignore
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 from channels.layers import get_channel_layer # type: ignore
 from asgiref.sync import async_to_sync
 import json
@@ -44,11 +49,13 @@ def give_exp_func():
         ]
     return data
 
+
+
 def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
-    #test_user = Customer.objects.first()
-    test_user= Vendor.objects.get(user_id = 4)
+    test_user = Customer.objects.first()
+    #test_user= Vendor.objects.get(user_id = 4)
     #user = request.user
 
     role = None
@@ -58,6 +65,9 @@ def front(request):
         role = 'vendor'
     elif isinstance(test_user, DeliveryP):
         role = 'delivery'
+
+    request.session['uid'] = test_user.user_id
+
     messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.user_id])
     msg = []
     for m in messages:
@@ -128,7 +138,8 @@ def front(request):
 
 
 def page(request, id):
-    
+
+    request.session['rid'] = id
     rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
     menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s and avaliable = True", [id])
     menus = []
@@ -148,6 +159,63 @@ def page(request, id):
     "img": rest.picture,
     }
     return render(request, "pages.html", {"restaurant": restaurant_info})
+
+
+def your_django_cart_view(request):
+    if request.method == 'POST':
+        try:
+            cart_data = json.loads(request.body)
+            # At this point, you have the cart_data (which corresponds to your cartItems array)
+            # You can now perform actions that don't necessarily involve the database immediately.
+
+            # Example: Logging the received cart data
+            print("Received cart data:", cart_data)
+
+            # Example: Storing in session
+            request.session['cart'] = cart_data
+
+            # Example: Sending a response without database interaction
+            return JsonResponse({'status': 'success', 'message': 'Cart data received'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON data'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Only POST requests are allowed'}, status=405)
+def view_cart(request):
+    cart_data_from_session = request.session.get('cart', [])
+    context = {'cart_items': cart_data_from_session}
+    return render(request, "cart.html", context)
+
+def contShop(request):
+    rid = request.session.get('rid')
+    return redirect('/pages/1/')
+
+def checkout(request):
+    last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
+    lastid = int(last[0].id)
+    oid = lastid + 1
+    rid = int(request.session.get('rid'))
+    uid = int(request.session.get('uid'))
+    cart_data = request.session.get('cart', [])
+    dtime = 0
+    price = 0
+    amount = 0
+    for i in cart_data:
+        p = int(i['price'])
+        q = int(i['quantity'])
+        amount += q
+        price += p * q
+    placetime = datetime.now()
+    dest = 'address'
+    status = 'on route'
+    location = '22.6300545:120.2639648'
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO "order" (id, items, price, created_at, user_id, restaurant_id, destination, status, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (oid, amount, price, placetime, uid, rid, dest, status, dtime, location))
+
+    return redirect('/orderplaced/')
+
+def orderplaced(request):
+    return render(request, 'orderplaced.html')
 
 def fav(request, userid):
     rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])
@@ -535,7 +603,7 @@ def ViewMenu(request, user):
     items = Item.objects.raw("SELECT * FROM item WHERE store_id = %s", [Rid])
     itms = []
     for i in items:
-        
+
         itms.append({
             "id": i.id,
             "name": i.name,
@@ -543,7 +611,7 @@ def ViewMenu(request, user):
             "desc": i.desc,
             "picture": i.picture,
             "avaliable": i.avaliable
-        }) 
+        })
 
     return render(request, "Menu.html", {"items": itms, "Rid": Rid})
 
@@ -578,7 +646,7 @@ def deleteItem(request, ItemId):
 
 
 def ShowUserCurrent(request,user):
-    CurrentOrder = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status != 'Complete'", [user]) 
+    CurrentOrder = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status != 'Complete'", [user])
     ors = []
     for c in CurrentOrder:
         foods = []
@@ -589,9 +657,9 @@ def ShowUserCurrent(request,user):
             foods.append({"name":food.name, "price": food.price})
         restaurant = Restaurant.objects.get(Rid=c.restaurant_id)
         restaurant_name = restaurant.name
-   
-  
-        
+
+
+
         details = {
         "id": c.id,
         "items": json.dumps(foods),
@@ -600,7 +668,7 @@ def ShowUserCurrent(request,user):
         "restaurant": restaurant_name,
         "delivery": c.delivery_person_id,
         "destination": c.destination,
-        
+
         "status": c.status,
         }
         ors.append(details)
