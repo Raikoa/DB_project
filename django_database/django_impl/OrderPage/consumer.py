@@ -7,7 +7,7 @@ import json
 import osmnx as ox
 from django.http import JsonResponse
 import requests
-from database.models import Order, Restaurant# type: ignore
+from database.models import Order, Restaurant, VideoFrame# type: ignore
 from channels.db import database_sync_to_async
 import osmnx as ox
 from shapely.geometry import Point
@@ -16,6 +16,7 @@ import networkx as nx
 from django.conf import settings
 from geopy.distance import geodesic
 from threading import Lock
+from django.core.files.base import ContentFile
 _graph_cache = None
 _graph_lock = Lock()
 
@@ -109,6 +110,16 @@ class DeliveryTracker(AsyncWebsocketConsumer):
                     "distance": route["distance"],
                     "oid": order_id,
                 }))
+        if data['type'] == "frameRequest":
+            lat = data['latitude']
+            lon = data['longitude']
+            oid = data['oid']
+            framenum = data['FrameNumber']
+            print(f"Recieved Frame request: {lat}, {lon}")
+            await self.save_frame(oid, lat, lon, framenum)
+            print("frame saved")
+
+
     @database_sync_to_async
     def update_order_location(self, order_id, lat, lng):
         order = Order.objects.get(id=order_id)
@@ -147,11 +158,41 @@ class DeliveryTracker(AsyncWebsocketConsumer):
         except Exception as e:
             print(f"[Route Error] {str(e)}")
             return None
+        
+    @database_sync_to_async
+    def save_frame(self, order_id,lat,lng, TimeNum):
+        key = "AIzaSyDRPaAyw-McbHYiboHfXCEExlK7zGXrPOg"
+        actual_lat, actual_lng = find_nearby_streetview(lat, lng, key)
+
+        if actual_lat is None:
+            print(f"No nearby Street View found for {lat}, {lng}")
+            return
+
+        location = f"{actual_lat},{actual_lng}"
+        heading = 90
+        pitch = 0
+        fov = 90
+
+        url = f'https://maps.googleapis.com/maps/api/streetview?size=640x640&location={location}&heading={heading}&pitch={pitch}&fov={fov}&key={key}'
+        r = requests.get(url)
+
+        if r.status_code == 200:
+            file_name = f"{order_id}_streetview_{TimeNum}.jpg"
+            image_file = ContentFile(r.content, name=file_name)
+            try:
+                the_order = Order.objects.get(id=order_id)
+                VideoFrame.objects.create(order=the_order, latitude=actual_lat, longitude=actual_lng, frame=image_file)
+            except Order.DoesNotExist:
+                print(f"Order {order_id} not found.")
+        else:
+            print(f"Image request failed with status: {r.status_code}")
 
     async def disconnect(self, close_code):
         pass
+    
+    
 
-
+      
 
 
 
@@ -202,4 +243,19 @@ class MapConsumer(AsyncWebsocketConsumer):
                     "lng": lng,
             }))
 
-            
+def find_nearby_streetview(lat, lng, key, step=0.0005, range_steps=1):
+    r = requests.get(f'https://maps.googleapis.com/maps/api/streetview/metadata?location={lat},{lng}&key={key}')
+    if r.status_code == 200 and r.json().get("status") == "OK":
+        return lat, lng
+    offsets = [-step * i for i in range(1, range_steps + 1)] + [0] + [step * i for i in range(1, range_steps + 1)]
+    for lat_offset in offsets:
+        for lng_offset in offsets:
+            trial_lat = lat + lat_offset
+            trial_lng = lng + lng_offset
+            location = f"{trial_lat},{trial_lng}"
+
+            meta_url = f"https://maps.googleapis.com/maps/api/streetview/metadata?location={location}&key={key}"
+            response = requests.get(meta_url)
+            if response.status_code == 200 and response.json().get("status") == "OK":
+                return trial_lat, trial_lng  # ✅ found a valid spot
+    return None, None  # ❌ no image found nearby

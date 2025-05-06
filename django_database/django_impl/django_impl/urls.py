@@ -45,8 +45,8 @@ urlpatterns = [
     path("DeleteMenu/<int:ItemId>", views.deleteItem),
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
-]
-
+ 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if settings.DEBUG:

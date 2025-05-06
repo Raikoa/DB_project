@@ -10,6 +10,7 @@ let distanceLabel;
 let lastPosition = null;
 let googleMap;
 let osmb;
+let framenumber = 0;
 document.addEventListener("DOMContentLoaded", function(){
         
         let tabs = document.querySelectorAll(".restaurant_tab")
@@ -805,7 +806,8 @@ function handleLocation(pos, OrderId) {
 
     const locationDisplay = document.getElementById("locationDisplay");
     locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;
-
+    SaveFrame(OrderId, latitude, longitude, framenumber)
+    framenumber = framenumber + 1
     sendLocationToBackend(latitude, longitude, OrderId);
 }
 
@@ -856,6 +858,18 @@ function initStreetView(){
     
 }
 
+
+function SaveFrame(Oid, lat,lng, FrameNum){
+    if (deliverySocket.readyState === WebSocket.OPEN) {
+        deliverySocket.send(JSON.stringify({
+            type: 'frameRequest',
+            latitude: lat,
+            longitude: lng,
+            oid: Oid,
+            FrameNumber: FrameNum
+        }));
+    }
+}
 /*
 function initGoogleMap() {
     const lat = parseFloat(document.getElementById("trackerImage").dataset.lat);
