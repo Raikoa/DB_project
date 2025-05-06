@@ -1,0 +1,62 @@
+/*
+Cart Functions Cart Functions Cart Functions
+Cart Functions Cart Functions Cart Functions
+Cart Functions Cart Functions Cart Functions
+*/
+
+#quantityPopup {
+    /* Existing styles */
+    z-index: 1000; /* Ensure it's on top of other content */
+    border-radius: 8px;
+}
+
+#quantityPopup h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+#quantityPopup button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#quantityPopup input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#viewCartBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50; /* A nice green */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+#viewCartBtn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+#cartItemCount {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/*
+End of Cart Functions End of Cart Functions
+End of Cart Functions End of Cart Functions
+End of Cart Functions End of Cart Functions
+*/
