@@ -197,19 +197,11 @@ def checkout(request):
     location = '22.6300545:120.2639648'
     with connection.cursor() as cursor:
         cursor.execute('INSERT INTO "order" (id, items, price, created_at, user_id, restaurant_id, destination, status, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (oid, amount, price, placetime, uid, rid, dest, status, dtime, location))
-    if request.method == 'POST':
-        try:
-            cart_data = json.loads(request.body)
-            # ... process the order ...
 
-            # Clear the cart data from the session
-            if 'cart' in request.session:
-                del request.session['cart']
+    return redirect('/orderplaced/')
 
-            return JsonResponse({'status': 'success', 'message': 'Order placed successfully'})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
-    return redirect('/pages/1/')
+def orderplaced(request):
+    return render(request, 'orderplaced.html')
 
 def fav(request, userid):
     rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])

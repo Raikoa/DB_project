@@ -4,6 +4,7 @@ const viewCartBtn = document.getElementById('viewCartBtn');
 const cartItemCountSpan = document.getElementById('cartItemCount');
 let cartItemCount = 0; // Initialize cart count
 let cartItems = []; // Array to store food items, quantity, and price
+const placeOrderLink = document.querySelector('a[href="/checkout/"]');
 
 function updateCartButton() {
     if (cartItemCount > 0) {
@@ -13,6 +14,11 @@ function updateCartButton() {
         viewCartBtn.style.display = 'none'; // Hide the button if cart is empty
         cartItemCountSpan.textContent = 0;
     }
+}
+
+function clearCartItems() {
+    cartItems = [];
+    updateCartButton()
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -121,7 +127,9 @@ foodTabs.forEach(tab => {
     });
 });
 
-document.getElementById('checkoutBtn').addEventListener('click', function() {
+placeOrderLink.addEventListener('click', function(event) {
+    event.preventDefault();
+    localStorage.removeItem('cart');
     window.location.href = '/index/';
 });
 
