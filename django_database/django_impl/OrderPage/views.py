@@ -54,8 +54,8 @@ def give_exp_func():
 def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
-    #test_user = Customer.objects.first()
-    test_user= Vendor.objects.get(user_id = 4)
+    test_user = Customer.objects.first()
+    #test_user= Vendor.objects.get(user_id = 4)
     #user = request.user
 
     role = None
