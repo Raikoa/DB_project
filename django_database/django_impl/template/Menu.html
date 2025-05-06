@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    </head>
+    <body>
+        <div id="TopBar">
+            <p>My Menu</p>
+            <button id="AddItems" data-Rid = "{{Rid}}">Add Items</button>
+            <button id="ManageItems" data-Rid = "{{Rid}}">Manage Items</button>
+        </div>
+        <div id="ItemBar">
+            
+            {% if items %}
+        {% for i in items %}
+        <div class="ItemObj">
+        <div class="FoodTab Items">
+            {%if not i.avaliable %}
+            <div class="UnavailableOverlay">No Stock</div>
+            {% endif %}
+            <img src="{{ i.picture.url }}" class="display"/>
+            <p>{{ i.name }}</p>
+            <p>{{ i.price }}</p>
+            
+        </div>
+        <div class="buttonbar">
+        <button class="UpdateStat" data-id = "{{i.id}}">Change Stock</button>
+        <button class="Remove" data-id = "{{i.id}}">Remove</button>
+        </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <h2>No Menu Items Yet, Add Some</h2>
+    {% endif %}
+        </div>
+        <div id="ItemFormModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Add an Item</h2>
+              <form id="ItemModalForm" method="POST" enctype="multipart/form-data">
+                <label for="ItemName">Item Name</label>
+                <input type="text" name="ItemName" required>
+                <label for="ItemDesc">Item Description</label>
+                <input type="text" name="ItemDesc">
+                <label for="ItemPrice">Item Price</label>
+                <input type="text" name="ItemPrice">
+                <label for="ItemPic">Item Picture</label>
+                <input type="file" name="ItemPic">
+                
+
+                <button id="ItemSubmit" type="submit">Submit</button>
+              </form>
+               
+            </div>
+        </div>
+    </body>
+</html>

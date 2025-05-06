@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <!--for leaflet.js css-->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><!--for leaflet.js code, for the map stuff-->
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+        <link rel="stylesheet" href="https://cdn.osmbuildings.org/4.1.1/OSMBuildings.css">
+        <script src="https://cdn.osmbuildings.org/4.1.1/OSMBuildings.js"></script>
+    </head>
+    <body>
+        <!--<div id="trackerImage" data-order = "{{orderid}}">
+        <img id="mapillary-image" src="" width="600" />
+    </div>-->
+    <div id="trackerImage" style="width: 100%; height: 500px;" data-order = "{{orderid}}"></div>
+    <!--<div id="Googlemap" style="height: 500px; width: 100%;"></div>-->
+    <br>
+    <br>
+    <div id="street-view"></div>
+    <p id="locationDisplay">Location: waiting...</p>
+    <div id="3Dmarker" style="
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: red;
+    border-radius: 50%;
+    border: 2px solid white;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    "></div>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRPaAyw-McbHYiboHfXCEExlK7zGXrPOg&loading=async"
+      async defer
+      onload="initStreetView()">
+    </script>
+    
+    </body>
+</html>
