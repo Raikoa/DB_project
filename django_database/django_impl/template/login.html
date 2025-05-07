@@ -1,21 +1,101 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Pages</title>
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'style.css' %}">
-        {% load static %}
-        <script src="{% static 'script.js' %}"></script>
-    </head>
-    <body>
-        <form id="test_roles">
-        <input type="radio" id="cust" name="role" value="customer">
-        <label for="cust">Customer</label><br>
-        <input type="radio" id="Vendor" name="role" value="vendor">
-        <label for="Vendor">Vendor</label><br>
-        <input type="radio" id="DeliP" name="role" value="delivery">
-        <label for="DeliP">Delivery person</label>
-        <input type="submit" value="Submit" />
-        </form>
-    </body>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodExpress - 登入/註冊</title>
+    {% load static %}
+    <link rel="stylesheet" href= {% static 'login.css' %}>
+    {% load static %}
+    <script src= {% static 'login.js' %}></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">FoodExpress</div>
+        <div class="nav-links">
+            <!-- 導航連結可以放在這裡 -->
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-image"></div>
+            <div class="auth-forms">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="login">登入</button>
+                    <button class="tab-button" data-tab="register">註冊</button>
+                </div>
+
+                <!-- 登入表單 -->
+                <div class="form-container active" id="login-form">
+                    <form id="loginForm" method="POST">
+                        <input type="hidden" name="form_type" value="login">
+                        <div class="form-group">
+                            <label for="login-email">電子郵件</label>
+                            <input type="email" id="login-email" name="email" required>
+                            <div class="error-message" id="login-email-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">密碼</label>
+                            <input type="password" id="login-password" name="password" required>
+                            <div class="error-message" id="login-password-error"></div>
+                        </div>
+                        <button type="submit" class="btn">登入</button>
+                        <div class="success-message" id="login-success"></div>
+                        <div class="form-footer">
+                            還沒有帳號？ <a href="#" id="switch-to-register">立即註冊</a>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 註冊表單 -->
+                <div class="form-container" id="register-form">
+                    <form id="registerForm" method="POST">
+                        <input type="hidden" name="form_type" value="register">
+                        <div class="form-group">
+                            <label for="register-role">選擇身份</label>
+                            <select id="register-role" name="role" required>
+                                <option value="">-- 請選擇 --</option>
+                                <option value="customer">顧客</option>
+                                <option value="deliverer">外送員</option>
+                                <option value="vendor">餐廳業者</option>
+                            </select>
+                            <div class="error-message" id="register-role-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">電子郵件</label>
+                            <input type="email" id="register-email" name="email" required>
+                            <div class="error-message" id="register-email-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-username">帳號名稱</label>
+                            <input type="text" id="register-username" name="username" required>
+                            <div class="error-message" id="register-username-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">密碼</label>
+                            <input type="password" id="register-password" name="password" required>
+                            <div class="error-message" id="register-password-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm-password">確認密碼</label>
+                            <input type="password" id="register-confirm-password" name="confirm_password" required>
+                            <div class="error-message" id="register-confirm-password-error"></div>
+                        </div>
+                        <button type="submit" class="btn">註冊</button>
+                        <div class="success-message" id="register-success"></div>
+                        <div class="form-footer">
+                            已經有帳號？ <a href="#" id="switch-to-login">立即登入</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 FoodExpress. 保留所有權利。</p>
+    </footer>
+
+</body>
 </html>
