@@ -156,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
         }
         let ShowModal = document.querySelectorAll(".ShowCurrentOrderItems")
-
+       
         if(ShowModal.length > 0){
             let mo = document.querySelector("#DeliModal")
             let co = document.querySelector("#DelimodalContent")
@@ -309,8 +309,8 @@ document.addEventListener("DOMContentLoaded", function(){
             deliverySocket.onmessage = function(e){
                 const data = JSON.parse(e.data);
                 if (data.type === 'route.update') {
-
-
+                    
+                        
                         if (routePolyline) map.removeLayer(routePolyline);
                         if (fallbackPolyline) map.removeLayer(fallbackPolyline);
                         if (distanceLabel) map.removeLayer(distanceLabel);
@@ -369,13 +369,13 @@ document.addEventListener("DOMContentLoaded", function(){
                     fetch("/AddRestaurant/" + parseInt(user)  , {
                         method: "POST",
                         headers: {
-                            "X-CSRFToken": getCookie("csrftoken")
+                            "X-CSRFToken": getCookie("csrftoken") 
                         },
                         body: formData
                     })
                     .then(response => {
                         if (!response.ok) throw new Error("Network response was not ok");
-                        return response.json();
+                        return response.json(); 
                     })
                     .then(data => {
                         console.log("Success:", data);
@@ -424,13 +424,13 @@ document.addEventListener("DOMContentLoaded", function(){
                     fetch("/AddMenu/" + parseInt(Rid)  , {
                         method: "POST",
                         headers: {
-                            "X-CSRFToken": getCookie("csrftoken")
+                            "X-CSRFToken": getCookie("csrftoken") 
                         },
                         body: formData
                     })
                     .then(response => {
                         if (!response.ok) throw new Error("Network response was not ok");
-                        return response.json();
+                        return response.json(); 
                     })
                     .then(data => {
                         console.log("Success:", data);
@@ -456,27 +456,27 @@ document.addEventListener("DOMContentLoaded", function(){
                         }else{
                              b.style.display = "block"
                         }
-
+                        
                     })
                 }
                 click = click + 1
             })
             let updatestatus = document.querySelectorAll(".UpdateStat")
-
+            
             if(updatestatus.length > 0){
                 updatestatus.forEach(u => {
                     let id = u.dataset.id
-
+                 
                     u.addEventListener("click", function(){
                         fetch("/UpdateMenu/" + parseInt(id)  , {
                             method: "POST",
                             headers: {
-                                "X-CSRFToken": getCookie("csrftoken")
+                                "X-CSRFToken": getCookie("csrftoken") 
                             },
                         })
                         .then(response => {
                             if (!response.ok) throw new Error("Network response was not ok");
-                            return response.json();
+                            return response.json(); 
                         })
                         .then(data => {
                             console.log("Success:", data);
@@ -487,7 +487,7 @@ document.addEventListener("DOMContentLoaded", function(){
                             console.error("Error:", error);
                         });
                     })
-
+                    
                 })
             }
             let DeleteBtn = document.querySelectorAll(".Remove")
@@ -498,12 +498,12 @@ document.addEventListener("DOMContentLoaded", function(){
                         fetch("/DeleteMenu/" + parseInt(id)  , {
                             method: "POST",
                             headers: {
-                                "X-CSRFToken": getCookie("csrftoken")
+                                "X-CSRFToken": getCookie("csrftoken") 
                             },
                         })
                         .then(response => {
                             if (!response.ok) throw new Error("Network response was not ok");
-                            return response.json();
+                            return response.json(); 
                         })
                         .then(data => {
                             console.log("Success:", data);
@@ -516,6 +516,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 })
             }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -588,9 +589,12 @@ document.addEventListener("DOMContentLoaded", function(){
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+            
+>>>>>>> parent of 4e7b1e1 (Merge pull request #37 from Raikoa/main)
         }
         let ShowUserOrder = document.getElementById("UserCurrentOrder")
-
+            
             if(ShowUserOrder){
                 ShowUserOrder.addEventListener("click", function(){
                     window.location.href = "/ShowUserCurrentOrder/" + parseInt(ShowUserOrder.dataset.user)
@@ -600,10 +604,10 @@ document.addEventListener("DOMContentLoaded", function(){
             if(tracker.length > 0){
                 tracker.forEach(track => {
                     track.addEventListener("click", function(){
-
+                       
                         let orderid = track.dataset.id
                         window.location.href = "/Tracker/" + parseInt(orderid)
-
+                        
                     })
                 })
             }
@@ -613,20 +617,20 @@ document.addEventListener("DOMContentLoaded", function(){
                 let co = document.querySelector("#UserOrdermodalContent")
                 let close = mo.querySelector(".close");
             if(close){
-
+            
                 close.addEventListener("click", function(){
-
+                
                 mo.style.display = "none"
             })
             }
-
+   
             ShowUserCurrentItem.forEach(Mod => {
             Mod.addEventListener("click", function(){
-
-                const items = JSON.parse(this.dataset.items);
-
-
-                co.innerHTML = "";
+                
+                const items = JSON.parse(this.dataset.items); 
+               
+             
+                co.innerHTML = ""; 
 
                 items.forEach(item => {
                 const p = document.createElement("p");
@@ -651,17 +655,17 @@ document.addEventListener("DOMContentLoaded", function(){
                         socket.onmessage = function(e) {
                             const data = JSON.parse(e.data);
                             if (data.type === "error") {
-                                alert(data.message);
+                                alert(data.message);  
                             } else if (data.type === "map") {
-
+                                
                                 console.log(data.lat)
                                 console.log(data.lng)
                                 trackerImage.setAttribute("data-lat", data.lat)
                                 trackerImage.setAttribute("data-lng", data.lng)
-
+                                
                                 osmb = new OSMBuildings({
                                     container: 'trackerImage',
-                                    position: { latitude: parseFloat(data.lat), longitude: parseFloat(data.lng) },
+                                    position: { latitude: parseFloat(data.lat), longitude: parseFloat(data.lng) }, 
                                     zoom: 17,
                                     minZoom: 15,
                                     maxZoom: 20,
@@ -686,14 +690,14 @@ document.addEventListener("DOMContentLoaded", function(){
                                 rotation = (rotation + 1) % 360;
                                 osmb.setRotation(rotation);
                                 }, 100);
-
+                                
                             }
                         };
                         socket.onopen = function() {
                             console.log("socket sent")
                             socket.send(JSON.stringify({
                                 type: "request_map",
-                                order_id: orderid
+                                order_id: orderid  
                             }));
                         };
             }
@@ -795,14 +799,14 @@ function getLocale(OrderId){
         const now = Date.now();
         marker.setLatLng([latitude, longitude]); //move marker
         map.setView([latitude, longitude]); //recenter map
-
+        
         if (now - lastSent > interval) {
             lastSent = now;
             console.log("updated")
             const locationDisplay = document.getElementById("locationDisplay");
             locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, lastUpdated: ${new Date(lastSent).toLocaleTimeString()}`;
             sendLocationToBackend(latitude, longitude, OrderId);
-
+            
         }
     }, error => {
         console.error(error);
@@ -820,7 +824,7 @@ function getLocale(OrderId){
         const locationDisplay = document.getElementById("locationDisplay");
         locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, lastUpdated: ${new Date(now).toLocaleTimeString()}`;
         sendLocationToBackend(latitude, longitude, OrderId);
-        lastSent = now;
+        lastSent = now; 
     }, error => {
         console.error("getCurrentPosition error", error);
     }, {
@@ -838,14 +842,14 @@ function getLocale(OrderId){
             const locationDisplay = document.getElementById("locationDisplay");
             locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, lastUpdated: ${new Date(now).toLocaleTimeString()}`;
             sendLocationToBackend(latitude, longitude, OrderId);
-            lastSent = now;
+            lastSent = now; 
         }, error => {
             console.error("getCurrentPosition error", error);
         }, {
             enableHighAccuracy: true,
             timeout: 15000
         });
-    }, 30000);
+    }, 30000); 
 }
 */
 
@@ -872,7 +876,7 @@ function initMap() {
 }
 
 function getDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3;
+    const R = 6371e3; 
     const toRad = angle => angle * Math.PI / 180;
     const dLat = toRad(lat2 - lat1);
     const dLon = toRad(lon2 - lon1);
@@ -888,7 +892,7 @@ function isRedundant(pos) {
     const { latitude, longitude } = pos.coords;
     const { latitude: lastLat, longitude: lastLng } = lastPosition.coords;
     const distance = getDistance(latitude, longitude, lastLat, lastLng);
-    return distance < 10;
+    return distance < 10; 
 }
 
 function handleLocation(pos, OrderId) {
@@ -949,7 +953,7 @@ function initStreetView(){
 
     const location = { lat, lng };
 
-
+   
     const panorama = new google.maps.StreetViewPanorama(
         document.getElementById("street-view"),
         {
@@ -962,7 +966,7 @@ function initStreetView(){
         }
     );
 
-
+    
 }
 
 
@@ -982,7 +986,7 @@ function initGoogleMap() {
     const lat = parseFloat(document.getElementById("trackerImage").dataset.lat);
     const lng = parseFloat(document.getElementById("trackerImage").dataset.lng);
     googleMap = new google.maps.Map(document.getElementById("Googlemap"), {
-      center: { lat: lat, lng: lng },
+      center: { lat: lat, lng: lng }, 
       zoom: 18,
       heading: 320,
       tilt: 45, // required for 3D buildings
@@ -990,7 +994,7 @@ function initGoogleMap() {
       mapTypeId: 'roadmap',
       disableDefaultUI: false,
     });
-
+  
     // Optional: animate rotation
     let heading = 320;
     setInterval(() => {
@@ -1004,7 +1008,7 @@ function initGoogleMap() {
         const lat = parseFloat(tracker.dataset.lat);
         const lng = parseFloat(tracker.dataset.lng);
         const location = { lat, lng };
-
+    
         const panorama = new google.maps.StreetViewPanorama(
             document.getElementById("street-view"),
             {
@@ -1016,18 +1020,18 @@ function initGoogleMap() {
                 zoom: 1
             }
         );
-
-
+    
+     
         const googleMap = new google.maps.Map(document.getElementById("Googlemap"), {
             center: location,
             zoom: 18,
             heading: 320,
             tilt: 45,
-            mapId: "8e0a97af9386fef",
+            mapId: "8e0a97af9386fef", 
             mapTypeId: 'roadmap'
         });
-
-
+    
+    
         let heading = 320;
         setInterval(() => {
             heading = (heading + 1) % 360;
