@@ -1,5 +1,6 @@
 # yourapp/consumers.py
 import base64
+import heapq
 import os
 from asgiref.sync import sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
@@ -17,6 +18,7 @@ from django.conf import settings
 from geopy.distance import geodesic
 from threading import Lock
 from django.core.files.base import ContentFile
+from math import sqrt
 _graph_cache = None
 _graph_lock = Lock()
 
@@ -146,7 +148,7 @@ class DeliveryTracker(AsyncWebsocketConsumer):
             if not nx.has_path(New_G, orig_node, dest_node):
                 print("No path exists between origin and destination")
                 return None
-            path = nx.shortest_path(New_G, orig_node, dest_node, weight="length")
+            path = Short_path_Astar(New_G, orig_node, dest_node)
             route_coords = [(New_G.nodes[n]['y'], New_G.nodes[n]['x']) for n in path]
             fallback_line = interpolate_line(delivery_coords, rest_coords)
             dist_km = geodesic(delivery_coords, rest_coords).km
@@ -257,5 +259,46 @@ def find_nearby_streetview(lat, lng, key, step=0.0005, range_steps=1):
             meta_url = f"https://maps.googleapis.com/maps/api/streetview/metadata?location={location}&key={key}"
             response = requests.get(meta_url)
             if response.status_code == 200 and response.json().get("status") == "OK":
-                return trial_lat, trial_lng  # ✅ found a valid spot
-    return None, None  # ❌ no image found nearby
+                return trial_lat, trial_lng 
+    return None, None 
+
+
+def Short_path_Astar(G, start, goal):
+    frontier = [(0, start)] #priority queue, init with start node 
+    came_from = {start: None}
+    cost_so_far = {start: 0}
+
+    while frontier: 
+        _, current = heapq.heappop(frontier) #pick node with lowest f(n)
+
+        if current == goal:
+            break
+
+        for neighbor in G.neighbors(current): #explore neignbors
+            try:
+                weight = G[current][neighbor][0]['length']  # for MultiDiGraph edge
+            except KeyError:
+                weight = G[current][neighbor]['length']     # for  DiGraph edge
+            new_cost = cost_so_far[current] + weight #g(n) 
+
+            if neighbor not in cost_so_far or new_cost < cost_so_far[neighbor]: #only update if a shorter path is found
+                cost_so_far[neighbor] = new_cost
+                priority = new_cost + euclidean_heuristic(G.nodes[goal], G.nodes[neighbor]) #f(n) = g(n) + h(n)
+                heapq.heappush(frontier, (priority, neighbor)) # add to queue 
+                came_from[neighbor] = current #record path segments
+
+    # Reconstruct path
+    path = []
+    current = goal
+    while current != start:
+        path.append(current)
+        current = came_from.get(current)
+        if current is None:
+            return None  # No path found
+    path.append(start)
+    path.reverse()
+    return path
+
+
+def euclidean_heuristic(a, b): #get distance between nodes
+    return sqrt((a['x'] - b['x'])**2 + (a['y'] - b['y'])**2)

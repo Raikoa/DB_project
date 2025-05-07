@@ -387,6 +387,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     });
                 })
             }
+            
         }
         let VendorMenu = document.getElementById("Menu")
         if(VendorMenu){
@@ -515,7 +516,66 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 })
             }
+<<<<<<< Updated upstream
 
+=======
+            let EditBtn = document.querySelectorAll(".EditItem")
+          
+            if(EditBtn.length > 0){
+                EditBtn.forEach(E => {
+                     
+                    E.addEventListener("click", function(){
+                        selectedId = E.dataset.id
+                        let mo = document.getElementById("ItemFormUpdateModal")
+                        let close = document.querySelector(".close")
+                        if(close){
+                        close.addEventListener("click", function(){
+                        mo.style.display = "none"
+                    })
+                    }
+                    if(mo){
+                        mo.style.display = "flex"
+                        document.getElementById("updateName").value = document.getElementById("name_" + selectedId).innerText
+                        document.getElementById("updatePrice").value = document.getElementById("price_" + selectedId).innerText
+                        document.getElementById("currentPicPreview").src = document.getElementById("pic_" + selectedId).src;
+                        document.getElementById("updateDesc").value = document.getElementById("tab_" + selectedId).dataset.desc
+                    }
+                    window.onclick = (e) => {
+                        if (e.target == mo) {
+                         mo.style.display = "none";
+                        }   
+                    };
+                    })
+                })
+                let UpdateSubmit = document.getElementById("UpdateSubmit")
+                if(UpdateSubmit){
+                    UpdateSubmit.addEventListener("click", function(e){
+                        e.preventDefault()
+                        const form = document.getElementById("ItemModalUpdateForm");
+                        const formData = new FormData(form);
+                        fetch("/EditMenu/" + parseInt(selectedId)  , {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken") 
+                        },
+                        body: formData
+                        })
+                        .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json(); 
+                        })
+                        .then(data => {
+                        console.log("Success:", data);
+                        alert("Item Edited successfully!");
+                        window.location.reload();
+                        })
+                        .catch(error => {
+                        console.error("Error:", error);
+                        });
+                    })
+                }
+            }
+>>>>>>> Stashed changes
         }
         let ShowUserOrder = document.getElementById("UserCurrentOrder")
 
@@ -624,6 +684,41 @@ document.addEventListener("DOMContentLoaded", function(){
                                 order_id: orderid
                             }));
                         };
+            }
+            let searchbtn = document.getElementById("Search")
+            if(searchbtn){
+                searchbtn.addEventListener("click", function(){
+                    const form = document.getElementById("searchbar");
+                    
+                    const formData = new FormData(form);
+                    const searchValue = formData.get("search");
+                    fetch("/SearchMenu"  , {
+                        method: "POST",
+                        headers: {
+                            "X-CSRFToken": getCookie("csrftoken") 
+                        },
+                        body: formData
+                        })
+                        .then(response => {
+                        if (!response.ok) throw new Error("Network response was not ok");
+                        return response.json(); 
+                        })
+                        .then(data => {
+                        console.log("Success:", data);
+                        document.getElementById("SearchModal").style.display = "flex"
+                        let s = document.getElementById("searchResult")
+                    
+                        s.innerText = data.name + ":" + data.price
+                        window.onclick = (e) => {
+                            if (e.target == document.getElementById("SearchModal")) {
+                                document.getElementById("SearchModal").style.display = "none";
+                            }
+                          };
+                        })
+                        .catch(error => {
+                        console.error("Error:", error);
+                        });
+                })
             }
 })
 
