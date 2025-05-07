@@ -55,9 +55,12 @@ urlpatterns = [
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
     path("Navi/<int:Oid>", views.StartNav),
 =======
+=======
+>>>>>>> Stashed changes
     path("EditMenu/<int:Mid>", views.UpdateItem),
     path("SearchMenu", views.search)
  
