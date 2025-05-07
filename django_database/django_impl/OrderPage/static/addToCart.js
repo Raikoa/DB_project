@@ -5,7 +5,6 @@ const cartItemCountSpan = document.getElementById('cartItemCount');
 let cartItemCount = 0; // Initialize cart count
 let cartItems = []; // Array to store food items, quantity, and price
 const placeOrderLink = document.querySelector('a[href="/checkout/"]');
-console.log(placeOrderLink)
 function updateCartButton() {
     if (cartItemCount > 0 && viewCartBtn) {
         viewCartBtn.style.display = 'inline-block'; // Show the button
@@ -114,6 +113,66 @@ function addToOrder() {
         localStorage.setItem('cart', JSON.stringify(cartItems));
 
         closePopup();
+    }
+}
+
+function removeItemFromCart(itemName) {
+    cartItems = cartItems.filter(item => item.name !== itemName);
+    cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    updateCartButton();
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+
+    // Re-render the cart on the page
+    const cartList = document.querySelector('ul');
+    if (cartList) {
+        cartList.innerHTML = ''; // Clear the current list
+        if (cartItems.length > 0) {
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.dataset.itemName = item.name;
+                listItem.textContent = `${item.quantity} x ${item.name} - $${item.price}`;
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-item-btn');
+                deleteButton.textContent = 'Delete';
+                listItem.appendChild(deleteButton);
+                cartList.appendChild(listItem);
+            });
+        } else {
+            const emptyMessage = document.createElement('p');
+            emptyMessage.textContent = 'Your cart is empty.';
+            cartList.appendChild(emptyMessage);
+        }
+    }
+
+    // Update the total items count on the page
+    const totalItemsElement = Array.from(document.querySelectorAll('p')).find(p => p.textContent.startsWith('Total Items:'));
+    if (totalItemsElement) {
+        totalItemsElement.textContent = `Total Items: ${cartItems.length}`;
+    } else if (cartItems.length === 0) {
+        const cartSection = document.querySelector('h1').parentNode;
+        const emptyMessage = document.createElement('p');
+        emptyMessage.textContent = 'Your cart is empty.';
+        cartSection.insertBefore(emptyMessage, document.querySelector('a'));
+        const totalItemsElementToRemove = Array.from(document.querySelectorAll('p')).find(p => p.textContent.startsWith('Total Items:'));
+        if (totalItemsElementToRemove) {
+            totalItemsElementToRemove.remove();
+        }
+    }
+
+    // Re-attach event listeners to the newly created delete buttons
+    attachDeleteListeners();
+}
+
+function attachDeleteListeners() {
+    const deleteButtons = document.querySelectorAll('.delete-item-btn');
+    if (deleteButtons) {
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const listItem = this.parentNode;
+                const itemName = listItem.dataset.itemName;
+                removeItemFromCart(itemName);
+            });
+        });
     }
 }
 

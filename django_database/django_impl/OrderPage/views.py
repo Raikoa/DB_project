@@ -188,7 +188,7 @@ def view_cart(request):
 
 def contShop(request):
     rid = request.session.get('rid')
-    return redirect('/pages/1/')
+    return redirect('pages', id=rid)
 
 def checkout(request):
     last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
