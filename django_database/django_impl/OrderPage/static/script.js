@@ -516,7 +516,10 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 })
             }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             let EditBtn = document.querySelectorAll(".EditItem")
           
             if(EditBtn.length > 0){
@@ -573,7 +576,10 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 }
             }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         }
         let ShowUserOrder = document.getElementById("UserCurrentOrder")
             
