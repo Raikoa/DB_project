@@ -1,6 +1,7 @@
 import datetime
 import os
 import re
+from django.shortcuts import render, redirect
 import uuid
 from django.db import connection
 from datetime import datetime
@@ -19,7 +20,9 @@ import json
 from geopy.geocoders import Nominatim # type: ignore
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 
+from .form import UserRegistrationForm, UserLoginForm
 # Create your views here.
+
 def give_exp_func():
     data = [
             {
@@ -54,21 +57,22 @@ def give_exp_func():
 def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
-    test_user = Customer.objects.first()
-    #test_user= Vendor.objects.get(user_id = 4)
+    #test_user = Customer.objects.first()
+    user_id = request.session.get('user_id')
+    test_user = User.objects.get(user_id = user_id)
+    #test_user= Vendor.objects.first()
     #user = request.user
 
-    role = None
-    if isinstance(test_user, Customer):
-        role = 'customer'
-    elif isinstance(test_user, Vendor):
-        role = 'vendor'
-    elif isinstance(test_user, DeliveryP):
-        role = 'delivery'
+    # if isinstance(test_user, Customer):
+    #     role = 'customer'
+    # elif isinstance(test_user, Vendor):
+    #     role = 'vendor'
+    # elif isinstance(test_user, DeliveryP):
+    #     role = 'delivery'
 
-    request.session['uid'] = test_user.user_id
-
-    messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.user_id])
+    role = request.session.get('role')
+    print(role)
+    messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.pk])
     msg = []
     for m in messages:
         msg.append({
@@ -267,8 +271,51 @@ def orderUser(request, userid):
         UserOrders.append(ord)
     return render(request, "orders.html", {'order':UserOrders, 'user': userid})
 
-def login(request):
-    return render(request)
+@csrf_exempt
+def login_view(request):
+
+    if request.method == "POST":
+        form_type = request.POST.get("form_type")
+
+        if form_type == 'login':
+            form = UserLoginForm(request.POST)
+            if form.is_valid():
+                email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                user = User.objects.get(email = email)
+                if user is not None:
+                    user_id = user.user_id
+                    if Customer.objects.filter(user_ptr_id= user_id).exists():
+                        request.session['role'] = 'customer'
+                    elif Vendor.objects.filter(user_ptr_id= user_id).exists():
+                        request.session['role'] = 'vendor'
+                    elif DeliveryP.objects.filter(user_ptr_id= user_id).exists():
+                        request.session['role'] = 'delivery'
+                    request.session['user_id'] = user.pk
+                    print(user.pk)
+                    return redirect('index')
+
+
+        elif form_type == 'register':
+            form = UserRegistrationForm(request.POST)
+            if form.is_valid():
+
+                user = User(name=form.cleaned_data['username'], email=form.cleaned_data['email'] ,password=form.cleaned_data['password'])
+                user.save()
+
+                user_type = form.cleaned_data['role']
+                if user_type == 'customer':
+                    customer = Customer(user_ptr_id = user.pk)
+                    customer.save_base(raw = True) #避免重複保存User
+                elif user_type == 'deliverer':
+                    deliverer = DeliveryP(user_ptr_id = user.pk)
+                    deliverer.save_base(raw = True)
+                elif user_type == 'vendor':
+                    vendor = Vendor(user_ptr_id = user.pk)
+                    vendor.save_base(raw = True)
+                return redirect('login')
+
+    return render(request, "login.html")
 
 
 def ShowOrderDetails(request, OrderID, DeliID):
