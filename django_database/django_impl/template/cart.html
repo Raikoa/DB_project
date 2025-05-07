@@ -11,12 +11,12 @@
             {% for item in cart_items %}
                 <li>{{ item.quantity }} x {{ item.name }} - ${{ item.price }}</li>
             {% endfor %}
+            <button class="delete-item-btn">Delete</button>
         </ul>
-        <p>Total Items: {{ cart_items|length }}</p>
-        {% else %}
+    {% else %}
         <p>Your cart is empty.</p>
     {% endif %}
-    <a href="/pages/1/">Continue Shopping</a>
+    <a href="/contShop/">Continue Shopping</a>
     <a href="/checkout/">Place Order</a>
     {% load static %}
     <script src="{% static 'addToCart.js' %}"></script>
