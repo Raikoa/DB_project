@@ -201,7 +201,7 @@
     width: 100%;
 }
 
-#RestModalForm, #ItemModalForm{
+#RestModalForm, #ItemModalForm, #ItemModalUpdateForm{
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -218,6 +218,8 @@
     margin-top: 100px;
     display: flex;
     gap: 10px;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .buttonbar{

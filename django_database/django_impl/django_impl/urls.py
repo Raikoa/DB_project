@@ -54,8 +54,14 @@ urlpatterns = [
     path("DeleteMenu/<int:ItemId>", views.deleteItem),
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
+<<<<<<< Updated upstream
 
     path("Navi/<int:Oid>", views.StartNav),
+=======
+    path("EditMenu/<int:Mid>", views.UpdateItem),
+    path("SearchMenu", views.search)
+ 
+>>>>>>> Stashed changes
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
