@@ -192,7 +192,7 @@ def view_cart(request):
 
 def contShop(request):
     rid = request.session.get('rid')
-    return redirect('/pages/1/')
+    return redirect('pages', id=rid)
 
 def checkout(request):
     last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
@@ -726,4 +726,41 @@ def ShowUserCurrent(request,user):
 def ShowTracker(request, order):
     return render(request, "Tracker.html", {"orderid": order})
 
+@csrf_exempt
+def UpdateItem(request, Mid):
+    if request.method == "POST":
+        name = request.POST.get("ItemName")
+        desc = request.POST.get("ItemDesc")
+        price = request.POST.get("ItemPrice")
+        pic = request.FILES.get("ItemPic")
+        It = Item.objects.get(id=Mid)
+        It.name = name
+        It.price = price
+        It.desc = desc
+        if(pic):
+            It.picture = pic
+        It.save()
+        
+        
+        
+        return JsonResponse({
+            "status": "success",
+            "id": It.id
+        })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@csrf_exempt
+def search(request):
+    if request.method == "POST":
+            name = request.POST.get("search")
+            item = Item.objects.filter(name__icontains=name).first()
+            
+            return JsonResponse({
+                "status": "success",
+                "id": item.id,
+                "name": item.name,
+                "price": item.price,
+                
+                "desc": item.desc
+            })
+    return JsonResponse({"error": "Invalid request method"}, status=405)

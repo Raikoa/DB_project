@@ -14,24 +14,31 @@
             <p>My Menu</p>
             <button id="AddItems" data-Rid = "{{Rid}}">Add Items</button>
             <button id="ManageItems" data-Rid = "{{Rid}}">Manage Items</button>
+            <form id="searchbar">
+                <Input type ="text" name="search" >
+                <button id="Search">enter</button>
+            </form>
+         
         </div>
         <div id="ItemBar">
             
             {% if items %}
         {% for i in items %}
         <div class="ItemObj">
-        <div class="FoodTab Items">
+        <div class="FoodTab Items" id="tab_{{i.id}}" data-desc = "{{i.desc}}">
             {%if not i.avaliable %}
             <div class="UnavailableOverlay">No Stock</div>
             {% endif %}
-            <img src="{{ i.picture.url }}" class="display"/>
-            <p>{{ i.name }}</p>
-            <p>{{ i.price }}</p>
+            <img src="{{ i.picture.url }}" class="display" id="pic_{{i.id}}"/>
+            
+            <p id="name_{{i.id}}">{{ i.name }}</p>
+            <p id="price_{{i.id}}">{{ i.price }}</p>
             
         </div>
         <div class="buttonbar">
-        <button class="UpdateStat" data-id = "{{i.id}}">Change Stock</button>
+        <button class="UpdateStat" data-id = "{{i.id}}">Stock</button>
         <button class="Remove" data-id = "{{i.id}}">Remove</button>
+        <button class="EditItem" data-id = "{{i.id}}">Edit</button>
         </div>
         </div>
         {% endfor %}
@@ -49,14 +56,45 @@
                 <label for="ItemDesc">Item Description</label>
                 <input type="text" name="ItemDesc">
                 <label for="ItemPrice">Item Price</label>
-                <input type="text" name="ItemPrice">
+                <input type="text" name="ItemPrice" required>
                 <label for="ItemPic">Item Picture</label>
-                <input type="file" name="ItemPic">
+                <input type="file" name="ItemPic" required>
                 
 
                 <button id="ItemSubmit" type="submit">Submit</button>
               </form>
                
+            </div>
+        </div>
+
+        <div id="ItemFormUpdateModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Add an Item</h2>
+              <form id="ItemModalUpdateForm" method="POST" enctype="multipart/form-data">
+                <label for="ItemName">Item Name</label>
+                <input type="text" name="ItemName" required id="updateName">
+                <label for="ItemDesc">Item Description</label>
+                <input type="text" name="ItemDesc" id="updateDesc">
+                <label for="ItemPrice">Item Price</label>
+                <input type="text" name="ItemPrice" required id="updatePrice">
+                <label for="ItemPic">Item Picture</label>
+                <input type="file" name="ItemPic" id="updatePic">
+                <label for="currentPicPreview">Current Image</label>
+                <img id="currentPicPreview" src="" alt="Current Image" style="max-width: 100px; display:block; margin-top:10px;">
+
+                <button id="UpdateSubmit" type="submit">Submit</button>
+              </form>
+               
+            </div>
+        </div>
+
+
+        <div id="SearchModal" class="modal">
+            <div class="modal-content">
+           
+              <div id="searchResult"></div>
+              
             </div>
         </div>
     </body>
