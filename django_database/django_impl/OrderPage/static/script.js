@@ -516,16 +516,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 })
             }
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             let EditBtn = document.querySelectorAll(".EditItem")
           
             if(EditBtn.length > 0){
@@ -582,16 +573,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     })
                 }
             }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-            
->>>>>>> parent of 4e7b1e1 (Merge pull request #37 from Raikoa/main)
+
         }
         let ShowUserOrder = document.getElementById("UserCurrentOrder")
             

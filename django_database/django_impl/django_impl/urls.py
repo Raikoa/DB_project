@@ -45,24 +45,9 @@ urlpatterns = [
     path("DeleteMenu/<int:ItemId>", views.deleteItem),
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-
     path("Navi/<int:Oid>", views.StartNav),
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     path("EditMenu/<int:Mid>", views.UpdateItem),
     path("SearchMenu", views.search)
- 
->>>>>>> Stashed changes
-=======
- 
->>>>>>> parent of 4e7b1e1 (Merge pull request #37 from Raikoa/main)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
