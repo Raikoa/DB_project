@@ -21,6 +21,7 @@ from geopy.geocoders import Nominatim # type: ignore
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 
 from .form import UserRegistrationForm, UserLoginForm
+from django.utils import timezone
 # Create your views here.
 
 def give_exp_func():
@@ -309,6 +310,7 @@ def login_view(request):
                     customer.save_base(raw = True) #避免重複保存User
                 elif user_type == 'deliverer':
                     deliverer = DeliveryP(user_ptr_id = user.pk)
+                    deliverer.last_delivery_time = timezone.now()
                     deliverer.save_base(raw = True)
                 elif user_type == 'vendor':
                     vendor = Vendor(user_ptr_id = user.pk)
