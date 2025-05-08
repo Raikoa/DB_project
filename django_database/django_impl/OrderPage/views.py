@@ -21,6 +21,8 @@ from geopy.geocoders import Nominatim # type: ignore
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 
 from .form import UserRegistrationForm, UserLoginForm
+from django.utils import timezone
+
 # Create your views here.
 
 def give_exp_func():
@@ -102,6 +104,7 @@ def front(request):
                 "id":t.id,
                 "Name":t.name,
             })
+        test_user = Vendor.objects.get(user_ptr_id = user_id)
         if test_user.store_id is None:
             return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg, "NoRes": True, "Tags": T_tags})
         pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [test_user.store_id])
@@ -309,6 +312,7 @@ def login_view(request):
                     customer.save_base(raw = True) #避免重複保存User
                 elif user_type == 'deliverer':
                     deliverer = DeliveryP(user_ptr_id = user.pk)
+                    deliverer.last_delivery_time = timezone.now()
                     deliverer.save_base(raw = True)
                 elif user_type == 'vendor':
                     vendor = Vendor(user_ptr_id = user.pk)
