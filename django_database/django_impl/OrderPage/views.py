@@ -21,6 +21,7 @@ from geopy.geocoders import Nominatim # type: ignore
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 
 from .form import UserRegistrationForm, UserLoginForm
+from django.utils import timezone
 # Create your views here.
 
 def give_exp_func():
@@ -309,6 +310,7 @@ def login_view(request):
                     customer.save_base(raw = True) #避免重複保存User
                 elif user_type == 'deliverer':
                     deliverer = DeliveryP(user_ptr_id = user.pk)
+                    deliverer.last_delivery_time = timezone.now()
                     deliverer.save_base(raw = True)
                 elif user_type == 'vendor':
                     vendor = Vendor(user_ptr_id = user.pk)
@@ -726,4 +728,41 @@ def ShowUserCurrent(request,user):
 def ShowTracker(request, order):
     return render(request, "Tracker.html", {"orderid": order})
 
+@csrf_exempt
+def UpdateItem(request, Mid):
+    if request.method == "POST":
+        name = request.POST.get("ItemName")
+        desc = request.POST.get("ItemDesc")
+        price = request.POST.get("ItemPrice")
+        pic = request.FILES.get("ItemPic")
+        It = Item.objects.get(id=Mid)
+        It.name = name
+        It.price = price
+        It.desc = desc
+        if(pic):
+            It.picture = pic
+        It.save()
+        
+        
+        
+        return JsonResponse({
+            "status": "success",
+            "id": It.id
+        })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
 
+@csrf_exempt
+def search(request):
+    if request.method == "POST":
+            name = request.POST.get("search")
+            item = Item.objects.filter(name__icontains=name).first()
+            
+            return JsonResponse({
+                "status": "success",
+                "id": item.id,
+                "name": item.name,
+                "price": item.price,
+                
+                "desc": item.desc
+            })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
