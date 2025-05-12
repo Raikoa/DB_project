@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c93915a3-3d3e-4975-8dba-87a31792e27c" name="Changes" comment="" />
+    <list default="true" id="c93915a3-3d3e-4975-8dba-87a31792e27c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OrderPage/static/addToCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/OrderPage/static/addToCart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OrderPage/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/OrderPage/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/django_impl/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/django_impl/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/cart.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/template/orderplaced.html" beforeDir="false" afterPath="$PROJECT_DIR$/template/orderplaced.html" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -118,6 +126,10 @@
       <workItem from="1746542375072" duration="5753000" />
       <workItem from="1746584038296" duration="3439000" />
       <workItem from="1746589852984" duration="16000" />
+      <workItem from="1746700883821" duration="2283000" />
+      <workItem from="1746864562696" duration="656000" />
+      <workItem from="1746978490813" duration="5662000" />
+      <workItem from="1747026467897" duration="3392000" />
     </task>
     <servers />
   </component>

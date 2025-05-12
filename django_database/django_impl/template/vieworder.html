@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Place Your Order</h1>
+    <p>Total price: {{ price }}</p>
+    <form method="POST" action={% url 'checkout' %}>
+        {% csrf_token %}
+        <input type="text" name="dest" placeholder="Enter Destination">
+        <button type="submit">Place Order</button>
+    </form>
+</body>
+</html>
