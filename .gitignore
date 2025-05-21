@@ -15,7 +15,7 @@
 *.iws
 *.ipr
 .idea_modules/
-
+*.pyc
 # Python
 __pycache__/
 *.py[cod]

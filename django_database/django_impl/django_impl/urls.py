@@ -55,7 +55,9 @@ urlpatterns = [
     path("ShowUserCurrentOrder/<int:user>", views.ShowUserCurrent),
     path("Tracker/<int:order>", views.ShowTracker),
 
+
     path("Navi/<int:Oid>", views.StartNav),
+
     path("EditMenu/<int:Mid>", views.UpdateItem),
     path("SearchMenu", views.search)
 

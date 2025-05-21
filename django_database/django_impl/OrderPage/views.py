@@ -104,7 +104,6 @@ def front(request):
                 "id":t.id,
                 "Name":t.name,
             })
-        test_user = Vendor.objects.get(user_ptr_id = user_id)
         if test_user.store_id is None:
             return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg, "NoRes": True, "Tags": T_tags})
         pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [test_user.store_id])
