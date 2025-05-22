@@ -5,17 +5,28 @@ let deliverySocket;
 let map;
 let marker;
 let routePolyline;
+let routeStaticPolyLine;
 let fallbackPolyline;
 let distanceLabel;
 let lastPosition = null;
 let googleMap;
 let osmb;
 let framenumber = 0;
+let heatLayer;
+let heatmap
+let coloredSegments = [];
+let isGoogleMapsLoaded = false;
+let latLng = null;
+let city
+let Predmarker
+let RestPredMarker
+let have_dest = false
 document.addEventListener("DOMContentLoaded", function(){
         
         let tabs = document.querySelectorAll(".restaurant_tab")
         if(tabs.length > 0){
             let userid = document.getElementById("Menus").dataset.user
+            loadNewInbox(userid)
             const socket = new WebSocket(`ws://${window.location.host}/ws/notify/${userid}/`);
             socket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
@@ -49,6 +60,55 @@ document.addEventListener("DOMContentLoaded", function(){
                 let user = viewBtn.getAttribute("data-user")
                 viewBtn.addEventListener("click", function(){
                     window.location.href = "/Inbox/" + parseInt(user)
+                })
+            }
+        }
+        let mails = document.getElementById("Mails")
+        if(mails){
+            console.log("in mail")
+            let ms = document.querySelectorAll(".msgTab")
+            if(ms.length > 0){
+                console.log(ms.length)
+                const orderPattern = /#(\d+)#/;
+                ms.forEach(m => {
+                    console.log("matching")
+                    let match = m.innerText.match(orderPattern);
+                    console.log(match)
+                    if(match){
+                        id = mails.dataset.id
+                        let orderId = match[1];
+                        fetch('/CheckAlreadyReviewed/' + orderId, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                            body: JSON.stringify({})
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.Valid) {
+                                const rateBtn = document.createElement("button");
+                                rateBtn.textContent = "Rate Order #" + orderId;
+                                rateBtn.className = "rate-button"; 
+                                rateBtn.id = "rate_" + orderId
+                                rateBtn.onclick = function() {
+                                    window.location.href = "/rateOrder/" + orderId + "/" + id;
+                                };
+                                m.appendChild(rateBtn);
+                                
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Fetch error:', error);
+                        });
+                        
+                    }
                 })
             }
         }
@@ -98,7 +158,12 @@ document.addEventListener("DOMContentLoaded", function(){
                 }
               };
         }
-        
+        let estimate = document.getElementById("DeliveryEstimate")
+        if(estimate){
+            estimate.addEventListener("click", function(){
+                window.location.href = "/DeliveryEstimate/"
+            })
+        }
         let user_roles = document.getElementById("test_roles")
         if(user_roles){
             user_roles.addEventListener("submit", function(e){
@@ -126,10 +191,63 @@ document.addEventListener("DOMContentLoaded", function(){
                     window.location.href = "/CurrentDelivery/" + current.dataset.user
                 })
             }
+            let difficulty = document.querySelectorAll(".difficulty")
+            if(difficulty.length > 0){
+                difficulty.forEach( d => {
+                    d.addEventListener("click", function(){
+                        Oid = d.dataset.oid
+                        //get the city the order destination and the restaurant is in 
+                        fetch('/GetCity/' + Oid, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            city = data.city;
+                            window.location.href = "/AreaEstimateDeli/" + city + "/" + Oid
+                            console.log('City:', city);
+                            
+                        } else {
+                            console.error('Server error:', data);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+                       
+                    })
+                })
+            }
         }
 
         let button = document.getElementById('TakeOrderBtn');
         if(button){
+            const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+            const socket = new WebSocket(protocol + window.location.host + "/ws/Heatmap/");
+            console.log("socket connected")
+            socket.onopen = function(e) {
+                socket.send(JSON.stringify({
+                        "type": "UpdateDiff",
+                        "Dest_address": document.getElementById("Dest_addr").innerText,
+                        "Rest_address": document.getElementById("Rest_addr").innerText,
+                        "Oid": document.getElementById("DetailOrderId").innerText,
+                    }));
+            }
+            socket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                console.log('Update received:', data.stat);
+            };
+            
             button.addEventListener("click", function(){
                 let orderId = button.getAttribute('data-order-id');
                 let DeliP = button.getAttribute('data-user')
@@ -246,7 +364,7 @@ document.addEventListener("DOMContentLoaded", function(){
             })
         }
         let completeDelivery = document.querySelectorAll('.CompleteOrderBtn')
-        if(completeDelivery){
+        if(completeDelivery.length > 0){
             completeDelivery.forEach(CB => {
                 CB.addEventListener("click", function(){
                     let orderId = CB.getAttribute('data-order-id');
@@ -299,11 +417,14 @@ document.addEventListener("DOMContentLoaded", function(){
                 const orderId = navMap.dataset.order; 
                 initMap()
                 const [ResLat, RestLng] = navMap.dataset.address.split(',').map(Number);
+                const [DestLat, DestLng] = navMap.dataset.dest.split(',').map(Number);
                 console.log(ResLat, RestLng)
                 let Restmarker = L.marker([ResLat, RestLng])
                 .addTo(map)
                 .bindPopup("Restaurant Location")
-                .openPopup();
+                
+                console.log(DestLat, DestLng)
+                let destMarker = L.marker([DestLat, DestLng]).addTo(map).bindPopup("Customer Destination");
                 getLocale(orderId);
             }
             deliverySocket.onmessage = function(e){
@@ -314,9 +435,14 @@ document.addEventListener("DOMContentLoaded", function(){
                         if (routePolyline) map.removeLayer(routePolyline);
                         if (fallbackPolyline) map.removeLayer(fallbackPolyline);
                         if (distanceLabel) map.removeLayer(distanceLabel);
+                        if (routeStaticPolyLine) map.removeLayer(routeStaticPolyLine);
                         if (data.route && data.route.length > 0) {
                             console.log(data.route)
                             routePolyline = L.polyline(data.route, { color: 'red' }).addTo(map);
+                        }
+                        if(data.static_route && data.static_route.length > 0){
+                            console.log(data.static_route)
+                            routeStaticPolyLine = L.polyline(data.static_route, { color: 'Blue' }).addTo(map);
                         }
                         if (data.fallback_line && data.fallback_line.length > 0) {
                             fallbackPolyline = L.polyline(data.fallback_line, { color: 'gray', dashArray: '5, 5' }).addTo(map);
@@ -337,6 +463,38 @@ document.addEventListener("DOMContentLoaded", function(){
                             }).addTo(map);
                         }
                 }
+              
+                
+                if (data.type == "heatmap_data"){
+                    initHeatMap();
+                    if (coloredSegments) {
+                    coloredSegments.forEach(seg => heatmap.removeLayer(seg));
+                    }
+                    coloredSegments = [];
+                   
+
+                for (let i = 0; i < data.heatmap.length - 1; i++) {
+                    const p1 = data.heatmap[i];
+                    const p2 = data.heatmap[i + 1];
+                    const score = (p1.score + p2.score) / 2;
+                    console.log(score)
+                    const color = getColorForScore(score);
+                    const segment = L.polyline([[p1.lat, p1.lng], [p2.lat, p2.lng]], {
+                        color: color,
+                        weight: 8,
+                        opacity: 0.9,
+                        smoothFactor: 1
+                    }).addTo(heatmap);
+
+                    coloredSegments.push(segment);
+
+                }
+                const bounds = L.latLngBounds(data.heatmap.map(p => [p.lat, p.lng]));
+                heatmap.fitBounds(bounds);
+
+                }
+                
+                
             }
         }
 
@@ -645,35 +803,42 @@ document.addEventListener("DOMContentLoaded", function(){
                                 console.log(data.lng)
                                 trackerImage.setAttribute("data-lat", data.lat)
                                 trackerImage.setAttribute("data-lng", data.lng)
-
+                                updateLatLng(data.lat, data.lng);
                                 osmb = new OSMBuildings({
                                     container: 'trackerImage',
                                     position: { latitude: parseFloat(data.lat), longitude: parseFloat(data.lng) },
                                     zoom: 17,
-                                    minZoom: 15,
-                                    maxZoom: 20,
+                                    minZoom: 17,
+                                    maxZoom: 17,
                                     state: true,
                                     tilt: 40,
                                     rotation: 300,
                                     effects: ['shadows'],
+                                    state: false,
+                                    controls: false,
                                     tileSource: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
                                     attribution: '© Data <a href="https://openstreetmap.org/copyright/">OpenStreetMap</a> © Map <a href="https://osmbuildings.org/copyright/">OSM Buildings</a>'
                                 });
                                 osmb.addMapTiles('https://tile-a.openstreetmap.fr/hot/{z}/{x}/{y}.png');
 
                                 osmb.addGeoJSONTiles('https://{s}.data.osmbuildings.org/0.2/59fcc2e8/tile/{z}/{x}/{y}.json');
-                                const pos = osmb.project([lng, lat]);
-                                const marker = document.getElementById('3Dmarker');
-                                if (pos) {
-                                marker.style.left = pos.x + 'px';
-                                marker.style.top = pos.y + 'px';
-                                }
-                                let rotation = 300;
-                                setInterval(() => {
-                                rotation = (rotation + 1) % 360;
-                                osmb.setRotation(rotation);
-                                }, 100);
-
+                                setTimeout(() => {
+                                    /*const pos = osmb.project([parseFloat(data.lng), parseFloat(data.lat)]);
+                                    const marker = document.getElementById('3Dmarker');
+                                    if (pos) {
+                                        console.log("Projected position:", pos);
+                                        marker.style.left = `${pos.x}px`;
+                                        marker.style.top = `${pos.y}px`;
+                                    }
+                                    */
+                                
+                              
+                                 let rotation = 300;
+                                    setInterval(() => {
+                                    rotation = (rotation + 1) % 360;
+                                    osmb.setRotation(rotation);
+                                    }, 300);
+                                    }, 3000);
                             }
                         };
                         socket.onopen = function() {
@@ -719,6 +884,207 @@ document.addEventListener("DOMContentLoaded", function(){
                         });
                 })
             }
+            let regions = document.querySelectorAll(".region-label")
+            if(regions){
+                regions.forEach(re =>{
+                    re.addEventListener("click", function(){
+                        window.location.href = "/AreaEstimate/" + re.dataset.region
+                    })
+                })
+            }
+            let subHeat = document.getElementById("SubmitHeat")
+            if(subHeat){
+                const Predictmap = L.map('heatmapMap', {
+                    zoomControl: false,
+                    scrollWheelZoom: false,
+                    doubleClickZoom: false,
+                    boxZoom: false,
+                    touchZoom: false,
+                    dragging: false, // Optional: also disables dragging
+                }).setView([25.0330, 121.5654], 10);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: 'Map data © OpenStreetMap contributors'
+                }).addTo(Predictmap);
+              
+                let data_dest = document.getElementById("Dest_data")
+                let dest_lat = null
+                let dest_lng = null
+                let data_Rest = document.getElementById("Rest_data")
+                let rest_lat = null
+                let rest_lng = null
+                if(data_Rest){
+                    rest_lat = data_Rest.dataset.lat
+                    rest_lng = data_Rest.dataset.lng
+                    RestPredMarker = L.marker([rest_lat, rest_lng])
+                    .addTo(Predictmap)
+                    .bindPopup("restaurant Location")
+                   
+                }
+                if(data_dest){
+                    console.log("got data_dest")
+                    dest_lat = data_dest.dataset.lat
+                    dest_lng = data_dest.dataset.lng
+                     Predmarker = L.marker([dest_lat, dest_lng])
+                    .addTo(Predictmap)
+                    .bindPopup("Destination Location")
+                  
+                    Predictmap.setView(Predmarker.getLatLng(), 11);
+                    have_dest = true
+                    document.getElementById("weatherControl").style.display = "none"
+                    
+                    
+                }
+                
+                let heatLayer = null;
+                const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+                const socket = new WebSocket(protocol + window.location.host + "/ws/Heatmap/");
+                console.log("socket connected")
+                
+                subHeat.addEventListener("click", function(){
+                    subHeat.disabled = true;
+                    oid = subHeat.dataset.oid
+                    weekday = document.getElementById("weekDays").value
+                    time = document.getElementById("timeOfDay").value
+                    //weather = document.getElementById("weather").value
+                    if(rest_lat != null && dest_lat != null){
+                        socket.send(JSON.stringify({
+                        "type": "Prediction_info",
+                        "weekday": weekday,
+                        "time": time,
+                        //"weather": weather,
+                        // "temp": parseFloat(document.getElementById("temp").value),
+                        // "rain": parseFloat(document.getElementById("rain").value),
+                        // "wind_speed": parseFloat(document.getElementById("wind_speed").value),
+                        // "visibility": parseInt(document.getElementById("visibility").value),
+                        // "thunder": document.getElementById("thunder").checked,
+                        "city": document.getElementById("Area").dataset.city,
+                        "dest_node": dest_lat + ":" + dest_lng,
+                        "rest_node": rest_lat + ":" + rest_lng,
+                        "oid": oid
+                    }));
+                    }else{
+                        socket.send(JSON.stringify({
+                        "type": "Prediction_info",
+                        "weekday": weekday,
+                        "time": time,
+                        //"weather": weather,
+                        "temp": parseFloat(document.getElementById("temp").value),
+                        "rain": parseFloat(document.getElementById("rain").value),
+                        "wind_speed": parseFloat(document.getElementById("wind_speed").value),
+                        "visibility": parseInt(document.getElementById("visibility").value),
+                        "thunder": document.getElementById("thunder").checked,
+                        "city": document.getElementById("Area").dataset.city,
+                        
+                    }));
+                    }
+                    
+
+                    
+                })
+                socket.onmessage = function(e) {
+                            console.log("[WS] Message received!");
+                            const data = JSON.parse(e.data);
+                            console.log(data)
+                            if (data.type === "HeatMap") {
+                                console.log("heatmap received:", data);
+
+                                // Convert heatmap data to [lat, lng, intensity]
+                                const points = data.heatmap.map(p => [p.lat, p.lng, p.value]);
+
+                                // Remove old heat layer if exists
+                                if (heatLayer) {
+                                    Predictmap.removeLayer(heatLayer);
+                                }
+
+                                // Create and add new heat layer
+                                heatLayer = L.heatLayer(points, {
+                                    radius: 20,
+                                    blur: 15,
+                                    maxZoom: 17,
+                                    minOpacity: 0.5,
+                                    max: 60,
+                                    min: 10,
+                                }).addTo(Predictmap);
+                
+                            }
+                            if (data.bounds && data.bounds.sw && data.bounds.ne) {
+                            const bounds = L.latLngBounds(
+                                [data.bounds.sw.lat, data.bounds.sw.lng],
+                                [data.bounds.ne.lat, data.bounds.ne.lng]
+                            );
+                            Predictmap.fitBounds(bounds);
+                            // // Check if marker exists
+                            // if (typeof Predmarker !== "undefined" && Predmarker) {
+                            //     // Focus on the marker with a suitable zoom level
+                            //     Predictmap.setView(Predmarker.getLatLng(), 15);
+                            // } else {
+                            //     // Otherwise, fit to heatmap bounds
+                            //     Predictmap.fitBounds(bounds);
+                            // }
+                            }
+                            if(data.Rest_score && data.Dest_score){
+                                let avg = (data.Rest_score + data.Dest_score)
+                                diff = document.getElementById("difficulties")
+                                if(avg <= 0.5){
+                                    diff.innerText = "Easy"
+                                    
+                                }else if(avg <= 1 && avg > 0.5){
+                                    diff.innerText = "Normal"
+                                }else if(avg <= 1.5 && avg > 1){
+                                    diff.innerText = "Expert"
+                                }else{
+                                    diff.innerText = "Hard"
+                                }
+                            }
+                    };
+            }
+            Ratings = document.getElementById("SubmitRating")
+            if(Ratings){
+                oid = Ratings.dataset.oid
+                uid = Ratings.dataset.uid
+                Ratings.addEventListener("click", function(){
+                    score = document.getElementById("score").value
+                    comment = document.getElementById("comment").value
+                    fetch("/ProcessOrder/" + oid + "/" + parseInt(score) + "/" + comment, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({})
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert("Thanks for the review")
+                           console.log("successfully Review")
+                            
+                        } else {
+                            console.error('Error:', data);
+                        }
+                        window.location.href = "/Inbox/" + uid
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+                })
+                
+                
+
+            }
+            let rank = document.getElementById("Rankings")
+            if(rank){
+                uid = rank.dataset.id 
+                rank.addEventListener("click", function(){
+                    window.location.href = "/Rankings/"
+                })
+            }
+            
 })
 
 function getCookie(name) {
@@ -764,11 +1130,33 @@ function loadNewInbox(id){
     .then(data => {
         const msgContainer = document.getElementById('msgArea');
         msgContainer.innerHTML = '';  
-
+        const orderPattern = /#(\d+)#/;
         data.forEach(msg => {
             mli = document.createElement("li")
             mli.style = "padding: 5px 0; border-bottom: 1px solid #eee;"
             mli.innerHTML = msg.message + "<br><small>" + msg.timestamp + "</small>"
+            const match = msg.message.match(orderPattern);
+            console.log(match)
+            if (match) {
+                const orderId = match[1];
+                const rateBtn = document.createElement("button");
+                rateBtn.textContent = "Rate Order #" + orderId;
+                rateBtn.className = "rate-button"; 
+                rateBtn.id = "rate_" + orderId
+                if (msg.reviewed) {
+                    rateBtn.disabled = true;
+                    rateBtn.textContent += " (Reviewed)";
+                    rateBtn.style.opacity = 0.6;
+                    rateBtn.style.cursor = "not-allowed";
+                } else {
+                    rateBtn.onclick = function () {
+                        window.location.href = "/rateOrder/" + orderId + "/" + id;
+                    };
+                }
+
+                mli.appendChild(document.createElement("br"));
+                mli.appendChild(rateBtn);
+            }
             msgContainer.appendChild(mli)
         });
     });
@@ -880,28 +1268,29 @@ function isRedundant(pos) {
 
 function handleLocation(pos, OrderId) {
     const now = Date.now();
-
-    if (isRedundant(pos)) {
-        console.log(" Ignoring redundant update");
-        return;
-    }
-
     const { latitude, longitude, accuracy } = pos.coords;
-    if (accuracy > 50) {
-        console.log(" Skipping due to poor accuracy:", accuracy);
-        return;
-    }
-
     lastPosition = pos;
     lastSent = now;
 
     marker.setLatLng([latitude, longitude]);
     map.setView([latitude, longitude]);
+    if (isRedundant(pos)) {
+        console.log(" Ignoring redundant update");
+        return;
+    }
+
+
+    if (accuracy > 50) {
+        console.log(" Skipping due to poor accuracy:", accuracy);
+        return;
+    }
+
+
 
     const locationDisplay = document.getElementById("locationDisplay");
     locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;
-    SaveFrame(OrderId, latitude, longitude, framenumber)
-    framenumber = framenumber + 1
+    //SaveFrame(OrderId, latitude, longitude, framenumber)
+    //framenumber = framenumber + 1
     sendLocationToBackend(latitude, longitude, OrderId);
 }
 
@@ -930,27 +1319,56 @@ function getLocale(OrderId) {
 }
 
 
-function initStreetView(){
-    const lat = parseFloat(document.getElementById("trackerImage").dataset.lat);
-    const lng = parseFloat(document.getElementById("trackerImage").dataset.lng);
+function initStreetView() {
+    const orderId = document.getElementById("trackerImage").dataset.order;
 
-    const location = { lat, lng };
+    fetch('/GetCurrentCoords/' + orderId, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            const lat = parseFloat(data.lat);
+            const lng = parseFloat(data.lng);
+            const location = { lat, lng };
 
-
-    const panorama = new google.maps.StreetViewPanorama(
-        document.getElementById("street-view"),
-        {
-            position: location,
-            pov: {
-                heading: 34,
-                pitch: 10
-            },
-            zoom: 1
+            console.log("Street View location:", location);
+            const streetViewService = new google.maps.StreetViewService();
+            streetViewService.getPanorama({
+            location: location,
+            radius: 100 
+            }, (data, status) => {
+            if (status === google.maps.StreetViewStatus.OK) {
+            const panorama = new google.maps.StreetViewPanorama(
+            document.getElementById("street-view"),
+            {
+                pano: data.location.pano,
+                pov: {
+                    heading: 34,
+                    pitch: 10
+                },
+                zoom: 1
+            }
+        );
+    } else {
+        console.warn("No Street View available:", status);
+        document.getElementById("street-view").innerHTML = "<p>No Street View available at this location.</p>";
+    }
+});
+            
+        } else {
+            console.error("Failed to get coordinates:", data.message);
         }
-    );
-
-
+    })
+    .catch(err => {
+        console.error("Fetch error:", err);
+    });
 }
+
 
 
 function SaveFrame(Oid, lat,lng, FrameNum){
@@ -1021,5 +1439,37 @@ function initGoogleMap() {
             googleMap.setHeading(heading);
         }, 100);
     }*/
+
+
+function initHeatMap() {
+    if (!heatmap) {
+        heatmap = L.map('Heatmap',{
+            /*
+            zoomControl: false,
+            dragging: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            boxZoom: false,
+            keyboard: false,
+            tap: false,
+            touchZoom: false*/
+        }).setView([0, 0], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 22,
+        attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(heatmap);
+    }
+}
+
+
+function getColorForScore(score) {
+    // score should already be between 0 and 1
+    if (score < 0.2) return 'blue';
+    if (score < 0.4) return 'lime';
+    if (score < 0.6) return 'yellow';
+    if (score < 0.8) return 'orange';
+    return 'red';
+}
+
 
 

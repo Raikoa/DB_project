@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    </head>
+    <body>
+        <h2>Delivery Man Ranking</h2>
+        <div id="ranks">
+            {% for d in delis%}
+            <div style="display: flex; gap: 10px; padding: 5px 0;">
+            <div><strong>#{{ forloop.counter }}</strong></div>
+            <div>ID: {{ d.id }}</div>
+            <div>Name: {{ d.name }}</div>
+            <div>Score: {{ d.score }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

@@ -17,27 +17,39 @@
         <!--<div id="trackerImage" data-order = "{{orderid}}">
         <img id="mapillary-image" src="" width="600" />
     </div>-->
-    <div id="trackerImage" style="width: 100%; height: 500px;" data-order = "{{orderid}}"></div>
-    <!--<div id="Googlemap" style="height: 500px; width: 100%;"></div>-->
-    <br>
-    <br>
-    <div id="street-view"></div>
-    <p id="locationDisplay">Location: waiting...</p>
-    <div id="3Dmarker" style="
+    <div id="trackerImage" style="width: 100%; height: 500px;" data-order = "{{orderid}}">
+          <div id="3Dmarker" style="
     position: absolute;
-    width: 20px;
-    height: 20px;
+    top: 50%;
+    left: 50%;
+    width: 15px;
+    height: 15px;
     background: red;
     border-radius: 50%;
     border: 2px solid white;
     z-index: 1000;
     transform: translate(-50%, -50%);
+    pointer-events: none;
+   
     "></div>
+
+
+    </div>
+    <!--<div id="Googlemap" style="height: 500px; width: 100%;"></div>-->
+    <br>
+    <br>
+    <div id="street-view"></div>
+    <p id="locationDisplay">Location: waiting...</p>
+  
+    <br>
+    <br>
+    <div id="heatmapdelivery" style="height: 400px; width: 100%;"></div>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRPaAyw-McbHYiboHfXCEExlK7zGXrPOg&loading=async"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRPaAyw-McbHYiboHfXCEExlK7zGXrPOg"
       async defer
       onload="initStreetView()">
     </script>
     
+
     </body>
 </html>

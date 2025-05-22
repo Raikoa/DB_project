@@ -1,0 +1,13 @@
+asgiref
+channels
+Django
+geopy
+numpy
+osmnx
+pandas
+requests
+daphne
+Pillow
+joblib
+scikit-learn
+lxml

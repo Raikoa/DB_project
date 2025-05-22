@@ -19,7 +19,7 @@
             <table id="options">
                 <tr>
                     <td>Account info</td>
-                    <td>Chat</td>
+                    
                     <td id="msgToggle">Inbox</td>
                     <!--
                     <span id="msgCount" style="color: red; font-weight: bold;">
@@ -45,6 +45,7 @@
                     {% if Role == 'customer'%}
                     <td id="Favorite" data-id="{{userid}}">Favorite</td>
                     <td id="UserCurrentOrder" data-user="{{userid}}">My order</td>
+                    <td id="DeliveryEstimate" data-user = "{{userid}}">Estimate</td>
                     <td data-id="{{userid}}">My Cart</td>
                     {% endif %}
                     {% if Role == 'vendor' %}
@@ -53,6 +54,9 @@
                     {% if Role == 'delivery'%}
                     
                     <td id="CurrentOrder" data-user="{{userid}}">Current order</td>
+                    {% endif %}
+                    {%  if Role != 'vendor' %}
+                    <td data-id="{{userid}}" id="Rankings">Rankings</td>
                     {% endif %}
                     
                 </tr>
@@ -155,8 +159,9 @@
                 <p>{{i.created}}</p>
                 <p>{{i.customer}}</p>
                 <p>{{i.restaurant}}</p>
-              
+               
              </div>
+              <button class="difficulty" data-Oid = "{{i.id}}">Difficulty</button>
              {%endfor%}
              {%endif%}
              <hr style="border-top: dotted 1px;" class="line" />
