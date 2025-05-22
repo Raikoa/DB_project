@@ -22,6 +22,7 @@ from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 
 from .form import UserRegistrationForm, UserLoginForm
 from django.utils import timezone
+
 # Create your views here.
 
 def give_exp_func():
