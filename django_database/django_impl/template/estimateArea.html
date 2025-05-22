@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    </head>
+    <body>
+        {% if Deli %}
+            <div id="Dest_data", data-lat="{{dest_lat}}", data-lng="{{dest_lng}}"></div>
+            <div id="Rest_data", data-lat = "{{rest_lat}}", data-lng = "{{rest_lng}}"></div>
+            <div id="difficulties" ></div>
+        {% endif %}
+       <h2 id="Area" data-city="{{area}}">{{area}}</h2>
+        <div id="HeatMap">
+            <div id="heatmapMap" style="height: 600px;"></div>
+            <br><br>
+            <form>
+          <label for="weekDays">Day of the Week:</label>
+    <select id="weekDays" name="weekDays">
+        <option value="">Select day</option>
+        <option value="0">Monday</option>
+        <option value="1">Tuesday</option>
+        <option value="2">Wednesday</option>
+        <option value="3">Thursday</option>
+        <option value="4">Friday</option>
+        <option value="5">Saturday</option>
+        <option value="6">Sunday</option>
+    </select>
+    <br><br>
+
+    <label for="timeOfDay">Time of Day:</label>
+    <select id="timeOfDay" name="timeOfDay">
+        <option value="0">00:00</option>
+    <option value="1">01:00</option>
+    <option value="2">02:00</option>
+    <option value="3">03:00</option>
+    <option value="4">04:00</option>
+    <option value="5">05:00</option>
+    <option value="6">06:00</option>
+    <option value="7">07:00</option>
+    <option value="8">08:00</option>
+    <option value="9">09:00</option>
+    <option value="10">10:00</option>
+    <option value="11">11:00</option>
+    <option value="12">12:00</option>
+    <option value="13">13:00</option>
+    <option value="14">14:00</option>
+    <option value="15">15:00</option>
+    <option value="16">16:00</option>
+    <option value="17">17:00</option>
+    <option value="18">18:00</option>
+    <option value="19">19:00</option>
+    <option value="20">20:00</option>
+    <option value="21">21:00</option>
+    <option value="22">22:00</option>
+    <option value="23">23:00</option>
+    </select>
+    <br><br>
+
+    <!-- <label for="weather">Weather:</label>
+    <select id="weather" name="weather">
+            <option value="">Select weather</option>
+            <option value="Clear">Clear</option>
+            <option value="Partially Cloudy">Partially Cloudy</option>
+            <option value="Cloudy">Cloudy</option>
+            <option value="Overcast">Overcast</option>
+            <option value="Rain">Rain</option>
+            <option value="Drizzle">Drizzle</option>
+            <option value="Light Rain">Light Rain</option>
+            <option value="Heavy Rain">Heavy Rain</option>
+            <option value="Showers">Showers</option>
+            <option value="Thunderstorm">Thunderstorm</option>
+            <option value="Snow">Snow</option>
+            <option value="Fog">Fog</option>
+            <option value="Haze">Haze</option>
+            <option value="Mist">Mist</option>
+            <option value="Scattered Clouds">Scattered Clouds</option>
+    </select> -->
+    <div id="weatherControl">
+    <label>Temperature (°C):</label>
+    <input type="number" id="temp" name="temp" required value="0"><br>
+
+    <label>Rain (mm):</label>
+    <input type="number" id="rain" name="rain" step="0.1" required value="0"><br>
+
+    <label>Wind Speed (m/s):</label>
+    <input type="number" id="wind_speed" name="wind_speed" step="0.1" required value="0"><br>
+
+    <label>Visibility (m):</label>
+    <input type="number" id="visibility" name="visibility" required value="0"><br>
+
+    <label>Thunder:</label>
+    <input type="checkbox" id="thunder" name="thunder"><br>
+    </div>
+          </form>
+    <button id="SubmitHeat" data-oid = "{{Oid}}">Submit</button>
+        </div>
+    </body>
+</html>
+
+
+
+
+

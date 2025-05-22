@@ -7,4 +7,5 @@ websocket_urlpatterns = [
     re_path(r'ws/notify/(?P<user_id>\d+)/$', consumer.OrderNotificationConsumer.as_asgi()),
     re_path(r'ws/delivery/$', consumer.DeliveryTracker.as_asgi()),
     re_path(r'ws/map/$', consumer.MapConsumer.as_asgi()),
+    re_path(r'ws/Heatmap/$', consumer.HeatMapConsumer.as_asgi())
 ]
