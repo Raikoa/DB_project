@@ -2,6 +2,7 @@
 
 # Default ignored files
 /shelf/
+*.xml
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
@@ -44,4 +45,5 @@ ENV/
 env/
 
 #SQLite 資料庫檔案
+*.sqlite3
 **/*sqlite3
