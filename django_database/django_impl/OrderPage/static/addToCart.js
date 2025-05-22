@@ -18,10 +18,6 @@ function updateCartButton() {
     }
 }
 
-function clearCartItems() {
-    cartItems = [];
-    updateCartButton()
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const storedCart = localStorage.getItem('cart');

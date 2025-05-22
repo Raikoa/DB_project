@@ -202,12 +202,19 @@ def contShop(request):
     rid = request.session.get('rid')
     return redirect('pages', id=rid)
 
+def vieworder(request):
+    cart_data = request.session.get('cart', [])
+    price = 0
+    for i in cart_data:
+        price += int(i['price'])
+    return render(request, 'vieworder.html', {'price': price})
+
 def checkout(request):
     last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
     lastid = int(last[0].id)
     oid = lastid + 1
     rid = int(request.session.get('rid'))
-    uid = int(request.session.get('uid'))
+    uid = int(request.session.get('user_id'))
     cart_data = request.session.get('cart', [])
     dtime = 0
     price = 0
@@ -218,7 +225,7 @@ def checkout(request):
         amount += q
         price += p * q
     placetime = datetime.now()
-    dest = 'address'
+    dest = str(request.POST.get('dest'))
     status = 'on route'
     location = '22.6300545:120.2639648'
     with connection.cursor() as cursor:
