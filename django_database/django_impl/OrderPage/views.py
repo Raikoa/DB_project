@@ -1,6 +1,8 @@
 import datetime
 import os
 import re
+
+from Tools.scripts.pysource import print_debug
 from django.shortcuts import render, redirect
 import uuid
 from django.db import connection
@@ -24,6 +26,7 @@ from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 import osmnx as ox
 from .form import UserRegistrationForm, UserLoginForm
 from django.utils import timezone
+
 # Create your views here.
 
 def give_exp_func():
@@ -61,8 +64,7 @@ def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
     #test_user = Customer.objects.first()
-    user_id = request.session.get('user_id')
-    test_user = User.objects.get(user_id = user_id)
+    # test_user = User.objects.get(user_id = user_id)
     #test_user= Vendor.objects.first()
     #user = request.user
 
@@ -72,9 +74,14 @@ def front(request):
     #     role = 'vendor'
     # elif isinstance(test_user, DeliveryP):
     #     role = 'delivery'
-
+    test_user = None
+    user_id = request.session.get('user_id')
     role = request.session.get('role')
-    print(role)
+    if role == 'customer': test_user = Customer.objects.get(user_ptr_id = user_id)
+    elif role == 'vendor': test_user = Vendor.objects.get(user_ptr_id = user_id)
+    elif role == 'delivery': test_user = DeliveryP.objects.get(user_ptr_id = user_id)
+    else: print(f"in orderpage/view.py ,role error : {role}")
+
     messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.pk])
     msg = []
     for m in messages:
@@ -197,12 +204,19 @@ def contShop(request):
     rid = request.session.get('rid')
     return redirect('pages', id=rid)
 
+def vieworder(request):
+    cart_data = request.session.get('cart', [])
+    price = 0
+    for i in cart_data:
+        price += int(i['price'])
+    return render(request, 'vieworder.html', {'price': price})
+
 def checkout(request):
     last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
     lastid = int(last[0].id)
     oid = lastid + 1
     rid = int(request.session.get('rid'))
-    uid = int(request.session.get('uid'))
+    uid = int(request.session.get('user_id'))
     cart_data = request.session.get('cart', [])
     dtime = 0
     price = 0
@@ -213,7 +227,7 @@ def checkout(request):
         amount += q
         price += p * q
     placetime = datetime.now()
-    dest = 'address'
+    dest = str(request.POST.get('dest'))
     status = 'on route'
     location = '22.6300545:120.2639648'
     with connection.cursor() as cursor:
