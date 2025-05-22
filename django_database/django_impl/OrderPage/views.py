@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from django.core.files.base import ContentFile
 from django.shortcuts import render
 from django.templatetags.static import static
+import numpy as np
+import pandas as pd
 import requests
 from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox, VideoFrame # type: ignore
 from django.http import HttpResponse, JsonResponse
@@ -19,7 +21,7 @@ from asgiref.sync import async_to_sync
 import json
 from geopy.geocoders import Nominatim # type: ignore
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
-
+import osmnx as ox
 from .form import UserRegistrationForm, UserLoginForm
 from django.utils import timezone
 # Create your views here.
@@ -353,6 +355,7 @@ def TakeOrder(request,orderid, deliID):
             order = Order.objects.get(id=orderid)
             delivery_person = User.objects.get(user_id=deliID)
             order.delivery_person_id = delivery_person
+            order.taken = timezone.now()
             order.status = 'pending'
             order.save()
             channel_layer = get_channel_layer()
@@ -472,7 +475,17 @@ def CompOrder(request, Orderid, Userid):
         try:
             order = Order.objects.get(id=Orderid)
             delivery = order.delivery_person
+            add_points_to_deli(order.id, order.points)
+            try:
+                delivery_person = DeliveryP.objects.get(user_id=delivery.user_id)
+                delivery_person.last_delivery_time = timezone.now()
+                delivery_person.save()
+            except DeliveryP.DoesNotExist:
+                print("Error: User is not a delivery person.")
+           
+            
             order.status = "Complete"
+            order.completed = timezone.now()
             order.save()
             
             channel_layer = get_channel_layer()
@@ -480,10 +493,10 @@ def CompOrder(request, Orderid, Userid):
             f"user_{Userid}",
         {
             'type': 'send_order_complete',
-            'message': f"Your order #{Orderid} has been marked as completed by delivery {delivery}"
+            'message': f"Your order #{Orderid} has been marked as completed by delivery ({delivery.id})"
         }
             )
-            Inbox.objects.create(message = f"Your order #{Orderid} has been marked as completed by delivery {delivery}", user_id = Userid)
+            Inbox.objects.create(message = f"Your order #{Orderid}# has been marked as completed by delivery ({delivery.id})", user_id = Userid)
 
             return JsonResponse({'success': True})
         except order.DoesNotExist:
@@ -496,17 +509,28 @@ def updateInbox(request, userid):
     msgs = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [userid])
     data = []
     for m in msgs:
+            match = re.search(r"#(\d+)#", m.message)
+            reviewed = False
+            if match:
+                order_id = int(match.group(1))
+                try:
+                    order = Order.objects.get(id=order_id)
+                    reviewed = order.Review != "-"  # Or however you store default/no review
+                except Order.DoesNotExist:
+                    pass
             data.append({
             "message": m.message,
-            "timestamp": m.timestamp
+            "timestamp": m.timestamp,
+            "reviewed": reviewed
         })
 
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)
 
 
 
 def ViewInbox(request, userid):
     msgs = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [userid])
+    
     data = []
     for m in msgs:
             data.append({
@@ -514,26 +538,31 @@ def ViewInbox(request, userid):
             "timestamp": m.timestamp
         })
             
-    return render(request, "inbox.html", {"msg": data})
+    return render(request, "inbox.html", {"msg": data, "userid": userid})
 
 
 def StartNav(request, Oid):
     o = Order.objects.get(id=Oid)
     o.status = "on route"
     o.save()
+    destination = o.destination
     Rest = Restaurant.objects.get(Rid = o.restaurant_id)
     coords = get_coordinates(Rest.address)
     if(coords):
         Rest.latitude = coords[0]
         Rest.longitude = coords[1]
         Rest.save()
-    
-    return render(request, "Navigation.html", {"orderID": Oid, "RestAddress":coords})
+    Order_end_coords = get_coordinates(destination)
+    if(Order_end_coords):
+        o.destination_lat = Order_end_coords[0]
+        o.destination_lng = Order_end_coords[1]
+        o.save()
+    return render(request, "Navigation.html", {"orderID": Oid, "RestAddress":coords, "Order_end_coords": Order_end_coords, "preview": False})
 
 
-def get_coordinates(address):
-    newAddr = force_trim_to_road_name(address)
-    print(f"[DEBUG] Attempting to geocode address: {newAddr}")
+#def get_coordinates(address):
+    #newAddr = force_trim_to_road_name(address)
+    #print(f"[DEBUG] Attempting to geocode address: {newAddr}")
     geolocator = Nominatim(user_agent="DjangoUberApp") 
     try:
         location = geolocator.geocode(newAddr)
@@ -550,8 +579,33 @@ def get_coordinates(address):
         print(f"[ERROR] Geocoder service error: {e}")
         return None
     
+def get_coordinates(address):
+    try:
+        # Properly encode the address for URL use
+        #encoded_address = urllib.parse.quote(address)
 
+        # Your API key from Django settings
+        api_key = "AIzaSyBElfTjB_ODR7adcc1xYSO1f0itjz77Lr4"
 
+        # Construct the API URL
+        url = f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={api_key}"
+
+        # Make the request
+        response = requests.get(url)
+        data = response.json()
+
+        # Check for valid response
+        if data['status'] == 'OK':
+            location = data['results'][0]['geometry']['location']
+            print(f"[DEBUG] Geocoding success: {location}")
+            return location['lat'], location['lng']
+        else:
+            print(f"[ERROR] Geocoding failed: {data['status']}")
+            return None
+
+    except Exception as e:
+        print(f"[ERROR] Google Maps API request failed: {e}")
+        return None
 def force_trim_to_road_name(address): #force address to match specifications
 
     # Remove leading postal code if any (3 to 5 digits)
@@ -765,4 +819,270 @@ def search(request):
                 
                 "desc": item.desc
             })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+def heatmap(request, Oid):
+    order = Order.objects.get(id = Oid)
+    destination = order.destination
+    rest_id = order.restaurant_id
+    rest = Restaurant.objects.get(Rid = rest_id)
+    rest_dest = rest.address
+    location = get_coordinates(rest_dest)
+    if(location):
+        rest.latitude = location[0]
+        rest.longitude = location[1]
+        rest.save()
+    Order_end_coords = get_coordinates(destination)
+    if(Order_end_coords):
+        order.destination_lat = Order_end_coords[0]
+        order.destination_lng = Order_end_coords[1]
+        order.save()
+    return render(request,"Navigation.html", {"orderID": Oid, "RestAddress":location, "Order_end_coords": Order_end_coords, "preview": True})
+
+
+
+@csrf_exempt
+def getCoords(request, Oid):
+    if request.method == "POST":
+        order = Order.objects.get(id = Oid)
+        laln = order.location.split(":")
+        lat = laln[0]
+        lng = laln[1]
+        return JsonResponse({
+                "status": "success",
+                "lat": lat,
+                "lng": lng
+            })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+def startEstimate(request):
+        return render(request, "estimateSelect.html")
+
+
+def AreaEstimate(request,area):
+        translate_city_to_english(area)
+        return render(request, "estimateArea.html", {"area":area, "Deli": False})
+
+def translate_city_to_english(chinese_city):
+    match chinese_city:
+        case "台北市": return "Taipei"
+        case "新北市": return "New Taipei"
+        case "桃園市": return "Taoyuan"
+        case "台中市": return "Taichung"
+        case "台南市": return "Tainan"
+        case "高雄市": return "Kaohsiung"
+        case "基隆市": return "Keelung"
+        case "新竹市": return "Hsinchu"
+        case "嘉義市": return "Chiayi"
+        case "新竹縣": return "Hsinchu"
+        case "苗栗縣": return "Miaoli"
+        case "彰化縣": return "Changhua"
+        case "南投縣": return "Nantou"
+        case "雲林縣": return "Yunlin"
+        case "嘉義縣": return "Chiayi"
+        case "屏東縣": return "Pingtung"
+        case "宜蘭縣": return "Yilan"
+        case "花蓮縣": return "Hualien"
+        case "台東縣" | "臺東縣": return "Taitung"
+        case "澎湖縣": return "Penghu"
+        case "金門縣": return "Kinmen"
+        case "連江縣": return "Lienchiang"
+        case _: return chinese_city
+
+# def get_bounds(city_name):
+#     try:
+#         gdf = ox.geocode_to_gdf(city_name)
+#         bounds = gdf.bounds.iloc[0]
+#         return {
+#             "min_lat": bounds["miny"],
+#             "max_lat": bounds["maxy"],
+#             "min_lng": bounds["minx"],
+#             "max_lng": bounds["maxx"]
+#         }
+#     except Exception as e:
+#         print(f"[City Bounds Error] {str(e)}")
+#         return None
+    
+
+# def generate_grid(city_name, step=0.01):
+#     city_bounds = get_bounds(city_name)
+#     if not city_bounds:
+#         return pd.DataFrame()
+
+#     lat_range = np.arange(city_bounds["min_lat"], city_bounds["max_lat"], step)
+#     lng_range = np.arange(city_bounds["min_lng"], city_bounds["max_lng"], step)
+
+#     grid_points = [
+#         {"lat": lat, "lng": lng}
+#         for lat in lat_range
+#         for lng in lng_range
+#     ]
+#     return pd.DataFrame(grid_points)
+
+
+@csrf_exempt
+def getCity(request, Oid):
+    if request.method == "POST":
+        order = Order.objects.get(id=Oid)
+        raw_address = order.destination
+        print(raw_address)
+        city = extract_city(raw_address)
+        eng_city = translate_city_name(city)
+        dest_lat, dest_lng = order.destination_lat, order.destination_lng
+        if(dest_lat is None or dest_lng is None):
+            dest_lat, dest_lng = get_coordinates(raw_address)
+            print(get_coordinates(raw_address))
+        return JsonResponse({
+            "status": "success",
+            "city": eng_city,
+            "lat": dest_lat,
+            "lng": dest_lng
+        })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+def extract_city(address):
+    match = re.search(r"(台北市|新北市|台中市|台南市|高雄市|基隆市|新竹市|嘉義市|桃園市|宜蘭縣|新竹縣|苗栗縣|彰化縣|南投縣|雲林縣|嘉義縣|屏東縣|臺東縣|花蓮縣|澎湖縣|金門縣|連江縣)", address)
+    if match:
+        return match.group(0)
+    return "未知地區"
+
+
+
+
+def AreaEstimateDeli(request,area, Oid):
+        order = Order.objects.get(id=Oid)
+        raw_address = order.destination
+        dest_lat, dest_lng = order.destination_lat, order.destination_lng
+        Rest = order.restaurant
+      
+        rest_lat = Rest.latitude
+        rest_lng = Rest.longitude
+        if(rest_lat is None or rest_lng is None):
+            rest_addr = Rest.address
+            rest_lat, rest_lng = get_coordinates(rest_addr)
+
+        if(dest_lat is None or dest_lng is None):
+            dest_lat, dest_lng = get_coordinates(raw_address)
+        return render(request, "estimateArea.html", {"area":area, "dest_lat": dest_lat, "dest_lng": dest_lng, "Deli": True, 'rest_lat': rest_lat, 'rest_lng': rest_lng, 'Oid': Oid})
+
+
+def translate_city_name(ch_name):
+    match ch_name:
+        case "臺北市" | "台北市":
+            return "Taipei"
+        case "新北市":
+            return "New Taipei"
+        case "桃園市":
+            return "Taoyuan"
+        case "臺中市" | "台中市":
+            return "Taichung"
+        case "臺南市" | "台南市":
+            return "Tainan"
+        case "高雄市":
+            return "Kaohsiung"
+        case "基隆市":
+            return "Keelung"
+        case "新竹市":
+            return "Hsinchu"
+        case "嘉義市":
+            return "Chiayi"
+        case "新竹縣":
+            return "Hsinchu County"
+        case "苗栗縣":
+            return "Miaoli"
+        case "彰化縣":
+            return "Changhua"
+        case "南投縣":
+            return "Nantou"
+        case "雲林縣":
+            return "Yunlin"
+        case "嘉義縣":
+            return "Chiayi County"
+        case "屏東縣":
+            return "Pingtung"
+        case "宜蘭縣":
+            return "Yilan"
+        case "花蓮縣":
+            return "Hualien"
+        case "臺東縣" | "台東縣":
+            return "Taitung"
+        case "澎湖縣":
+            return "Penghu"
+        case "金門縣":
+            return "Kinmen"
+        case "連江縣":
+            return "Lienchiang"
+        case _:
+            return ch_name  # fallback, just in case
+
+
+def RateOrder(request, Oid, Uid):
+    return render(request, "Rate.html",{"Oid": Oid, "Uid": Uid})
+
+@csrf_exempt
+def ProcessOrder(request, Oid, score, comment):
+    if request.method == "POST":
+        order = Order.objects.get(id=Oid)
+        point = 0
+        if(score <= 2):
+            point = 0
+        
+        if(score > 2 and score < 4):
+            point = 1
+        if(score >= 4):
+            point = 2
+        order.points = order.points + point
+        order.Review = str(score) + ":" + comment
+        add_points_to_deli(order.id, score)
+        order.save()
+        
+        return JsonResponse({
+            "status": "success"
+            
+        })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+def add_points_to_deli(Oid, points):
+    order = Order.objects.get(id=Oid)
+    user = order.delivery_person
+    try:
+        delivery_person = DeliveryP.objects.get(user_id=user.user_id)
+        delivery_person.Score += points
+        delivery_person.save()
+    except DeliveryP.DoesNotExist:
+        print("Error: User is not a delivery person.")
+
+
+
+def Rankings(request):
+    data = DeliveryP.objects.raw("SELECT * FROM delivery_person ORDER BY score DESC")
+    delis = []
+    for d in data:
+        delis.append({
+            "id": d.user_id,
+            "name": d.name,
+            "score": d.Score
+        })
+    return render(request, "Rankings.html", {"delis": delis})
+
+@csrf_exempt
+def checkReviewed(request, Oid):
+    if request.method == "POST":
+        valid = True
+        order = Order.objects.get(id = Oid)
+        if order.Review != "-":
+            valid = False
+        
+        return JsonResponse({
+            "Valid": valid
+            
+        })
     return JsonResponse({"error": "Invalid request method"}, status=405)

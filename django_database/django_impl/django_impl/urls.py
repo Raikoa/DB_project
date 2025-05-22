@@ -59,8 +59,17 @@ urlpatterns = [
     path("Navi/<int:Oid>", views.StartNav),
 
     path("EditMenu/<int:Mid>", views.UpdateItem),
-    path("SearchMenu", views.search)
-
+    path("SearchMenu", views.search),
+    path("GetHeatMap/<int:Oid>", views.heatmap),
+    path("GetCurrentCoords/<int:Oid>", views.getCoords),
+    path("DeliveryEstimate/", views.startEstimate),
+    path("AreaEstimate/<str:area>", views.AreaEstimate),
+    path("GetCity/<int:Oid>", views.getCity),
+    path("AreaEstimateDeli/<str:area>/<int:Oid>", views.AreaEstimateDeli),
+    path("rateOrder/<int:Oid>/<int:Uid>", views.RateOrder),
+    path("ProcessOrder/<int:Oid>/<int:score>/<str:comment>", views.ProcessOrder),
+    path("Rankings/", views.Rankings),
+    path("CheckAlreadyReviewed/<int:Oid>", views.checkReviewed),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

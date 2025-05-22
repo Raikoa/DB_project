@@ -26,8 +26,9 @@ class Customer(User):
         db_table = "customer"
 
 class DeliveryP(User):
-    miles = models.IntegerField(default=0)
+    
     last_delivery_time = models.DateTimeField(auto_now_add=True)
+    Score = models.IntegerField(default=0)
 
     class Meta:
         db_table = "delivery_person"
@@ -99,10 +100,16 @@ class Order(models.Model):
     items = models.CharField(max_length=100)  # Could later become ManyToMany if needed
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    taken = models.DateTimeField(null=True)
+    completed = models.DateTimeField(null=True)
     status = models.CharField(max_length=100, default="Pending")
     destination = models.CharField(max_length=100, default="-")
-    time = models.DurationField(default=default_duration)
+    destination_lat = models.FloatField(null=True)
+    destination_lng = models.FloatField(null=True)
+   
     location = models.TextField(default="-")
+    points = models.IntegerField(default=0)
+    Review = models.TextField(default="-")
     class Meta:
         db_table = "order"
 

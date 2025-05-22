@@ -8,12 +8,20 @@
         <script src="{% static 'script.js' %}"></script>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /> <!--for leaflet.js css-->
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><!--for leaflet.js code, for the map stuff-->
+        <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script><!--for leaflet.js heatmap code, for the map stuff-->
         {% load static %}
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
-    <div id="NavMap" data-order = "{{orderID}}" data-address = "{{ RestAddress.0 }},{{ RestAddress.1 }}">
+    <div id="NavMap" data-order = "{{orderID}}" data-address = "{{ RestAddress.0 }},{{ RestAddress.1 }}" data-dest = "{{Order_end_coords.0}}, {{Order_end_coords.1}}">
     </div>
+    
+    <br>
+    <br>
+    
     <p id="locationDisplay">Location: waiting...</p>
+    {% if preview %}
+    <div id="Heatmap" style="height: 600px;"></div>
+    {% endif %}
     </body>
 </html>
