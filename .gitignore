@@ -2,6 +2,7 @@
 
 # Default ignored files
 /shelf/
+*.xml
 /workspace.xml
 # Editor-based HTTP Client requests
 /httpRequests/
@@ -10,7 +11,7 @@
 /dataSources.local.xml
 
 # PyCharm
-**/.idea/
+.idea/
 *.iml
 *.iws
 *.ipr
@@ -38,6 +39,9 @@ var/
 .installed.cfg
 *.egg
 
+#heat map
+django_database/django_impl/media/VideoFrames/
+
 # 虛擬環境
 venv/
 ENV/
@@ -46,5 +50,3 @@ env/
 #SQLite 資料庫檔案
 *.sqlite3
 **/*sqlite3
-*.graphml
-*.gpickle

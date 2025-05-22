@@ -1268,23 +1268,24 @@ function isRedundant(pos) {
 
 function handleLocation(pos, OrderId) {
     const now = Date.now();
-
-    if (isRedundant(pos)) {
-        console.log(" Ignoring redundant update");
-        return;
-    }
-
     const { latitude, longitude, accuracy } = pos.coords;
-    if (accuracy > 50) {
-        console.log(" Skipping due to poor accuracy:", accuracy);
-        return;
-    }
-
     lastPosition = pos;
     lastSent = now;
 
     marker.setLatLng([latitude, longitude]);
     map.setView([latitude, longitude]);
+    if (isRedundant(pos)) {
+        console.log(" Ignoring redundant update");
+        return;
+    }
+
+
+    if (accuracy > 50) {
+        console.log(" Skipping due to poor accuracy:", accuracy);
+        return;
+    }
+
+
 
     const locationDisplay = document.getElementById("locationDisplay");
     locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;
