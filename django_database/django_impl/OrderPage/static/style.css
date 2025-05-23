@@ -119,7 +119,7 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover, #DeliveryEstimate:hover, #Rankings:hover{
+#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover, #DeliveryEstimate:hover, #Rankings:hover, #Kart:hover{
     background-color: navajowhite;
     cursor: pointer;
 }
@@ -132,9 +132,9 @@
     border-bottom: dotted 2px gray;
 }
 
-.OrdersTab:hover{
+/* .OrdersTab:hover{
     cursor: pointer;
-}
+} */
 
 #Orders, #deliverys{
     display: flex;
@@ -304,4 +304,25 @@
     align-items: center;
     overflow: auto;
     font-size: 18px;
+}
+
+
+.Showitems{
+    border: solid 2px black
+}
+
+.Showitems:hover{
+    background-color: orange;
+    cursor: pointer;
+}
+
+#SearchPost{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#tag-checkboxes{
+    overflow: auto;
+    height: 250px;
 }

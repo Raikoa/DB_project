@@ -16,14 +16,14 @@
             <div>NO ORDERS</div>
             {%else %}
           {% for i in order %}
-            <div class="OrdersTab" data-order = "{{i.id}}" data-user="{{user}}">
+            <div class="Orderstab" data-order = "{{i.id}}" data-user="{{user}}">
                 <p>{{i.id}}</p>
                 <p>{{i.created}}</p>
-                <p>{{i.deliveryP}}</p>
+                <p>{{i.delivery_person_name}}</p>
                 <p>{{i.restaurant}}</p>
                 <p class="Showitems" data-items = '{{i.items|safe}}'>Items</p>
                 <p>{{i.destination}}</p>
-                <p>{{i.time}}</p>
+                
                 <p>{{i.price}}</p>
                 <p>{{i.status}}</p>
             </div>

@@ -1040,7 +1040,8 @@ def calcu_next_node(lat,lng):
     traffic_data = get_traffic_data_point(lat, lng, tomtomKey)
     congestion = traffic_data["congestion"] if traffic_data else None
     elevation = get_elevation_point(lat, lng)
-    road_score = compute_road_complexity_point(lat, lng)
+    #road_score = compute_road_complexity_point(lat, lng)
+    road_score = get_cached_road_complexity_by_location(lat,lng)
     weather_data = get_weather_data_point(lat, lng, key)
     print(weather_data)
     weather_score = compute_weather_score_point(weather_data) if weather_data else 0
@@ -1722,3 +1723,21 @@ def compute_route_segment(G, New_G, path, start_node, end_node):
     except Exception as e:
         print(f"[compute_route_segment] Error: {e}")
         return [(New_G.nodes[n]['y'], New_G.nodes[n]['x']) for n in path]
+
+
+def get_cached_road_complexity_by_location(lat, lng):
+    if road_complexity_df.empty:
+        print("[RC][ERROR] road_complexity_df is empty.")
+        return 0.5
+
+    # Compute squared distance from all points
+    distances = (road_complexity_df["lat"] - lat) ** 2 + (road_complexity_df["lng"] - lng) ** 2
+    idx_closest = distances.idxmin()
+
+    if pd.isna(idx_closest):
+        print(f"[RC][ERROR] idxmin() failed. No closest point found.")
+        return 0.5
+
+    cand_value = road_complexity_df.loc[idx_closest]["road_complexity"]
+    print(f"[RC][SUCCESS] Closest road complexity for ({lat}, {lng}) is {cand_value}")
+    return cand_value
