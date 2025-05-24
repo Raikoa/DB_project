@@ -1,8 +1,6 @@
 import datetime
 import os
 import re
-
-from Tools.scripts.pysource import print_debug
 from django.shortcuts import render, redirect
 import uuid
 from django.db import connection
@@ -26,7 +24,6 @@ from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 import osmnx as ox
 from .form import UserRegistrationForm, UserLoginForm
 from django.utils import timezone
-
 # Create your views here.
 
 def give_exp_func():
@@ -64,7 +61,8 @@ def front(request):
     data = give_exp_func()
     #test_user = DeliveryP.objects.first()
     #test_user = Customer.objects.first()
-    # test_user = User.objects.get(user_id = user_id)
+    user_id = request.session.get('user_id')
+    test_user = User.objects.get(user_id = user_id)
     #test_user= Vendor.objects.first()
     #user = request.user
 
@@ -74,14 +72,9 @@ def front(request):
     #     role = 'vendor'
     # elif isinstance(test_user, DeliveryP):
     #     role = 'delivery'
-    test_user = None
-    user_id = request.session.get('user_id')
-    role = request.session.get('role')
-    if role == 'customer': test_user = Customer.objects.get(user_ptr_id = user_id)
-    elif role == 'vendor': test_user = Vendor.objects.get(user_ptr_id = user_id)
-    elif role == 'delivery': test_user = DeliveryP.objects.get(user_ptr_id = user_id)
-    else: print(f"in orderpage/view.py ,role error : {role}")
 
+    role = request.session.get('role')
+    print(role)
     messages = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [test_user.pk])
     msg = []
     for m in messages:
@@ -140,6 +133,13 @@ def front(request):
     
     if role == 'customer':
        restaurants  = Restaurant.objects.raw("SELECT * FROM restaurant")
+       tags = Tag.objects.raw("SELECT * FROM tag")
+       tgs = []
+       for t in tags:
+           tgs.append({
+               "id": t.id,
+               "name": t.name
+           })
        data = []
        for r in restaurants:
            data.append({
@@ -148,7 +148,7 @@ def front(request):
                 "address": r.address,
                 "img": r.picture,
            })
-       return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg})
+       return render(request, "index.html", {'Test':data, 'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg, 'tags': tgs})
 
 
 def page(request, id):
@@ -204,19 +204,12 @@ def contShop(request):
     rid = request.session.get('rid')
     return redirect('pages', id=rid)
 
-def vieworder(request):
-    cart_data = request.session.get('cart', [])
-    price = 0
-    for i in cart_data:
-        price += int(i['price'])
-    return render(request, 'vieworder.html', {'price': price})
-
 def checkout(request):
     last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
     lastid = int(last[0].id)
     oid = lastid + 1
     rid = int(request.session.get('rid'))
-    uid = int(request.session.get('user_id'))
+    uid = int(request.session.get('uid'))
     cart_data = request.session.get('cart', [])
     dtime = 0
     price = 0
@@ -227,7 +220,7 @@ def checkout(request):
         amount += q
         price += p * q
     placetime = datetime.now()
-    dest = str(request.POST.get('dest'))
+    dest = 'address'
     status = 'on route'
     location = '22.6300545:120.2639648'
     with connection.cursor() as cursor:
@@ -266,27 +259,49 @@ def fav(request, userid):
 
 
 def orderUser(request, userid):
-    orders = Order.objects.raw("SELECT * FROM 'order' WHERE user_id = %s AND status='Complete'", [userid])
+    orders = Order.objects.raw("""
+        SELECT 
+            o.id,
+            o.price,
+            o.created_at,
+            o.destination,
+            o.status,
+            o.items,
+            o.user_id,
+            o.delivery_person_id,
+            o.restaurant_id,
+            u.name AS delivery_person_name,
+            r.name AS restaurant_name
+        FROM "order" o
+        LEFT JOIN "user" u ON o.delivery_person_id = u.user_id
+        INNER JOIN restaurant r ON o.restaurant_id = r.Rid
+        WHERE o.user_id = %s AND o.status = 'Complete'
+    """, [userid])
     
     UserOrders = []
     for o in orders:
-      
-        
-        rest = Restaurant.objects.get(Rid=o.restaurant_id)
-        
+        itemId = o.items.split(",")
+        itms = []
+        for i in itemId:
+            item = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [i]))[0]
+            itms.append({
+                "name": item.name,
+                "price":item.price,
+                "desc": item.desc,
+            }) 
         ord = {
             "id": o.id,
-            
             "price": o.price,
             "created": o.created_at,
-            "time": o.time,
             "destination": o.destination,
-            "deliveryP": o.delivery_person_id,
-            "restaurant": rest.name,   
-            "status": o.status, 
+            "delivery_person_name": o.delivery_person_name or "Not Assigned",
+            "restaurant": o.restaurant_name,
+            "status": o.status,
+            "items": json.dumps(itms)
         }
         UserOrders.append(ord)
-    return render(request, "orders.html", {'order':UserOrders, 'user': userid})
+
+    return render(request, "orders.html", {'order': UserOrders, 'user': userid})
 
 @csrf_exempt
 def login_view(request):
@@ -1099,4 +1114,118 @@ def checkReviewed(request, Oid):
             "Valid": valid
             
         })
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+@csrf_exempt
+def SearchRest(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            name = data.get("name", "").strip()
+            tags = data.get("tags", [])
+
+            sql = """
+                SELECT DISTINCT r.Rid, r.name, r.desc, r.status, r.picture, r.address
+                FROM restaurant r
+                LEFT JOIN restaurant_tag rt ON r.Rid = rt.restaurant_id
+                LEFT JOIN tag t ON rt.tag_id = t.id
+                WHERE 1=1
+            """
+            params = []
+
+            if name:
+                sql += " AND r.name LIKE %s"
+                params.append(f"%{name}%")
+
+            if tags:
+                tag_count = len(tags)
+                sql += f"""
+                    AND r.Rid IN (
+                        SELECT restaurant_id
+                        FROM restaurant_tag
+                        WHERE tag_id IN ({','.join(['%s'] * tag_count)})
+                        GROUP BY restaurant_id
+                        HAVING COUNT(DISTINCT tag_id) = %s
+                    )
+                """
+                params.extend(tags)
+                params.append(tag_count)
+
+            with connection.cursor() as cursor:
+                cursor.execute(sql, params)
+                rows = cursor.fetchall()
+
+            results = []
+            restaurant_ids = []
+
+            for row in rows:
+                rest_id, rest_name, desc, status, picture, address = row
+                restaurant_ids.append(rest_id)
+                results.append({
+                    "id": rest_id,
+                    "name": rest_name,
+                    "desc": desc,
+                    "status": status,
+                    "picture": f"/media/{picture}" if picture else "",
+                    "address": address,
+                    "tags": []  # will be filled in next step
+                })
+
+            # Get all tags for the listed restaurants
+            if restaurant_ids:
+                with connection.cursor() as cursor:
+                    format_ids = ','.join(['%s'] * len(restaurant_ids))
+                    tag_sql = f"""
+                        SELECT rt.restaurant_id, t.name
+                        FROM restaurant_tag rt
+                        JOIN tag t ON rt.tag_id = t.id
+                        WHERE rt.restaurant_id IN ({format_ids})
+                    """
+                    cursor.execute(tag_sql, restaurant_ids)
+                    tag_rows = cursor.fetchall()
+
+                # Organize tags by restaurant_id
+                tags_map = {}
+                for rest_id, tag_name in tag_rows:
+                    tags_map.setdefault(rest_id, []).append(tag_name)
+
+                # Attach tags to results
+                for rest in results:
+                    rest["tags"] = tags_map.get(rest["id"], [])
+
+            return JsonResponse({"restaurants": results}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@csrf_exempt
+def GetInbox(request, userid):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            msgs = data.get("query", "").strip()
+
+            
+            query = """
+                SELECT * FROM inbox
+                WHERE user_id = %s AND message LIKE %s
+                ORDER BY timestamp DESC
+            """
+            inbox = Inbox.objects.raw(query, [userid, f"%{msgs}%"])
+
+            result = []
+            for msg in inbox:
+                result.append({
+                    "id": msg.id,
+                    "message": msg.message,
+                    "is_read": msg.is_read,
+                    "timestamp": msg.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+                })
+
+            return JsonResponse({"messages": result}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
     return JsonResponse({"error": "Invalid request method"}, status=405)
