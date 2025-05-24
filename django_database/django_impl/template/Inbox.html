@@ -10,6 +10,14 @@
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
+        <div id="SearchInbox">
+            <form>
+                <input type="text" name="InboxSearch" id="InboxSearch">
+            </form>
+            <button id="InboxSearchBtn">Search</button>
+        </div>
+        <br>
+        <br>
         <div id="Mails" data-id = "{{userid}}">
             {%for m in msg%}
             <div class="msgTab">
@@ -21,5 +29,14 @@
                 No Messages
             </h1>
             {% endfor %}
+            <div id="ResultInboxModal" class="modal">
+            <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Results</h2>
+            <div id="ResultInboxModalContent">
+            
+            </div>
+        </div>
+        </div>
     </body>
 </html>

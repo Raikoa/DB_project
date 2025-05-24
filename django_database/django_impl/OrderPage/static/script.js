@@ -111,6 +111,67 @@ document.addEventListener("DOMContentLoaded", function(){
                     }
                 })
             }
+            let search = document.getElementById("InboxSearchBtn")
+            if(search){
+                search.addEventListener("click", function(){
+                    let SearchQuery = document.getElementById("InboxSearch").value
+                    id = mails.dataset.id
+                    if(SearchQuery){
+                        fetch('/GetInbox/' + id, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({
+                            query: SearchQuery
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if(data.messages && data.messages.length > 0){
+                                let mo = document.querySelector("#ResultInboxModal")
+                                let co = document.querySelector("#ResultInboxModalContent")
+                                let close = document.querySelector(".close")
+                                if(close){
+                                    close.addEventListener("click", function(){
+                                        mo.style.display = "none"
+                                    })
+                                }
+                                co.innerHTML = ""; 
+
+                                data.messages.forEach(me => {
+                                let msgDiv = document.createElement("div");
+                                msgDiv.className = "inbox-message";
+                                msgDiv.innerHTML = `
+                                    <div class="msg-box" style="border-bottom: 1px solid #ccc; padding: 10px;">
+                                        <p><strong>Message:</strong> ${me.message}</p>
+                                        <p><small><strong>Time:</strong> ${me.timestamp}</small></p>
+                                    </div>
+                                `;
+                                co.appendChild(msgDiv);
+                            });
+                                mo.style.display = "flex"
+                            }else{
+                                alert("No messages found.");
+                            }
+                                })
+                                .catch(error => {
+                                    console.error('Fetch error:', error);
+                                });
+                                window.onclick = (e) => {
+                                    if (e.target == mo) {
+                                    mo.style.display = "none";
+                                    }
+                                };
+                        }
+                })
+            }
         }
         let fav = document.querySelector("#Favorite")
         if(fav){
@@ -145,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                     items.forEach(item => {
                     const p = document.createElement("p");
-                    p.textContent = item;
+                    p.textContent = item.name + ":" + item.price;
                     co.appendChild(p);
                     });
                     mo.style.display = "flex"
@@ -1084,7 +1145,114 @@ document.addEventListener("DOMContentLoaded", function(){
                     window.location.href = "/Rankings/"
                 })
             }
-            
+            let SearchRestaurant = document.getElementById("SearchRestaurant")
+            if(SearchRestaurant){
+                let mo = document.querySelector("#SearchModal")
+                let co = document.querySelector("#SearchModalContent")
+                let close = mo.querySelector(".close");
+                if(close){
+
+                    close.addEventListener("click", function(){
+
+                    mo.style.display = "none"
+                })
+                }
+
+                
+                SearchRestaurant.addEventListener("click", function(){
+             
+               
+                mo.style.display = "flex"
+                let but = document.getElementById("SearchWithTags")
+                if(but){
+                    but.addEventListener("click", function () {
+                    let name = document.getElementById("Restaname").value;
+
+                    // Get checked tag checkboxes
+                    let checkedBoxes = document.querySelectorAll('input[name="tagsSearch"]:checked');
+                    let selectedTagIds = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+
+                    // Send POST request with both name and tag IDs
+                    fetch('/SearchRestaurantsWithTag/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            tags: selectedTagIds
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                             if (data.restaurants && data.restaurants.length > 0) {
+                                    let mo2 = document.querySelector("#ResultModal")
+                                    let co2 = document.querySelector("#ResultModalContent")
+                                    let close = mo2.querySelector(".close");
+                                    co2.innerHTML = "";
+                                    if(close){
+
+                                        close.addEventListener("click", function(){
+
+                                        mo2.style.display = "none"
+                                    })
+                                    }
+                                     const menusDiv = document.createElement("div");
+                                        menusDiv.id = "Menus";
+                                        menusDiv.dataset.user = but.dataset.userid;
+
+
+                                    data.restaurants.forEach(restaurant => {
+                                        const restDiv = document.createElement("div");
+                                        restDiv.className = "restaurant_tab";
+                                        restDiv.setAttribute("data-id", restaurant.id);
+
+                                        restDiv.innerHTML = `
+                                            <img src="${restaurant.picture}" class="display" alt="${restaurant.name}" />
+                                            <p>${restaurant.name}</p>
+                                        `;
+
+                                        
+                                        restDiv.addEventListener("click", () => {
+                                            window.location.href = "/pages/" + restaurant.id +"/"
+                                          
+                                        });
+
+                                        menusDiv.appendChild(restDiv);
+                                    });
+                                     co2.appendChild(menusDiv);
+                                     mo2.style.display = "flex"
+                                     
+                                     window.onclick = (e) => {
+                                    if (e.target == mo) {
+                                    mo2.style.display = "none";
+                                    }
+                                    };
+                             }else{
+                                 alert("No restaurants found with that search.");
+                             }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+                });
+
+                }
+              
+                window.onclick = (e) => {
+                if (e.target == mo) {
+                mo.style.display = "none";
+                }
+                };
+                    
+            })
+            }
 })
 
 function getCookie(name) {
@@ -1263,29 +1431,29 @@ function isRedundant(pos) {
     const { latitude, longitude } = pos.coords;
     const { latitude: lastLat, longitude: lastLng } = lastPosition.coords;
     const distance = getDistance(latitude, longitude, lastLat, lastLng);
-    return distance < 10;
+    console.log(distance)
+    return distance < 5;
 }
 
 function handleLocation(pos, OrderId) {
     const now = Date.now();
-    const { latitude, longitude, accuracy } = pos.coords;
-    lastPosition = pos;
-    lastSent = now;
 
-    marker.setLatLng([latitude, longitude]);
-    map.setView([latitude, longitude]);
     if (isRedundant(pos)) {
         console.log(" Ignoring redundant update");
         return;
     }
 
-
+    const { latitude, longitude, accuracy } = pos.coords;
     if (accuracy > 50) {
         console.log(" Skipping due to poor accuracy:", accuracy);
         return;
     }
 
+    lastPosition = pos;
+    lastSent = now;
 
+    marker.setLatLng([latitude, longitude]);
+    map.setView([latitude, longitude]);
 
     const locationDisplay = document.getElementById("locationDisplay");
     locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;
