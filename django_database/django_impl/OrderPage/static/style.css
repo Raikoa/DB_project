@@ -119,7 +119,7 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover{
+#Favorite:hover, #Cart:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover{
     background-color: navajowhite;
     cursor: pointer;
 }

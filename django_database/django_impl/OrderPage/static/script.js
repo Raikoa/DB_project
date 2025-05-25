@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", function(){
             tabs.forEach(tab => {
                 tab.addEventListener("click", function(){
                     const id = tab.dataset.id;
+                    localStorage.clear();
                     window.location.href = "/pages/" + parseInt(id) +"/"
                 })
             })
@@ -57,6 +58,12 @@ document.addEventListener("DOMContentLoaded", function(){
             fav.addEventListener("click", function(){
                 const userID = fav.dataset.id
                 window.location.href = "/"  + parseInt(userID) + "/" + "favorite/"
+            })
+        }
+        let cart = document.querySelector("#Cart")
+        if(cart){
+            cart.addEventListener("click", function (){
+                window.location.href = "/your_django_cart_view/"
             })
         }
         let order = document.querySelector("#order")
