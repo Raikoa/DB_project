@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pages</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+        {% load static %}
+        <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    </head>
+    <body>
+        <div id="AccountDetails" data-userid = "{{user}}", data-role = "{{role}}">
+    <form id="UpdateAccountForm" method="post">
+    
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ UserDetails.name }}" />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="{{ UserDetails.email }}" />
+
+    <label for="passwd">Password:</label>
+    <input type="password" id="passwd" name="passwd" value="{{ UserDetails.passwd }}" />
+
+    {% if role == 'delivery' %}
+        <p>Last Delivery Time: {{ UserDetails.last }}</p>
+        <p>Score: {{ UserDetails.score }}</p>
+    {% endif %}
+
+    {% if role == 'vendor' %}
+    {% if UserDetails.Rid %}
+    <div id="Restaurant_info">
+        <label for="restaurant_name">Restaurant Name:</label>
+        <input type="text" id="restaurant_name" name="restaurant_name" value="{{ UserDetails.restaurant_Name }}" />
+        <p>Address: {{ UserDetails.restaurant_address }}</p>
+       
+
+        <label for="restaurant_desc">Restaurant Description:</label>
+        <textarea id="restaurant_desc" name="restaurant_desc">{{ UserDetails.restaurant_desc }}</textarea>
+
+        <label for="opening_time">Opening Time:</label>
+        <input type="time" id="opening_time" name="opening_time" value="{{ UserDetails.opening_time }}" />
+
+        <label for="closing_time">Closing Time:</label>
+        <input type="time" id="closing_time" name="closing_time" value="{{ UserDetails.closing_time }}" />
+
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="open" {% if UserDetails.status == "open" %}selected{% endif %}>Open</option>
+            <option value="closed" {% if UserDetails.status == "closed" %}selected{% endif %}>Closed</option>
+        </select>
+
+        <label for="image">Restaurant Image:</label>
+        <input type="file" id="image" name="image" />
+        {% if UserDetails.image %}
+            <img src="{{ UserDetails.image.url }}" id="Info_image" alt="Current Image" />
+        {% endif %}
+        
+    </div>
+    {% endif %}
+    {% endif %}
+</form>
+        <br>
+        <button id="UpdateInfo">Update</button>
+        </div>
+        <br>
+        {% if Permisson %}
+        <button id="DeleteRestaurant" data-user = "{{userid}}", data-restaurant = "{{UserDetails.Rid}}">Delete Restaurant</button>
+        {% endif %}
+       
+    </body>
+</html>

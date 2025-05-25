@@ -18,7 +18,7 @@ from django.http import JsonResponse
 from osmnx import features
 import pandas as pd
 import requests
-from database.models import Order, Restaurant, VideoFrame# type: ignore
+from database.models import Order, Restaurant# type: ignore
 from channels.db import database_sync_to_async
 import osmnx as ox
 from shapely.geometry import LineString, Point
@@ -446,33 +446,33 @@ class DeliveryTracker(AsyncWebsocketConsumer):
             print(f"[Route Error] {str(e)}")
             return None
         
-    @database_sync_to_async
-    def save_frame(self, order_id,lat,lng, TimeNum):
-        key = "AIzaSyDRPaAyw-McbHYiboHfXCEExlK7zGXrPOg"
-        actual_lat, actual_lng = find_nearby_streetview(lat, lng, key)
+    # @database_sync_to_async
+    # def save_frame(self, order_id,lat,lng, TimeNum):
+    #     key = "AIzaSyDRPaAyw-McbHYiboHfXCEExlK7zGXrPOg"
+    #     actual_lat, actual_lng = find_nearby_streetview(lat, lng, key)
 
-        if actual_lat is None:
-            print(f"No nearby Street View found for {lat}, {lng}")
-            return
+    #     if actual_lat is None:
+    #         print(f"No nearby Street View found for {lat}, {lng}")
+    #         return
 
-        location = f"{actual_lat},{actual_lng}"
-        heading = 90
-        pitch = 0
-        fov = 90
+    #     location = f"{actual_lat},{actual_lng}"
+    #     heading = 90
+    #     pitch = 0
+    #     fov = 90
 
-        url = f'https://maps.googleapis.com/maps/api/streetview?size=640x640&location={location}&heading={heading}&pitch={pitch}&fov={fov}&key={key}'
-        r = requests.get(url)
+    #     url = f'https://maps.googleapis.com/maps/api/streetview?size=640x640&location={location}&heading={heading}&pitch={pitch}&fov={fov}&key={key}'
+    #     r = requests.get(url)
 
-        if r.status_code == 200:
-            file_name = f"{order_id}_streetview_{TimeNum}.jpg"
-            image_file = ContentFile(r.content, name=file_name)
-            try:
-                the_order = Order.objects.get(id=order_id)
-                VideoFrame.objects.create(order=the_order, latitude=actual_lat, longitude=actual_lng, frame=image_file)
-            except Order.DoesNotExist:
-                print(f"Order {order_id} not found.")
-        else:
-            print(f"Image request failed with status: {r.status_code}")
+    #     if r.status_code == 200:
+    #         file_name = f"{order_id}_streetview_{TimeNum}.jpg"
+    #         image_file = ContentFile(r.content, name=file_name)
+    #         try:
+    #             the_order = Order.objects.get(id=order_id)
+    #             VideoFrame.objects.create(order=the_order, latitude=actual_lat, longitude=actual_lng, frame=image_file)
+    #         except Order.DoesNotExist:
+    #             print(f"Order {order_id} not found.")
+    #     else:
+    #         print(f"Image request failed with status: {r.status_code}")
 
     async def disconnect(self, close_code):
         pass
