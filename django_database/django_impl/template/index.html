@@ -73,7 +73,11 @@
                 {% for i in Test %}
                 <div class="restaurant_tab" data-id="{{ i.id }}">
                    
-                    <img src= "{{i.img.url}}"  class="display"/>
+                    {% if i.img %}
+                        <img src="{{ i.img.url }}" class="display" />
+                    {% else %}
+                        <img src="/media/item_pics/default.jpg" class="display" />
+                    {% endif %}
                     <p>{{i.name}}</p>
                 </div>
                 {% endfor %}
@@ -104,7 +108,7 @@
                 <label for="RestAddress">Restaurant Address</label>
                 <input type="text" name="RestAddress" required>
                 <label for="RestPic">Restaurant Picture</label>
-                <input type="file" name="RestPic">
+                <input type="file" name="RestPic" required>
                 <label for="OpeningTime">Opening Time</label>
                 <input type="time" name="OpeningTime" required>
                 <label for="ClosingTime">Closing Time</label>
