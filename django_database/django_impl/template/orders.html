@@ -10,20 +10,26 @@
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
+        <div id="SearchBar" style="margin: 20px;">
+          <label for="searchDate">Search by Date:</label>
+          <input type="date" id="searchDateInput" name="searchDate" />
+          <button id="searchBtnDate" data-user="{{user}}">Search</button>
+        </div>
         <div id="OrdersHistory">
             <hr style="border-top: dotted 1px;" class="line" />
             {%if not order%}
             <div>NO ORDERS</div>
             {%else %}
           {% for i in order %}
-            <div class="OrdersTab" data-order = "{{i.id}}" data-user="{{user}}">
+            <div class="Orderstab" data-order = "{{i.id}}" data-user="{{user}}">
                 <p>{{i.id}}</p>
                 <p>{{i.created}}</p>
-                <p>{{i.deliveryP}}</p>
+                <p>{{i.completed}}</p>
+                <p>{{i.delivery_person_name}}</p>
                 <p>{{i.restaurant}}</p>
                 <p class="Showitems" data-items = '{{i.items|safe}}'>Items</p>
                 <p>{{i.destination}}</p>
-                <p>{{i.time}}</p>
+                
                 <p>{{i.price}}</p>
                 <p>{{i.status}}</p>
             </div>
@@ -37,6 +43,16 @@
               <span class="close">&times;</span>
               <h2>Items</h2>
               <div id="modalContent">
+
+              </div>
+               
+            </div>
+        </div>
+        <div id="DateModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Items</h2>
+              <div id="DatemodalContent">
 
               </div>
                

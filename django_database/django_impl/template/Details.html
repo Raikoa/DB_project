@@ -15,14 +15,14 @@
         
       {% for d in detail%}
       <div class="detailsTab">
-      <p>{{d.id}}</p>
+      <p id="DetailOrderId">{{d.id}}</p>
       <button class="ShowCurrentOrderItems" data-items = '{{d.items|safe}}'>Items</button>
       <p>{{d.price}}</p>
       <p>{{d.created}}</p>
       <p>{{d.restaurant}}</p>
       <p>{{d.customer}}</p>
-      <p>{{d.destination}}</p>
-      <p>{{d.rest_dest}}</p>
+      <p id="Dest_addr">{{d.destination}}</p>
+      <p id="Rest_addr">{{d.rest_dest}}</p>
       
       </div>
       {% if CanTake %}

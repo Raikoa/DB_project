@@ -11,7 +11,7 @@
 /dataSources.local.xml
 
 # PyCharm
-**/.idea/
+.idea/
 *.iml
 *.iws
 *.ipr
@@ -38,6 +38,9 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+
+#heat map
+django_database/django_impl/media/VideoFrames/
 
 # 虛擬環境
 venv/

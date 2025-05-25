@@ -28,8 +28,7 @@ urlpatterns = [
     path('your_django_cart_view/', views.your_django_cart_view, name='your_django_cart_view'),
     path("cart/", views.view_cart),
     path("contShop/", views.contShop),
-    path('vieworder/', views.vieworder),
-    path('checkout/', views.checkout, name='checkout'),
+    path('checkout/', views.checkout),
     path('orderplaced/', views.orderplaced),
     path('fvrclick/', views.addFvr),
     path('remclick/', views.remFvr),
@@ -62,8 +61,24 @@ urlpatterns = [
     path("Navi/<int:Oid>", views.StartNav),
 
     path("EditMenu/<int:Mid>", views.UpdateItem),
-    path("SearchMenu", views.search)
-
+    path("SearchMenu", views.search),
+    path("GetHeatMap/<int:Oid>", views.heatmap),
+    path("GetCurrentCoords/<int:Oid>", views.getCoords),
+    path("DeliveryEstimate/", views.startEstimate),
+    path("AreaEstimate/<str:area>", views.AreaEstimate),
+    path("GetCity/<int:Oid>", views.getCity),
+    path("AreaEstimateDeli/<str:area>/<int:Oid>", views.AreaEstimateDeli),
+    path("rateOrder/<int:Oid>/<int:Uid>", views.RateOrder),
+    path("ProcessOrder/<int:Oid>/<int:score>/<str:comment>", views.ProcessOrder),
+    path("Rankings/", views.Rankings),
+    path("CheckAlreadyReviewed/<int:Oid>", views.checkReviewed),
+    path("SearchRestaurantsWithTag/", views.SearchRest),
+    path("GetInbox/<int:userid>", views.GetInbox),
+    path("AccountInfo/<int:userid>/<str:role>", views.GetAccount),
+    path("UpdateAccountInfo/<int:userid>/<str:role>", views.updateAccount),
+    path("DeleteRestaurant/<int:userid>/<int:rest>", views.DeleteRest),
+    path("DeleteInbox/<int:Mid>", views.DelMsg),
+    path("GetOrderByDate/<str:date>/<int:user>", views.GetByDate),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
