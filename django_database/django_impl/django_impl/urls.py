@@ -71,7 +71,12 @@ urlpatterns = [
     path("Rankings/", views.Rankings),
     path("CheckAlreadyReviewed/<int:Oid>", views.checkReviewed),
     path("SearchRestaurantsWithTag/", views.SearchRest),
-    path("GetInbox/<int:userid>", views.GetInbox)
+    path("GetInbox/<int:userid>", views.GetInbox),
+    path("AccountInfo/<int:userid>/<str:role>", views.GetAccount),
+    path("UpdateAccountInfo/<int:userid>/<str:role>", views.updateAccount),
+    path("DeleteRestaurant/<int:userid>/<int:rest>", views.DeleteRest),
+    path("DeleteInbox/<int:Mid>", views.DelMsg),
+    path("GetOrderByDate/<str:date>/<int:user>", views.GetByDate),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

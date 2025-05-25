@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function(){
                         if(data.messages && data.messages.length > 0){
                                 let mo = document.querySelector("#ResultInboxModal")
                                 let co = document.querySelector("#ResultInboxModalContent")
-                                let close = document.querySelector(".close")
+                                let close = mo.querySelector(".close")
                                 if(close){
                                     close.addEventListener("click", function(){
                                         mo.style.display = "none"
@@ -172,6 +172,40 @@ document.addEventListener("DOMContentLoaded", function(){
                         }
                 })
             }
+            let delMsg = document.querySelectorAll(".DeleteMsg")
+            console.log(delMsg)
+            if(delMsg.length > 0){
+                delMsg.forEach( d => {
+                    d.addEventListener("click", function(){
+                        msgID = d.dataset.id
+                        fetch('/DeleteInbox/' + parseInt(msgID), {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Failed to delete restaurant");
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === "success") {
+                            alert("Inbox deleted successfully");
+                            window.location.reload();
+                        } else {
+                            alert("Error deleting restaurant");
+                            console.error(data);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Something went wrong.");
+                    });
+                    })
+                })
+            }
+
+
         }
         let fav = document.querySelector("#Favorite")
         if(fav){
@@ -192,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function(){
         if(ShowItemModal.length > 0){
             let mo = document.querySelector("#myModal")
             let co = document.querySelector("#modalContent")
-            let close = document.querySelector(".close")
+            let close = mo.querySelector(".close")
             if(close){
                 close.addEventListener("click", function(){
                     mo.style.display = "none"
@@ -1253,6 +1287,164 @@ document.addEventListener("DOMContentLoaded", function(){
                     
             })
             }
+            let account = document.getElementById("Account")
+            if(account){
+                console.log(account.dataset.userid)
+                console.log(account.dataset.role)
+                account.addEventListener("click", function(){
+                    window.location.href = "/AccountInfo/" + parseInt(account.dataset.userid) + "/" + account.dataset.role
+                })
+            }
+            let upd = document.getElementById("UpdateInfo")
+            if(upd){
+                upd.addEventListener("click", function (e) {
+                    e.preventDefault(); 
+
+                    const form = document.getElementById("UpdateAccountForm");
+                    const formData = new FormData(form);
+
+                    
+                    // let data = {};
+                    // for (let [key, value] of formData.entries()) {
+                    //     data[key] = value;
+                    // }
+
+                    // console.log(data); 
+                    userid = document.getElementById("AccountDetails").dataset.userid
+                    role = document.getElementById("AccountDetails").dataset.role
+                    fetch("/UpdateAccountInfo/" + parseInt(userid) + "/" + role, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': getCookie('csrftoken')  
+                            },
+                            body: formData
+                        })
+                        .then(response => {
+                            if (!response.ok) throw new Error('Network response was not ok');
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert("Account Updated");
+                            } else {
+                                console.error('Error:', data);
+                            }
+                            window.location.href = "/index";
+                        });
+                    });
+            }
+            let deleteRest = document.getElementById("DeleteRestaurant")
+            if(deleteRest){
+                deleteRest.addEventListener("click", function(){
+                    userid = deleteRest.dataset.user
+                    Rid = deleteRest.dataset.restaurant
+                    const confirmed = window.confirm("Are you sure you want to delete this restaurant? This action cannot be undone.");
+                     if (confirmed) {
+                    
+                    fetch(`/DeleteRestaurant/${parseInt(userid)}/${parseInt(Rid)}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Failed to delete restaurant");
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === "success") {
+                            alert("Restaurant deleted successfully");
+                            window.location.href = "index/";
+                        } else {
+                            alert("Error deleting restaurant");
+                            console.error(data);
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alert("Something went wrong.");
+                    });
+                }
+                })
+            }
+           let Datesearch = document.getElementById("searchBtnDate");
+
+if (Datesearch) {
+    Datesearch.addEventListener("click", function () {
+        const searchDate = document.getElementById("searchDateInput").value;
+        const userid = Datesearch.dataset.user;
+
+        if (!searchDate) {
+            alert("Please select a date.");
+            return;
+        }
+
+        fetch("/GetOrderByDate/" + searchDate + "/" + parseInt(userid), {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "success") {
+                const orders = data.Result;
+                const modal = document.getElementById("DateModal");
+                const modalContent = document.getElementById("DatemodalContent");
+                let close = modal.querySelector(".close")
+                if(close){
+                    close.addEventListener("click", function(){
+                    modal.style.display = "none"
+                    })
+                }
+                window.onclick = (e) => {
+                    if (e.target == modal) {
+                        modal.style.display = "none";
+                    }
+                };
+                modalContent.innerHTML = ""; 
+
+                if (orders.length === 0) {
+                    modalContent.innerHTML = "<p>No orders found for selected date.</p>";
+                } else {
+                    orders.forEach(i => {
+                        modalContent.innerHTML += `
+                        <div class="Orderstab">
+                            <p><strong>Order ID:</strong> ${i.id}</p>
+                            <p><strong>Created:</strong> ${i.created}</p>
+                            <p><strong>Completed:</strong> ${i.completed}</p>
+                            <p><strong>Delivery Person:</strong> ${i.delivery_person_name}</p>
+                            <p><strong>Restaurant:</strong> ${i.restaurant}</p>
+                            <p><strong>Destination:</strong> ${i.destination}</p>
+                            <p><strong>Price:</strong> ${i.price}</p>
+                            <p><strong>Status:</strong> ${i.status}</p>
+                            <p><strong>Items:</strong></p>
+                            <ul>
+                                ${JSON.parse(i.items).map(item => `
+                                    <li>${item.name} - $${item.price}<br><em>${item.desc}</em></li>
+                                `).join("")}
+                            </ul>
+                            <hr>
+                        </div>`;
+                    });
+                }
+
+                modal.style.display = "flex"; 
+            } else {
+                console.error("Error fetching orders:", data.message);
+            }
+            })
+            .catch(error => {
+                    console.error("Fetch error:", error);
+                });
+            });
+        }         
 })
 
 function getCookie(name) {
