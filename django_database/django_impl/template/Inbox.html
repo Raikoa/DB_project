@@ -6,18 +6,38 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
         {% load static %}
         <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
-        <div id="Mails">
+        <div id="SearchInbox">
+            <form>
+                <input type="text" name="InboxSearch" id="InboxSearch">
+            </form>
+            <button id="InboxSearchBtn">Search</button>
+        </div>
+        <br>
+        <br>
+        <div id="Mails" data-id = "{{userid}}">
             {%for m in msg%}
             <div class="msgTab">
                 {{ m.message }} "  :"
                 {{ m.timestamp }}
+                <button class="DeleteMsg" data-id = "{{m.id}}">Delete</button>
             </div>
             {% empty %}
             <h1>
                 No Messages
             </h1>
             {% endfor %}
+            <div id="ResultInboxModal" class="modal">
+            <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Results</h2>
+            <div id="ResultInboxModalContent">
+            
+            </div>
+        </div>
+        </div>
     </body>
 </html>

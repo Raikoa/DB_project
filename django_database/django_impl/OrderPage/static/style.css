@@ -119,7 +119,7 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover{
+#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover, #DeliveryEstimate:hover, #Rankings:hover, #Kart:hover, #Account:hover{
     background-color: navajowhite;
     cursor: pointer;
 }
@@ -132,9 +132,9 @@
     border-bottom: dotted 2px gray;
 }
 
-.OrdersTab:hover{
+/* .OrdersTab:hover{
     cursor: pointer;
-}
+} */
 
 #Orders, #deliverys{
     display: flex;
@@ -255,3 +255,94 @@
     height: 100vh;
     width: 100%;
   }
+
+
+#trackerImage{
+     position: relative; 
+     pointer-events: none;
+}
+
+
+
+#selectRegion {
+  position: relative;
+  width: 400px;
+  height: auto;
+  margin: 20px auto;
+}
+
+#taiwanMap {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.region-label {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #888;
+  border-radius: 5px;
+  padding: 3px 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.region-label:hover {
+  background-color: #4CAF50;
+  color: white;
+  transform: scale(1.05);
+  z-index: 2;
+}
+
+#ranks{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    overflow: auto;
+    font-size: 18px;
+}
+
+
+.Showitems{
+    border: solid 2px black
+}
+
+.Showitems:hover{
+    background-color: orange;
+    cursor: pointer;
+}
+
+#SearchPost{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#tag-checkboxes{
+    overflow: auto;
+    height: 250px;
+}
+
+
+#Info_image{
+        width: 200px;
+        height: 250px;
+}
+
+
+#UpdateAccountForm{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+#Restaurant_info{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}

@@ -26,8 +26,9 @@ class Customer(User):
         db_table = "customer"
 
 class DeliveryP(User):
-    miles = models.IntegerField(default=0)
+    
     last_delivery_time = models.DateTimeField(auto_now_add=True)
+    Score = models.IntegerField(default=0)
 
     class Meta:
         db_table = "delivery_person"
@@ -60,13 +61,13 @@ class Favorite(models.Model):
         unique_together = ('user', 'restaurant')
         db_table = "favorite"
 
-class FreqAddr(models.Model):
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='frequent_addresses')
-    address = models.CharField(max_length=100)
+# class FreqAddr(models.Model):
+#     user = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='frequent_addresses')
+#     address = models.CharField(max_length=100)
 
-    class Meta:
-        unique_together = ('user', 'address')
-        db_table = "frequent_address"
+#     class Meta:
+#         unique_together = ('user', 'address')
+#         db_table = "frequent_address"
 
 class Tag(models.Model):
     name = models.CharField(max_length=100) 
@@ -99,10 +100,16 @@ class Order(models.Model):
     items = models.CharField(max_length=100)  # Could later become ManyToMany if needed
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
+    taken = models.DateTimeField(null=True)
+    completed = models.DateTimeField(null=True)
     status = models.CharField(max_length=100, default="Pending")
     destination = models.CharField(max_length=100, default="-")
-    time = models.DurationField(default=default_duration)
+    destination_lat = models.FloatField(null=True)
+    destination_lng = models.FloatField(null=True)
+   
     location = models.TextField(default="-")
+    points = models.IntegerField(default=0)
+    Review = models.TextField(default="-")
     class Meta:
         db_table = "order"
 
@@ -117,11 +124,11 @@ class Inbox(models.Model):
 
 
 
-class VideoFrame(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='RouteVideo')
-    latitude = models.FloatField(null=True)
-    longitude = models.FloatField(null=True)
-    captured_at = models.DateTimeField(auto_now_add=True)
-    frame = models.ImageField(upload_to='VideoFrames/', blank=True)
-    class Meta:
-        db_table = "videoframe"
+# class VideoFrame(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='RouteVideo')
+#     latitude = models.FloatField(null=True)
+#     longitude = models.FloatField(null=True)
+#     captured_at = models.DateTimeField(auto_now_add=True)
+#     frame = models.ImageField(upload_to='VideoFrames/', blank=True)
+#     class Meta:
+#         db_table = "videoframe"

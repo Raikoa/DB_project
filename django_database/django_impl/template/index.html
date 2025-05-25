@@ -16,10 +16,13 @@
                
             </div>
             <h3>Hello {{Role}} {{Username}}</h3>
+            {% if Role == 'customer' %}
+            <button id="SearchRestaurant" data-userid="{{userid}}">Search</button>
+            {% endif %}
             <table id="options">
                 <tr>
-                    <td>Account info</td>
-                    <td>Chat</td>
+                    <td id="Account", data-userid="{{userid}}", data-role="{{Role}}">Account info</td>
+                    
                     <td id="msgToggle">Inbox</td>
                     <!--
                     <span id="msgCount" style="color: red; font-weight: bold;">
@@ -45,7 +48,8 @@
                     {% if Role == 'customer'%}
                     <td id="Favorite" data-id="{{userid}}">Favorite</td>
                     <td id="UserCurrentOrder" data-user="{{userid}}">My order</td>
-                    <td data-id="{{userid}}">My Cart</td>
+                    <td id="DeliveryEstimate" data-user = "{{userid}}">Estimate</td>
+                    <td data-id="{{userid}}" id="Kart">My Cart</td>
                     {% endif %}
                     {% if Role == 'vendor' %}
                     <td data-id="{{userid}}" id="Menu">My Menu</td>
@@ -53,6 +57,9 @@
                     {% if Role == 'delivery'%}
                     
                     <td id="CurrentOrder" data-user="{{userid}}">Current order</td>
+                    {% endif %}
+                    {%  if Role != 'vendor' %}
+                    <td data-id="{{userid}}" id="Rankings">Rankings</td>
                     {% endif %}
                     
                 </tr>
@@ -155,8 +162,9 @@
                 <p>{{i.created}}</p>
                 <p>{{i.customer}}</p>
                 <p>{{i.restaurant}}</p>
-              
+               
              </div>
+              <button class="difficulty" data-Oid = "{{i.id}}">Difficulty</button>
              {%endfor%}
              {%endif%}
              <hr style="border-top: dotted 1px;" class="line" />
@@ -164,5 +172,38 @@
         </div>
         </div>
         {% endif %}
+        <div id="SearchModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Search Restaurants</h2>
+            <div id="SearchModalContent">
+            <form method="POST" id="SearchPost">
+                <label for="name">Restaurant Name:</label>
+                <input type="text" id="Restaname" name="name" placeholder="Enter restaurant name" />
+
+                <label for="tags">Tags:</label>
+                <div id="tag-checkboxes">
+                {% for tag in tags %}
+                    <label>
+                    <input type="checkbox" name="tagsSearch" value="{{ tag.id }}">
+                    {{ tag.name }}
+                    </label><br>
+                {% endfor %}
+               </div>
+               
+            </form>
+             <button id="SearchWithTags">Search</button>
+            </div>
+        </div>
+        </div>
+        <div id="ResultModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Results</h2>
+            <div id="ResultModalContent">
+            
+            </div>
+        </div>
+        </div>
     </body>
 </html>

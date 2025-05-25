@@ -43,3 +43,7 @@ env/
 
 #SQLite 資料庫檔案
 *sqlite3
+
+
+*.graphml
+*.gpickle

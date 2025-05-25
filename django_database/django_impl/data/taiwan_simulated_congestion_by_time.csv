@@ -1,0 +1,3697 @@
+city,day_of_week,hour,congestion_level
+Taipei,0,0,0.472
+Taipei,0,1,0.134
+Taipei,0,2,0.131
+Taipei,0,3,0.244
+Taipei,0,4,0.333
+Taipei,0,5,0.217
+Taipei,0,6,0.221
+Taipei,0,7,0.838
+Taipei,0,8,0.962
+Taipei,0,9,0.773
+Taipei,0,10,0.528
+Taipei,0,11,0.536
+Taipei,0,12,0.57
+Taipei,0,13,0.574
+Taipei,0,14,0.605
+Taipei,0,15,0.489
+Taipei,0,16,0.599
+Taipei,0,17,0.68
+Taipei,0,18,0.782
+Taipei,0,19,0.866
+Taipei,0,20,0.313
+Taipei,0,21,0.203
+Taipei,0,22,0.413
+Taipei,0,23,0.287
+Taipei,1,0,0.358
+Taipei,1,1,0.351
+Taipei,1,2,0.144
+Taipei,1,3,0.409
+Taipei,1,4,0.372
+Taipei,1,5,0.137
+Taipei,1,6,0.025
+Taipei,1,7,0.838
+Taipei,1,8,0.753
+Taipei,1,9,0.859
+Taipei,1,10,0.56
+Taipei,1,11,0.404
+Taipei,1,12,0.551
+Taipei,1,13,0.586
+Taipei,1,14,0.448
+Taipei,1,15,0.485
+Taipei,1,16,0.541
+Taipei,1,17,0.961
+Taipei,1,18,0.882
+Taipei,1,19,0.906
+Taipei,1,20,0.38
+Taipei,1,21,0.313
+Taipei,1,22,0.193
+Taipei,1,23,0.165
+Taipei,2,0,0.22
+Taipei,2,1,0.271
+Taipei,2,2,0.306
+Taipei,2,3,0.412
+Taipei,2,4,0.269
+Taipei,2,5,0.386
+Taipei,2,6,0.476
+Taipei,2,7,0.69
+Taipei,2,8,0.985
+Taipei,2,9,0.87
+Taipei,2,10,0.438
+Taipei,2,11,0.512
+Taipei,2,12,0.44
+Taipei,2,13,0.528
+Taipei,2,14,0.501
+Taipei,2,15,0.465
+Taipei,2,16,0.432
+Taipei,2,17,0.816
+Taipei,2,18,0.879
+Taipei,2,19,0.763
+Taipei,2,20,0.061
+Taipei,2,21,0.246
+Taipei,2,22,0.228
+Taipei,2,23,0.163
+Taipei,3,0,0.184
+Taipei,3,1,0.335
+Taipei,3,2,0.116
+Taipei,3,3,0.149
+Taipei,3,4,0.058
+Taipei,3,5,0.189
+Taipei,3,6,0.18
+Taipei,3,7,0.771
+Taipei,3,8,0.862
+Taipei,3,9,0.709
+Taipei,3,10,0.448
+Taipei,3,11,0.505
+Taipei,3,12,0.513
+Taipei,3,13,0.421
+Taipei,3,14,0.404
+Taipei,3,15,0.347
+Taipei,3,16,0.4
+Taipei,3,17,0.727
+Taipei,3,18,0.78
+Taipei,3,19,0.927
+Taipei,3,20,0.067
+Taipei,3,21,0.436
+Taipei,3,22,0.265
+Taipei,3,23,0.377
+Taipei,4,0,0.185
+Taipei,4,1,0.179
+Taipei,4,2,0.253
+Taipei,4,3,0.167
+Taipei,4,4,0.18
+Taipei,4,5,0.328
+Taipei,4,6,0.261
+Taipei,4,7,0.803
+Taipei,4,8,0.705
+Taipei,4,9,0.771
+Taipei,4,10,0.48
+Taipei,4,11,0.57
+Taipei,4,12,0.598
+Taipei,4,13,0.559
+Taipei,4,14,0.506
+Taipei,4,15,0.597
+Taipei,4,16,0.488
+Taipei,4,17,0.92
+Taipei,4,18,0.925
+Taipei,4,19,0.946
+Taipei,4,20,0.256
+Taipei,4,21,0.085
+Taipei,4,22,0.249
+Taipei,4,23,0.269
+Taipei,5,0,0.271
+Taipei,5,1,0.16
+Taipei,5,2,0.274
+Taipei,5,3,0.332
+Taipei,5,4,0.283
+Taipei,5,5,0.167
+Taipei,5,6,0.273
+Taipei,5,7,0.293
+Taipei,5,8,0.376
+Taipei,5,9,0.39
+Taipei,5,10,0.271
+Taipei,5,11,0.152
+Taipei,5,12,0.396
+Taipei,5,13,0.58
+Taipei,5,14,0.75
+Taipei,5,15,0.749
+Taipei,5,16,0.543
+Taipei,5,17,0.366
+Taipei,5,18,0.629
+Taipei,5,19,0.369
+Taipei,5,20,0.263
+Taipei,5,21,0.229
+Taipei,5,22,0.325
+Taipei,5,23,0.162
+Taipei,6,0,0.476
+Taipei,6,1,0.266
+Taipei,6,2,0.304
+Taipei,6,3,0.077
+Taipei,6,4,0.359
+Taipei,6,5,0.315
+Taipei,6,6,0.222
+Taipei,6,7,0.3
+Taipei,6,8,0.254
+Taipei,6,9,0.228
+Taipei,6,10,0.391
+Taipei,6,11,0.386
+Taipei,6,12,0.579
+Taipei,6,13,0.545
+Taipei,6,14,0.695
+Taipei,6,15,0.401
+Taipei,6,16,0.378
+Taipei,6,17,0.675
+Taipei,6,18,0.488
+Taipei,6,19,0.496
+Taipei,6,20,0.204
+Taipei,6,21,0.257
+Taipei,6,22,0.282
+Taipei,6,23,0.185
+New Taipei,0,0,0.191
+New Taipei,0,1,0.233
+New Taipei,0,2,0.272
+New Taipei,0,3,0.396
+New Taipei,0,4,0.405
+New Taipei,0,5,0.212
+New Taipei,0,6,0.375
+New Taipei,0,7,0.995
+New Taipei,0,8,0.719
+New Taipei,0,9,0.907
+New Taipei,0,10,0.553
+New Taipei,0,11,0.608
+New Taipei,0,12,0.484
+New Taipei,0,13,0.519
+New Taipei,0,14,0.593
+New Taipei,0,15,0.504
+New Taipei,0,16,0.546
+New Taipei,0,17,0.955
+New Taipei,0,18,0.755
+New Taipei,0,19,0.882
+New Taipei,0,20,0.425
+New Taipei,0,21,0.177
+New Taipei,0,22,0.408
+New Taipei,0,23,0.259
+New Taipei,1,0,0.323
+New Taipei,1,1,0.194
+New Taipei,1,2,0.14
+New Taipei,1,3,0.311
+New Taipei,1,4,0.366
+New Taipei,1,5,0.195
+New Taipei,1,6,0.328
+New Taipei,1,7,1.0
+New Taipei,1,8,0.943
+New Taipei,1,9,0.97
+New Taipei,1,10,0.472
+New Taipei,1,11,0.519
+New Taipei,1,12,0.495
+New Taipei,1,13,0.335
+New Taipei,1,14,0.487
+New Taipei,1,15,0.506
+New Taipei,1,16,0.371
+New Taipei,1,17,0.776
+New Taipei,1,18,0.917
+New Taipei,1,19,0.797
+New Taipei,1,20,0.244
+New Taipei,1,21,0.332
+New Taipei,1,22,0.147
+New Taipei,1,23,0.25
+New Taipei,2,0,0.316
+New Taipei,2,1,0.1
+New Taipei,2,2,0.501
+New Taipei,2,3,0.125
+New Taipei,2,4,0.099
+New Taipei,2,5,0.166
+New Taipei,2,6,0.436
+New Taipei,2,7,0.685
+New Taipei,2,8,0.921
+New Taipei,2,9,0.876
+New Taipei,2,10,0.488
+New Taipei,2,11,0.397
+New Taipei,2,12,0.554
+New Taipei,2,13,0.514
+New Taipei,2,14,0.411
+New Taipei,2,15,0.579
+New Taipei,2,16,0.614
+New Taipei,2,17,0.818
+New Taipei,2,18,0.851
+New Taipei,2,19,0.824
+New Taipei,2,20,0.31
+New Taipei,2,21,0.437
+New Taipei,2,22,0.209
+New Taipei,2,23,0.455
+New Taipei,3,0,0.135
+New Taipei,3,1,0.345
+New Taipei,3,2,0.283
+New Taipei,3,3,0.199
+New Taipei,3,4,0.215
+New Taipei,3,5,0.142
+New Taipei,3,6,0.454
+New Taipei,3,7,0.97
+New Taipei,3,8,0.771
+New Taipei,3,9,0.87
+New Taipei,3,10,0.583
+New Taipei,3,11,0.484
+New Taipei,3,12,0.57
+New Taipei,3,13,0.526
+New Taipei,3,14,0.625
+New Taipei,3,15,0.412
+New Taipei,3,16,0.436
+New Taipei,3,17,0.825
+New Taipei,3,18,0.798
+New Taipei,3,19,0.792
+New Taipei,3,20,0.244
+New Taipei,3,21,0.08
+New Taipei,3,22,0.184
+New Taipei,3,23,0.298
+New Taipei,4,0,0.323
+New Taipei,4,1,0.108
+New Taipei,4,2,0.193
+New Taipei,4,3,0.232
+New Taipei,4,4,0.316
+New Taipei,4,5,0.243
+New Taipei,4,6,0.04
+New Taipei,4,7,0.76
+New Taipei,4,8,0.727
+New Taipei,4,9,1.0
+New Taipei,4,10,0.403
+New Taipei,4,11,0.453
+New Taipei,4,12,0.351
+New Taipei,4,13,0.488
+New Taipei,4,14,0.588
+New Taipei,4,15,0.471
+New Taipei,4,16,0.493
+New Taipei,4,17,0.892
+New Taipei,4,18,0.905
+New Taipei,4,19,0.9
+New Taipei,4,20,0.456
+New Taipei,4,21,0.157
+New Taipei,4,22,0.273
+New Taipei,4,23,0.393
+New Taipei,5,0,0.118
+New Taipei,5,1,0.192
+New Taipei,5,2,0.105
+New Taipei,5,3,0.332
+New Taipei,5,4,0.38
+New Taipei,5,5,0.145
+New Taipei,5,6,0.469
+New Taipei,5,7,0.3
+New Taipei,5,8,0.287
+New Taipei,5,9,0.303
+New Taipei,5,10,0.423
+New Taipei,5,11,0.106
+New Taipei,5,12,0.569
+New Taipei,5,13,0.563
+New Taipei,5,14,0.422
+New Taipei,5,15,0.519
+New Taipei,5,16,0.386
+New Taipei,5,17,0.497
+New Taipei,5,18,0.499
+New Taipei,5,19,0.605
+New Taipei,5,20,0.301
+New Taipei,5,21,0.234
+New Taipei,5,22,0.167
+New Taipei,5,23,0.365
+New Taipei,6,0,0.035
+New Taipei,6,1,0.312
+New Taipei,6,2,0.127
+New Taipei,6,3,0.077
+New Taipei,6,4,0.116
+New Taipei,6,5,0.322
+New Taipei,6,6,0.128
+New Taipei,6,7,0.401
+New Taipei,6,8,0.27
+New Taipei,6,9,0.232
+New Taipei,6,10,0.307
+New Taipei,6,11,0.345
+New Taipei,6,12,0.438
+New Taipei,6,13,0.578
+New Taipei,6,14,0.656
+New Taipei,6,15,0.516
+New Taipei,6,16,0.674
+New Taipei,6,17,0.609
+New Taipei,6,18,0.495
+New Taipei,6,19,0.547
+New Taipei,6,20,0.288
+New Taipei,6,21,0.195
+New Taipei,6,22,0.338
+New Taipei,6,23,0.1
+Taoyuan,0,0,0.288
+Taoyuan,0,1,0.229
+Taoyuan,0,2,0.143
+Taoyuan,0,3,0.227
+Taoyuan,0,4,0.283
+Taoyuan,0,5,0.138
+Taoyuan,0,6,0.244
+Taoyuan,0,7,0.948
+Taoyuan,0,8,0.752
+Taoyuan,0,9,0.777
+Taoyuan,0,10,0.558
+Taoyuan,0,11,0.514
+Taoyuan,0,12,0.556
+Taoyuan,0,13,0.428
+Taoyuan,0,14,0.57
+Taoyuan,0,15,0.482
+Taoyuan,0,16,0.504
+Taoyuan,0,17,0.816
+Taoyuan,0,18,0.678
+Taoyuan,0,19,0.787
+Taoyuan,0,20,0.221
+Taoyuan,0,21,0.228
+Taoyuan,0,22,0.159
+Taoyuan,0,23,0.312
+Taoyuan,1,0,0.264
+Taoyuan,1,1,0.38
+Taoyuan,1,2,0.218
+Taoyuan,1,3,0.221
+Taoyuan,1,4,0.259
+Taoyuan,1,5,0.147
+Taoyuan,1,6,0.324
+Taoyuan,1,7,0.807
+Taoyuan,1,8,0.82
+Taoyuan,1,9,0.802
+Taoyuan,1,10,0.458
+Taoyuan,1,11,0.643
+Taoyuan,1,12,0.529
+Taoyuan,1,13,0.665
+Taoyuan,1,14,0.432
+Taoyuan,1,15,0.577
+Taoyuan,1,16,0.403
+Taoyuan,1,17,0.882
+Taoyuan,1,18,1.0
+Taoyuan,1,19,0.929
+Taoyuan,1,20,0.276
+Taoyuan,1,21,0.279
+Taoyuan,1,22,0.394
+Taoyuan,1,23,0.379
+Taoyuan,2,0,0.451
+Taoyuan,2,1,0.34
+Taoyuan,2,2,0.372
+Taoyuan,2,3,0.231
+Taoyuan,2,4,0.06
+Taoyuan,2,5,0.257
+Taoyuan,2,6,0.183
+Taoyuan,2,7,0.918
+Taoyuan,2,8,0.963
+Taoyuan,2,9,0.771
+Taoyuan,2,10,0.613
+Taoyuan,2,11,0.44
+Taoyuan,2,12,0.331
+Taoyuan,2,13,0.481
+Taoyuan,2,14,0.523
+Taoyuan,2,15,0.557
+Taoyuan,2,16,0.461
+Taoyuan,2,17,0.999
+Taoyuan,2,18,0.97
+Taoyuan,2,19,0.865
+Taoyuan,2,20,0.301
+Taoyuan,2,21,0.223
+Taoyuan,2,22,0.236
+Taoyuan,2,23,0.143
+Taoyuan,3,0,0.222
+Taoyuan,3,1,0.164
+Taoyuan,3,2,0.191
+Taoyuan,3,3,0.182
+Taoyuan,3,4,0.324
+Taoyuan,3,5,0.133
+Taoyuan,3,6,0.209
+Taoyuan,3,7,0.808
+Taoyuan,3,8,0.891
+Taoyuan,3,9,0.814
+Taoyuan,3,10,0.451
+Taoyuan,3,11,0.45
+Taoyuan,3,12,0.504
+Taoyuan,3,13,0.588
+Taoyuan,3,14,0.4
+Taoyuan,3,15,0.614
+Taoyuan,3,16,0.557
+Taoyuan,3,17,0.745
+Taoyuan,3,18,0.818
+Taoyuan,3,19,0.815
+Taoyuan,3,20,0.447
+Taoyuan,3,21,0.234
+Taoyuan,3,22,0.255
+Taoyuan,3,23,0.173
+Taoyuan,4,0,0.343
+Taoyuan,4,1,0.296
+Taoyuan,4,2,0.193
+Taoyuan,4,3,0.239
+Taoyuan,4,4,0.351
+Taoyuan,4,5,0.132
+Taoyuan,4,6,0.376
+Taoyuan,4,7,1.0
+Taoyuan,4,8,0.698
+Taoyuan,4,9,0.899
+Taoyuan,4,10,0.649
+Taoyuan,4,11,0.433
+Taoyuan,4,12,0.562
+Taoyuan,4,13,0.53
+Taoyuan,4,14,0.507
+Taoyuan,4,15,0.484
+Taoyuan,4,16,0.451
+Taoyuan,4,17,0.986
+Taoyuan,4,18,0.913
+Taoyuan,4,19,0.93
+Taoyuan,4,20,0.316
+Taoyuan,4,21,0.208
+Taoyuan,4,22,0.174
+Taoyuan,4,23,0.408
+Taoyuan,5,0,0.228
+Taoyuan,5,1,0.356
+Taoyuan,5,2,0.372
+Taoyuan,5,3,0.195
+Taoyuan,5,4,0.178
+Taoyuan,5,5,0.116
+Taoyuan,5,6,0.178
+Taoyuan,5,7,0.116
+Taoyuan,5,8,0.178
+Taoyuan,5,9,0.214
+Taoyuan,5,10,0.409
+Taoyuan,5,11,0.367
+Taoyuan,5,12,0.384
+Taoyuan,5,13,0.669
+Taoyuan,5,14,0.658
+Taoyuan,5,15,0.395
+Taoyuan,5,16,0.467
+Taoyuan,5,17,0.469
+Taoyuan,5,18,0.739
+Taoyuan,5,19,0.74
+Taoyuan,5,20,0.178
+Taoyuan,5,21,0.436
+Taoyuan,5,22,0.273
+Taoyuan,5,23,0.404
+Taoyuan,6,0,0.213
+Taoyuan,6,1,0.227
+Taoyuan,6,2,0.114
+Taoyuan,6,3,0.241
+Taoyuan,6,4,0.253
+Taoyuan,6,5,0.056
+Taoyuan,6,6,0.334
+Taoyuan,6,7,0.18
+Taoyuan,6,8,0.288
+Taoyuan,6,9,0.185
+Taoyuan,6,10,0.388
+Taoyuan,6,11,0.354
+Taoyuan,6,12,0.49
+Taoyuan,6,13,0.427
+Taoyuan,6,14,0.474
+Taoyuan,6,15,0.478
+Taoyuan,6,16,0.477
+Taoyuan,6,17,0.535
+Taoyuan,6,18,0.6
+Taoyuan,6,19,0.428
+Taoyuan,6,20,0.248
+Taoyuan,6,21,0.393
+Taoyuan,6,22,0.171
+Taoyuan,6,23,0.367
+Taichung,0,0,0.349
+Taichung,0,1,0.271
+Taichung,0,2,0.291
+Taichung,0,3,0.22
+Taichung,0,4,0.084
+Taichung,0,5,0.155
+Taichung,0,6,0.261
+Taichung,0,7,0.722
+Taichung,0,8,0.913
+Taichung,0,9,1.0
+Taichung,0,10,0.594
+Taichung,0,11,0.409
+Taichung,0,12,0.465
+Taichung,0,13,0.573
+Taichung,0,14,0.573
+Taichung,0,15,0.349
+Taichung,0,16,0.531
+Taichung,0,17,0.933
+Taichung,0,18,0.837
+Taichung,0,19,0.949
+Taichung,0,20,0.144
+Taichung,0,21,0.066
+Taichung,0,22,0.356
+Taichung,0,23,0.255
+Taichung,1,0,0.409
+Taichung,1,1,0.208
+Taichung,1,2,0.173
+Taichung,1,3,0.076
+Taichung,1,4,0.418
+Taichung,1,5,0.122
+Taichung,1,6,0.347
+Taichung,1,7,0.919
+Taichung,1,8,0.754
+Taichung,1,9,0.681
+Taichung,1,10,0.517
+Taichung,1,11,0.542
+Taichung,1,12,0.551
+Taichung,1,13,0.596
+Taichung,1,14,0.46
+Taichung,1,15,0.564
+Taichung,1,16,0.497
+Taichung,1,17,0.871
+Taichung,1,18,0.961
+Taichung,1,19,0.977
+Taichung,1,20,0.316
+Taichung,1,21,0.078
+Taichung,1,22,0.387
+Taichung,1,23,0.132
+Taichung,2,0,0.312
+Taichung,2,1,0.286
+Taichung,2,2,0.203
+Taichung,2,3,0.3
+Taichung,2,4,0.181
+Taichung,2,5,0.224
+Taichung,2,6,0.214
+Taichung,2,7,0.727
+Taichung,2,8,0.722
+Taichung,2,9,0.783
+Taichung,2,10,0.505
+Taichung,2,11,0.581
+Taichung,2,12,0.385
+Taichung,2,13,0.418
+Taichung,2,14,0.577
+Taichung,2,15,0.582
+Taichung,2,16,0.582
+Taichung,2,17,0.88
+Taichung,2,18,0.768
+Taichung,2,19,0.721
+Taichung,2,20,0.206
+Taichung,2,21,0.212
+Taichung,2,22,0.167
+Taichung,2,23,0.216
+Taichung,3,0,0.361
+Taichung,3,1,0.46
+Taichung,3,2,0.343
+Taichung,3,3,0.264
+Taichung,3,4,0.3
+Taichung,3,5,0.425
+Taichung,3,6,0.351
+Taichung,3,7,0.671
+Taichung,3,8,0.952
+Taichung,3,9,0.75
+Taichung,3,10,0.548
+Taichung,3,11,0.477
+Taichung,3,12,0.548
+Taichung,3,13,0.464
+Taichung,3,14,0.425
+Taichung,3,15,0.591
+Taichung,3,16,0.39
+Taichung,3,17,0.849
+Taichung,3,18,0.788
+Taichung,3,19,0.853
+Taichung,3,20,0.318
+Taichung,3,21,0.16
+Taichung,3,22,0.323
+Taichung,3,23,0.26
+Taichung,4,0,0.224
+Taichung,4,1,0.212
+Taichung,4,2,0.22
+Taichung,4,3,0.292
+Taichung,4,4,0.148
+Taichung,4,5,0.424
+Taichung,4,6,0.388
+Taichung,4,7,0.94
+Taichung,4,8,0.723
+Taichung,4,9,0.761
+Taichung,4,10,0.541
+Taichung,4,11,0.563
+Taichung,4,12,0.387
+Taichung,4,13,0.639
+Taichung,4,14,0.493
+Taichung,4,15,0.492
+Taichung,4,16,0.396
+Taichung,4,17,0.849
+Taichung,4,18,0.842
+Taichung,4,19,0.712
+Taichung,4,20,0.348
+Taichung,4,21,0.349
+Taichung,4,22,0.239
+Taichung,4,23,0.382
+Taichung,5,0,0.187
+Taichung,5,1,0.186
+Taichung,5,2,0.259
+Taichung,5,3,0.416
+Taichung,5,4,0.363
+Taichung,5,5,0.239
+Taichung,5,6,0.175
+Taichung,5,7,0.296
+Taichung,5,8,0.34
+Taichung,5,9,0.159
+Taichung,5,10,0.275
+Taichung,5,11,0.306
+Taichung,5,12,0.523
+Taichung,5,13,0.497
+Taichung,5,14,0.438
+Taichung,5,15,0.448
+Taichung,5,16,0.669
+Taichung,5,17,0.497
+Taichung,5,18,0.512
+Taichung,5,19,0.523
+Taichung,5,20,0.209
+Taichung,5,21,0.227
+Taichung,5,22,0.124
+Taichung,5,23,0.232
+Taichung,6,0,0.078
+Taichung,6,1,0.413
+Taichung,6,2,0.376
+Taichung,6,3,0.1
+Taichung,6,4,0.401
+Taichung,6,5,0.305
+Taichung,6,6,0.344
+Taichung,6,7,0.22
+Taichung,6,8,0.13
+Taichung,6,9,0.445
+Taichung,6,10,0.134
+Taichung,6,11,0.138
+Taichung,6,12,0.639
+Taichung,6,13,0.603
+Taichung,6,14,0.603
+Taichung,6,15,0.727
+Taichung,6,16,0.452
+Taichung,6,17,0.471
+Taichung,6,18,0.324
+Taichung,6,19,0.631
+Taichung,6,20,0.263
+Taichung,6,21,0.309
+Taichung,6,22,0.16
+Taichung,6,23,0.102
+Tainan,0,0,0.212
+Tainan,0,1,0.1
+Tainan,0,2,0.146
+Tainan,0,3,0.109
+Tainan,0,4,0.414
+Tainan,0,5,0.262
+Tainan,0,6,0.329
+Tainan,0,7,0.722
+Tainan,0,8,0.969
+Tainan,0,9,0.841
+Tainan,0,10,0.528
+Tainan,0,11,0.472
+Tainan,0,12,0.579
+Tainan,0,13,0.518
+Tainan,0,14,0.442
+Tainan,0,15,0.304
+Tainan,0,16,0.427
+Tainan,0,17,0.959
+Tainan,0,18,0.747
+Tainan,0,19,0.835
+Tainan,0,20,0.27
+Tainan,0,21,0.377
+Tainan,0,22,0.363
+Tainan,0,23,0.374
+Tainan,1,0,0.261
+Tainan,1,1,0.384
+Tainan,1,2,0.353
+Tainan,1,3,0.069
+Tainan,1,4,0.081
+Tainan,1,5,0.147
+Tainan,1,6,0.143
+Tainan,1,7,1.0
+Tainan,1,8,0.77
+Tainan,1,9,0.893
+Tainan,1,10,0.493
+Tainan,1,11,0.459
+Tainan,1,12,0.395
+Tainan,1,13,0.414
+Tainan,1,14,0.439
+Tainan,1,15,0.403
+Tainan,1,16,0.441
+Tainan,1,17,0.951
+Tainan,1,18,0.707
+Tainan,1,19,0.971
+Tainan,1,20,0.133
+Tainan,1,21,0.342
+Tainan,1,22,0.191
+Tainan,1,23,0.09
+Tainan,2,0,0.443
+Tainan,2,1,0.375
+Tainan,2,2,0.303
+Tainan,2,3,0.346
+Tainan,2,4,0.117
+Tainan,2,5,0.248
+Tainan,2,6,0.213
+Tainan,2,7,0.784
+Tainan,2,8,0.913
+Tainan,2,9,0.939
+Tainan,2,10,0.463
+Tainan,2,11,0.442
+Tainan,2,12,0.413
+Tainan,2,13,0.484
+Tainan,2,14,0.491
+Tainan,2,15,0.492
+Tainan,2,16,0.551
+Tainan,2,17,0.947
+Tainan,2,18,0.909
+Tainan,2,19,0.987
+Tainan,2,20,0.068
+Tainan,2,21,0.194
+Tainan,2,22,0.302
+Tainan,2,23,0.384
+Tainan,3,0,0.317
+Tainan,3,1,0.097
+Tainan,3,2,0.124
+Tainan,3,3,0.238
+Tainan,3,4,0.133
+Tainan,3,5,0.284
+Tainan,3,6,0.398
+Tainan,3,7,0.754
+Tainan,3,8,0.724
+Tainan,3,9,1.0
+Tainan,3,10,0.594
+Tainan,3,11,0.603
+Tainan,3,12,0.576
+Tainan,3,13,0.473
+Tainan,3,14,0.502
+Tainan,3,15,0.618
+Tainan,3,16,0.545
+Tainan,3,17,0.847
+Tainan,3,18,0.845
+Tainan,3,19,0.868
+Tainan,3,20,0.06
+Tainan,3,21,0.249
+Tainan,3,22,0.222
+Tainan,3,23,0.268
+Tainan,4,0,0.372
+Tainan,4,1,0.177
+Tainan,4,2,0.201
+Tainan,4,3,0.162
+Tainan,4,4,0.153
+Tainan,4,5,0.202
+Tainan,4,6,0.292
+Tainan,4,7,0.861
+Tainan,4,8,0.946
+Tainan,4,9,0.839
+Tainan,4,10,0.527
+Tainan,4,11,0.53
+Tainan,4,12,0.471
+Tainan,4,13,0.436
+Tainan,4,14,0.417
+Tainan,4,15,0.597
+Tainan,4,16,0.463
+Tainan,4,17,0.776
+Tainan,4,18,1.0
+Tainan,4,19,0.901
+Tainan,4,20,0.239
+Tainan,4,21,0.287
+Tainan,4,22,0.305
+Tainan,4,23,0.421
+Tainan,5,0,0.352
+Tainan,5,1,0.233
+Tainan,5,2,0.333
+Tainan,5,3,0.32
+Tainan,5,4,0.157
+Tainan,5,5,0.194
+Tainan,5,6,0.278
+Tainan,5,7,0.241
+Tainan,5,8,0.212
+Tainan,5,9,0.131
+Tainan,5,10,0.109
+Tainan,5,11,0.254
+Tainan,5,12,0.661
+Tainan,5,13,0.432
+Tainan,5,14,0.402
+Tainan,5,15,0.523
+Tainan,5,16,0.39
+Tainan,5,17,0.337
+Tainan,5,18,0.635
+Tainan,5,19,0.458
+Tainan,5,20,0.185
+Tainan,5,21,0.251
+Tainan,5,22,0.386
+Tainan,5,23,0.306
+Tainan,6,0,0.285
+Tainan,6,1,0.18
+Tainan,6,2,0.136
+Tainan,6,3,0.275
+Tainan,6,4,0.191
+Tainan,6,5,0.123
+Tainan,6,6,0.242
+Tainan,6,7,0.255
+Tainan,6,8,0.096
+Tainan,6,9,0.378
+Tainan,6,10,0.133
+Tainan,6,11,0.259
+Tainan,6,12,0.572
+Tainan,6,13,0.576
+Tainan,6,14,0.476
+Tainan,6,15,0.458
+Tainan,6,16,0.492
+Tainan,6,17,0.701
+Tainan,6,18,0.415
+Tainan,6,19,0.463
+Tainan,6,20,0.174
+Tainan,6,21,0.394
+Tainan,6,22,0.139
+Tainan,6,23,0.311
+Kaohsiung,0,0,0.279
+Kaohsiung,0,1,0.313
+Kaohsiung,0,2,0.18
+Kaohsiung,0,3,0.13
+Kaohsiung,0,4,0.316
+Kaohsiung,0,5,0.142
+Kaohsiung,0,6,0.22
+Kaohsiung,0,7,0.831
+Kaohsiung,0,8,0.915
+Kaohsiung,0,9,0.968
+Kaohsiung,0,10,0.612
+Kaohsiung,0,11,0.551
+Kaohsiung,0,12,0.621
+Kaohsiung,0,13,0.536
+Kaohsiung,0,14,0.39
+Kaohsiung,0,15,0.639
+Kaohsiung,0,16,0.377
+Kaohsiung,0,17,0.953
+Kaohsiung,0,18,0.819
+Kaohsiung,0,19,0.848
+Kaohsiung,0,20,0.25
+Kaohsiung,0,21,0.152
+Kaohsiung,0,22,0.232
+Kaohsiung,0,23,0.356
+Kaohsiung,1,0,0.344
+Kaohsiung,1,1,0.491
+Kaohsiung,1,2,0.233
+Kaohsiung,1,3,0.176
+Kaohsiung,1,4,0.442
+Kaohsiung,1,5,0.218
+Kaohsiung,1,6,0.1
+Kaohsiung,1,7,0.826
+Kaohsiung,1,8,0.722
+Kaohsiung,1,9,0.797
+Kaohsiung,1,10,0.505
+Kaohsiung,1,11,0.511
+Kaohsiung,1,12,0.455
+Kaohsiung,1,13,0.422
+Kaohsiung,1,14,0.542
+Kaohsiung,1,15,0.573
+Kaohsiung,1,16,0.502
+Kaohsiung,1,17,0.812
+Kaohsiung,1,18,0.844
+Kaohsiung,1,19,0.757
+Kaohsiung,1,20,0.286
+Kaohsiung,1,21,0.242
+Kaohsiung,1,22,0.208
+Kaohsiung,1,23,0.206
+Kaohsiung,2,0,0.096
+Kaohsiung,2,1,0.266
+Kaohsiung,2,2,0.296
+Kaohsiung,2,3,0.337
+Kaohsiung,2,4,0.202
+Kaohsiung,2,5,0.135
+Kaohsiung,2,6,0.336
+Kaohsiung,2,7,0.796
+Kaohsiung,2,8,0.896
+Kaohsiung,2,9,0.977
+Kaohsiung,2,10,0.444
+Kaohsiung,2,11,0.41
+Kaohsiung,2,12,0.388
+Kaohsiung,2,13,0.482
+Kaohsiung,2,14,0.485
+Kaohsiung,2,15,0.473
+Kaohsiung,2,16,0.479
+Kaohsiung,2,17,0.787
+Kaohsiung,2,18,0.922
+Kaohsiung,2,19,0.886
+Kaohsiung,2,20,0.411
+Kaohsiung,2,21,0.168
+Kaohsiung,2,22,0.441
+Kaohsiung,2,23,0.366
+Kaohsiung,3,0,0.293
+Kaohsiung,3,1,0.175
+Kaohsiung,3,2,0.402
+Kaohsiung,3,3,0.411
+Kaohsiung,3,4,0.275
+Kaohsiung,3,5,0.392
+Kaohsiung,3,6,0.16
+Kaohsiung,3,7,0.725
+Kaohsiung,3,8,0.851
+Kaohsiung,3,9,0.881
+Kaohsiung,3,10,0.418
+Kaohsiung,3,11,0.429
+Kaohsiung,3,12,0.408
+Kaohsiung,3,13,0.507
+Kaohsiung,3,14,0.538
+Kaohsiung,3,15,0.491
+Kaohsiung,3,16,0.48
+Kaohsiung,3,17,0.931
+Kaohsiung,3,18,0.642
+Kaohsiung,3,19,0.888
+Kaohsiung,3,20,0.294
+Kaohsiung,3,21,0.318
+Kaohsiung,3,22,0.195
+Kaohsiung,3,23,0.268
+Kaohsiung,4,0,0.049
+Kaohsiung,4,1,0.342
+Kaohsiung,4,2,0.134
+Kaohsiung,4,3,0.275
+Kaohsiung,4,4,0.343
+Kaohsiung,4,5,0.117
+Kaohsiung,4,6,0.153
+Kaohsiung,4,7,0.677
+Kaohsiung,4,8,1.0
+Kaohsiung,4,9,0.88
+Kaohsiung,4,10,0.593
+Kaohsiung,4,11,0.605
+Kaohsiung,4,12,0.575
+Kaohsiung,4,13,0.516
+Kaohsiung,4,14,0.496
+Kaohsiung,4,15,0.424
+Kaohsiung,4,16,0.519
+Kaohsiung,4,17,0.959
+Kaohsiung,4,18,0.702
+Kaohsiung,4,19,1.0
+Kaohsiung,4,20,0.252
+Kaohsiung,4,21,0.158
+Kaohsiung,4,22,0.161
+Kaohsiung,4,23,0.498
+Kaohsiung,5,0,0.382
+Kaohsiung,5,1,0.202
+Kaohsiung,5,2,0.39
+Kaohsiung,5,3,0.227
+Kaohsiung,5,4,0.16
+Kaohsiung,5,5,0.276
+Kaohsiung,5,6,0.215
+Kaohsiung,5,7,0.212
+Kaohsiung,5,8,0.464
+Kaohsiung,5,9,0.172
+Kaohsiung,5,10,0.178
+Kaohsiung,5,11,0.269
+Kaohsiung,5,12,0.481
+Kaohsiung,5,13,0.617
+Kaohsiung,5,14,0.615
+Kaohsiung,5,15,0.636
+Kaohsiung,5,16,0.421
+Kaohsiung,5,17,0.686
+Kaohsiung,5,18,0.561
+Kaohsiung,5,19,0.476
+Kaohsiung,5,20,0.216
+Kaohsiung,5,21,0.168
+Kaohsiung,5,22,0.429
+Kaohsiung,5,23,0.164
+Kaohsiung,6,0,0.334
+Kaohsiung,6,1,0.228
+Kaohsiung,6,2,0.31
+Kaohsiung,6,3,0.316
+Kaohsiung,6,4,0.378
+Kaohsiung,6,5,0.163
+Kaohsiung,6,6,0.281
+Kaohsiung,6,7,0.258
+Kaohsiung,6,8,0.123
+Kaohsiung,6,9,0.259
+Kaohsiung,6,10,0.362
+Kaohsiung,6,11,0.355
+Kaohsiung,6,12,0.457
+Kaohsiung,6,13,0.663
+Kaohsiung,6,14,0.633
+Kaohsiung,6,15,0.435
+Kaohsiung,6,16,0.623
+Kaohsiung,6,17,0.668
+Kaohsiung,6,18,0.649
+Kaohsiung,6,19,0.472
+Kaohsiung,6,20,0.192
+Kaohsiung,6,21,0.164
+Kaohsiung,6,22,0.395
+Kaohsiung,6,23,0.137
+Keelung,0,0,0.245
+Keelung,0,1,0.176
+Keelung,0,2,0.18
+Keelung,0,3,0.279
+Keelung,0,4,0.261
+Keelung,0,5,0.083
+Keelung,0,6,0.322
+Keelung,0,7,0.833
+Keelung,0,8,0.912
+Keelung,0,9,0.756
+Keelung,0,10,0.397
+Keelung,0,11,0.53
+Keelung,0,12,0.503
+Keelung,0,13,0.519
+Keelung,0,14,0.575
+Keelung,0,15,0.515
+Keelung,0,16,0.513
+Keelung,0,17,0.914
+Keelung,0,18,0.966
+Keelung,0,19,0.842
+Keelung,0,20,0.412
+Keelung,0,21,0.164
+Keelung,0,22,0.312
+Keelung,0,23,0.144
+Keelung,1,0,0.098
+Keelung,1,1,0.18
+Keelung,1,2,0.168
+Keelung,1,3,0.357
+Keelung,1,4,0.333
+Keelung,1,5,0.331
+Keelung,1,6,0.163
+Keelung,1,7,0.843
+Keelung,1,8,0.835
+Keelung,1,9,0.783
+Keelung,1,10,0.351
+Keelung,1,11,0.574
+Keelung,1,12,0.58
+Keelung,1,13,0.443
+Keelung,1,14,0.492
+Keelung,1,15,0.467
+Keelung,1,16,0.485
+Keelung,1,17,0.796
+Keelung,1,18,0.854
+Keelung,1,19,0.634
+Keelung,1,20,0.214
+Keelung,1,21,0.339
+Keelung,1,22,0.379
+Keelung,1,23,0.246
+Keelung,2,0,0.458
+Keelung,2,1,0.392
+Keelung,2,2,0.228
+Keelung,2,3,0.327
+Keelung,2,4,0.309
+Keelung,2,5,0.085
+Keelung,2,6,0.297
+Keelung,2,7,0.85
+Keelung,2,8,1.0
+Keelung,2,9,0.663
+Keelung,2,10,0.409
+Keelung,2,11,0.445
+Keelung,2,12,0.416
+Keelung,2,13,0.491
+Keelung,2,14,0.44
+Keelung,2,15,0.389
+Keelung,2,16,0.555
+Keelung,2,17,0.867
+Keelung,2,18,0.899
+Keelung,2,19,0.825
+Keelung,2,20,0.139
+Keelung,2,21,0.206
+Keelung,2,22,0.212
+Keelung,2,23,0.089
+Keelung,3,0,0.352
+Keelung,3,1,0.363
+Keelung,3,2,0.257
+Keelung,3,3,0.276
+Keelung,3,4,0.312
+Keelung,3,5,0.223
+Keelung,3,6,0.372
+Keelung,3,7,0.882
+Keelung,3,8,0.785
+Keelung,3,9,0.968
+Keelung,3,10,0.553
+Keelung,3,11,0.446
+Keelung,3,12,0.41
+Keelung,3,13,0.529
+Keelung,3,14,0.482
+Keelung,3,15,0.528
+Keelung,3,16,0.373
+Keelung,3,17,0.657
+Keelung,3,18,0.775
+Keelung,3,19,0.839
+Keelung,3,20,0.104
+Keelung,3,21,0.128
+Keelung,3,22,0.361
+Keelung,3,23,0.263
+Keelung,4,0,0.318
+Keelung,4,1,0.235
+Keelung,4,2,0.197
+Keelung,4,3,0.146
+Keelung,4,4,0.413
+Keelung,4,5,0.246
+Keelung,4,6,0.268
+Keelung,4,7,0.98
+Keelung,4,8,0.64
+Keelung,4,9,0.984
+Keelung,4,10,0.522
+Keelung,4,11,0.448
+Keelung,4,12,0.486
+Keelung,4,13,0.646
+Keelung,4,14,0.433
+Keelung,4,15,0.461
+Keelung,4,16,0.375
+Keelung,4,17,0.844
+Keelung,4,18,0.852
+Keelung,4,19,0.995
+Keelung,4,20,0.372
+Keelung,4,21,0.353
+Keelung,4,22,0.151
+Keelung,4,23,0.253
+Keelung,5,0,0.183
+Keelung,5,1,0.277
+Keelung,5,2,0.312
+Keelung,5,3,0.196
+Keelung,5,4,0.28
+Keelung,5,5,0.06
+Keelung,5,6,0.094
+Keelung,5,7,0.274
+Keelung,5,8,0.357
+Keelung,5,9,0.138
+Keelung,5,10,0.218
+Keelung,5,11,0.211
+Keelung,5,12,0.617
+Keelung,5,13,0.514
+Keelung,5,14,0.489
+Keelung,5,15,0.657
+Keelung,5,16,0.705
+Keelung,5,17,0.623
+Keelung,5,18,0.661
+Keelung,5,19,0.748
+Keelung,5,20,0.165
+Keelung,5,21,0.349
+Keelung,5,22,0.29
+Keelung,5,23,0.489
+Keelung,6,0,0.105
+Keelung,6,1,0.074
+Keelung,6,2,0.101
+Keelung,6,3,0.175
+Keelung,6,4,0.263
+Keelung,6,5,0.232
+Keelung,6,6,0.096
+Keelung,6,7,0.136
+Keelung,6,8,0.346
+Keelung,6,9,0.181
+Keelung,6,10,0.205
+Keelung,6,11,0.248
+Keelung,6,12,0.48
+Keelung,6,13,0.602
+Keelung,6,14,0.465
+Keelung,6,15,0.511
+Keelung,6,16,0.453
+Keelung,6,17,0.501
+Keelung,6,18,0.681
+Keelung,6,19,0.549
+Keelung,6,20,0.27
+Keelung,6,21,0.142
+Keelung,6,22,0.325
+Keelung,6,23,0.371
+Hsinchu,0,0,0.195
+Hsinchu,0,1,0.311
+Hsinchu,0,2,0.171
+Hsinchu,0,3,0.296
+Hsinchu,0,4,0.095
+Hsinchu,0,5,0.111
+Hsinchu,0,6,0.386
+Hsinchu,0,7,0.881
+Hsinchu,0,8,0.754
+Hsinchu,0,9,0.807
+Hsinchu,0,10,0.527
+Hsinchu,0,11,0.475
+Hsinchu,0,12,0.62
+Hsinchu,0,13,0.449
+Hsinchu,0,14,0.67
+Hsinchu,0,15,0.53
+Hsinchu,0,16,0.421
+Hsinchu,0,17,0.783
+Hsinchu,0,18,0.66
+Hsinchu,0,19,0.895
+Hsinchu,0,20,0.127
+Hsinchu,0,21,0.334
+Hsinchu,0,22,0.185
+Hsinchu,0,23,0.164
+Hsinchu,1,0,0.345
+Hsinchu,1,1,0.232
+Hsinchu,1,2,0.143
+Hsinchu,1,3,0.121
+Hsinchu,1,4,0.294
+Hsinchu,1,5,0.144
+Hsinchu,1,6,0.325
+Hsinchu,1,7,1.0
+Hsinchu,1,8,0.729
+Hsinchu,1,9,0.998
+Hsinchu,1,10,0.518
+Hsinchu,1,11,0.541
+Hsinchu,1,12,0.552
+Hsinchu,1,13,0.455
+Hsinchu,1,14,0.694
+Hsinchu,1,15,0.435
+Hsinchu,1,16,0.629
+Hsinchu,1,17,0.974
+Hsinchu,1,18,0.776
+Hsinchu,1,19,1.0
+Hsinchu,1,20,0.309
+Hsinchu,1,21,0.354
+Hsinchu,1,22,0.396
+Hsinchu,1,23,0.197
+Hsinchu,2,0,0.155
+Hsinchu,2,1,0.5
+Hsinchu,2,2,0.081
+Hsinchu,2,3,0.185
+Hsinchu,2,4,0.163
+Hsinchu,2,5,0.34
+Hsinchu,2,6,0.167
+Hsinchu,2,7,0.686
+Hsinchu,2,8,0.619
+Hsinchu,2,9,0.675
+Hsinchu,2,10,0.428
+Hsinchu,2,11,0.517
+Hsinchu,2,12,0.53
+Hsinchu,2,13,0.489
+Hsinchu,2,14,0.558
+Hsinchu,2,15,0.541
+Hsinchu,2,16,0.334
+Hsinchu,2,17,0.756
+Hsinchu,2,18,0.772
+Hsinchu,2,19,0.929
+Hsinchu,2,20,0.238
+Hsinchu,2,21,0.09
+Hsinchu,2,22,0.177
+Hsinchu,2,23,0.14
+Hsinchu,3,0,0.232
+Hsinchu,3,1,0.204
+Hsinchu,3,2,0.174
+Hsinchu,3,3,0.195
+Hsinchu,3,4,0.238
+Hsinchu,3,5,0.344
+Hsinchu,3,6,0.405
+Hsinchu,3,7,0.728
+Hsinchu,3,8,0.777
+Hsinchu,3,9,0.943
+Hsinchu,3,10,0.593
+Hsinchu,3,11,0.538
+Hsinchu,3,12,0.439
+Hsinchu,3,13,0.593
+Hsinchu,3,14,0.473
+Hsinchu,3,15,0.413
+Hsinchu,3,16,0.303
+Hsinchu,3,17,0.733
+Hsinchu,3,18,0.837
+Hsinchu,3,19,0.824
+Hsinchu,3,20,0.225
+Hsinchu,3,21,0.258
+Hsinchu,3,22,0.423
+Hsinchu,3,23,0.201
+Hsinchu,4,0,0.232
+Hsinchu,4,1,0.224
+Hsinchu,4,2,0.336
+Hsinchu,4,3,0.237
+Hsinchu,4,4,0.329
+Hsinchu,4,5,0.167
+Hsinchu,4,6,0.187
+Hsinchu,4,7,0.917
+Hsinchu,4,8,1.0
+Hsinchu,4,9,0.943
+Hsinchu,4,10,0.49
+Hsinchu,4,11,0.472
+Hsinchu,4,12,0.466
+Hsinchu,4,13,0.493
+Hsinchu,4,14,0.543
+Hsinchu,4,15,0.636
+Hsinchu,4,16,0.444
+Hsinchu,4,17,0.988
+Hsinchu,4,18,0.846
+Hsinchu,4,19,0.843
+Hsinchu,4,20,0.092
+Hsinchu,4,21,0.318
+Hsinchu,4,22,0.315
+Hsinchu,4,23,0.219
+Hsinchu,5,0,0.27
+Hsinchu,5,1,0.276
+Hsinchu,5,2,0.28
+Hsinchu,5,3,0.345
+Hsinchu,5,4,0.283
+Hsinchu,5,5,0.133
+Hsinchu,5,6,0.237
+Hsinchu,5,7,0.354
+Hsinchu,5,8,0.349
+Hsinchu,5,9,0.036
+Hsinchu,5,10,0.275
+Hsinchu,5,11,0.371
+Hsinchu,5,12,0.503
+Hsinchu,5,13,0.641
+Hsinchu,5,14,0.493
+Hsinchu,5,15,0.567
+Hsinchu,5,16,0.717
+Hsinchu,5,17,0.6
+Hsinchu,5,18,0.477
+Hsinchu,5,19,0.458
+Hsinchu,5,20,0.21
+Hsinchu,5,21,0.172
+Hsinchu,5,22,0.197
+Hsinchu,5,23,0.33
+Hsinchu,6,0,0.325
+Hsinchu,6,1,0.399
+Hsinchu,6,2,0.13
+Hsinchu,6,3,0.36
+Hsinchu,6,4,0.275
+Hsinchu,6,5,0.383
+Hsinchu,6,6,0.399
+Hsinchu,6,7,0.442
+Hsinchu,6,8,0.105
+Hsinchu,6,9,0.33
+Hsinchu,6,10,0.226
+Hsinchu,6,11,0.27
+Hsinchu,6,12,0.386
+Hsinchu,6,13,0.553
+Hsinchu,6,14,0.492
+Hsinchu,6,15,0.454
+Hsinchu,6,16,0.565
+Hsinchu,6,17,0.573
+Hsinchu,6,18,0.515
+Hsinchu,6,19,0.479
+Hsinchu,6,20,0.365
+Hsinchu,6,21,0.356
+Hsinchu,6,22,0.262
+Hsinchu,6,23,0.369
+Hsinchu County,0,0,0.445
+Hsinchu County,0,1,0.165
+Hsinchu County,0,2,0.412
+Hsinchu County,0,3,0.342
+Hsinchu County,0,4,0.25
+Hsinchu County,0,5,0.275
+Hsinchu County,0,6,0.16
+Hsinchu County,0,7,0.795
+Hsinchu County,0,8,0.987
+Hsinchu County,0,9,0.815
+Hsinchu County,0,10,0.421
+Hsinchu County,0,11,0.447
+Hsinchu County,0,12,0.348
+Hsinchu County,0,13,0.505
+Hsinchu County,0,14,0.529
+Hsinchu County,0,15,0.612
+Hsinchu County,0,16,0.446
+Hsinchu County,0,17,0.745
+Hsinchu County,0,18,0.921
+Hsinchu County,0,19,0.801
+Hsinchu County,0,20,0.4
+Hsinchu County,0,21,0.345
+Hsinchu County,0,22,0.302
+Hsinchu County,0,23,0.089
+Hsinchu County,1,0,0.114
+Hsinchu County,1,1,0.274
+Hsinchu County,1,2,0.262
+Hsinchu County,1,3,0.197
+Hsinchu County,1,4,0.304
+Hsinchu County,1,5,0.37
+Hsinchu County,1,6,0.307
+Hsinchu County,1,7,0.777
+Hsinchu County,1,8,0.811
+Hsinchu County,1,9,0.923
+Hsinchu County,1,10,0.425
+Hsinchu County,1,11,0.541
+Hsinchu County,1,12,0.366
+Hsinchu County,1,13,0.433
+Hsinchu County,1,14,0.462
+Hsinchu County,1,15,0.436
+Hsinchu County,1,16,0.428
+Hsinchu County,1,17,0.983
+Hsinchu County,1,18,0.676
+Hsinchu County,1,19,0.916
+Hsinchu County,1,20,0.123
+Hsinchu County,1,21,0.077
+Hsinchu County,1,22,0.339
+Hsinchu County,1,23,0.328
+Hsinchu County,2,0,0.256
+Hsinchu County,2,1,0.165
+Hsinchu County,2,2,0.279
+Hsinchu County,2,3,0.136
+Hsinchu County,2,4,0.085
+Hsinchu County,2,5,0.029
+Hsinchu County,2,6,0.127
+Hsinchu County,2,7,1.0
+Hsinchu County,2,8,0.949
+Hsinchu County,2,9,0.943
+Hsinchu County,2,10,0.379
+Hsinchu County,2,11,0.528
+Hsinchu County,2,12,0.465
+Hsinchu County,2,13,0.484
+Hsinchu County,2,14,0.616
+Hsinchu County,2,15,0.493
+Hsinchu County,2,16,0.431
+Hsinchu County,2,17,0.786
+Hsinchu County,2,18,0.758
+Hsinchu County,2,19,0.952
+Hsinchu County,2,20,0.269
+Hsinchu County,2,21,0.429
+Hsinchu County,2,22,0.292
+Hsinchu County,2,23,0.091
+Hsinchu County,3,0,0.263
+Hsinchu County,3,1,0.289
+Hsinchu County,3,2,0.269
+Hsinchu County,3,3,0.236
+Hsinchu County,3,4,0.218
+Hsinchu County,3,5,0.417
+Hsinchu County,3,6,0.102
+Hsinchu County,3,7,0.799
+Hsinchu County,3,8,0.992
+Hsinchu County,3,9,0.769
+Hsinchu County,3,10,0.567
+Hsinchu County,3,11,0.518
+Hsinchu County,3,12,0.542
+Hsinchu County,3,13,0.585
+Hsinchu County,3,14,0.537
+Hsinchu County,3,15,0.506
+Hsinchu County,3,16,0.512
+Hsinchu County,3,17,0.986
+Hsinchu County,3,18,0.751
+Hsinchu County,3,19,0.689
+Hsinchu County,3,20,0.116
+Hsinchu County,3,21,0.177
+Hsinchu County,3,22,0.212
+Hsinchu County,3,23,0.302
+Hsinchu County,4,0,0.128
+Hsinchu County,4,1,0.283
+Hsinchu County,4,2,0.21
+Hsinchu County,4,3,0.103
+Hsinchu County,4,4,0.164
+Hsinchu County,4,5,0.197
+Hsinchu County,4,6,0.341
+Hsinchu County,4,7,0.79
+Hsinchu County,4,8,0.75
+Hsinchu County,4,9,0.937
+Hsinchu County,4,10,0.488
+Hsinchu County,4,11,0.495
+Hsinchu County,4,12,0.514
+Hsinchu County,4,13,0.574
+Hsinchu County,4,14,0.506
+Hsinchu County,4,15,0.396
+Hsinchu County,4,16,0.461
+Hsinchu County,4,17,0.757
+Hsinchu County,4,18,0.836
+Hsinchu County,4,19,0.717
+Hsinchu County,4,20,0.096
+Hsinchu County,4,21,0.206
+Hsinchu County,4,22,0.288
+Hsinchu County,4,23,0.303
+Hsinchu County,5,0,0.189
+Hsinchu County,5,1,0.228
+Hsinchu County,5,2,0.327
+Hsinchu County,5,3,0.315
+Hsinchu County,5,4,0.206
+Hsinchu County,5,5,0.241
+Hsinchu County,5,6,0.247
+Hsinchu County,5,7,0.088
+Hsinchu County,5,8,0.123
+Hsinchu County,5,9,0.339
+Hsinchu County,5,10,0.299
+Hsinchu County,5,11,0.305
+Hsinchu County,5,12,0.493
+Hsinchu County,5,13,0.717
+Hsinchu County,5,14,0.541
+Hsinchu County,5,15,0.606
+Hsinchu County,5,16,0.325
+Hsinchu County,5,17,0.494
+Hsinchu County,5,18,0.608
+Hsinchu County,5,19,0.42
+Hsinchu County,5,20,0.188
+Hsinchu County,5,21,0.235
+Hsinchu County,5,22,0.166
+Hsinchu County,5,23,0.117
+Hsinchu County,6,0,0.327
+Hsinchu County,6,1,0.167
+Hsinchu County,6,2,0.009
+Hsinchu County,6,3,0.065
+Hsinchu County,6,4,0.106
+Hsinchu County,6,5,0.232
+Hsinchu County,6,6,0.226
+Hsinchu County,6,7,0.259
+Hsinchu County,6,8,0.28
+Hsinchu County,6,9,0.343
+Hsinchu County,6,10,0.277
+Hsinchu County,6,11,0.218
+Hsinchu County,6,12,0.716
+Hsinchu County,6,13,0.481
+Hsinchu County,6,14,0.37
+Hsinchu County,6,15,0.507
+Hsinchu County,6,16,0.524
+Hsinchu County,6,17,0.535
+Hsinchu County,6,18,0.503
+Hsinchu County,6,19,0.667
+Hsinchu County,6,20,0.25
+Hsinchu County,6,21,0.277
+Hsinchu County,6,22,0.407
+Hsinchu County,6,23,0.187
+Miaoli,0,0,0.133
+Miaoli,0,1,0.077
+Miaoli,0,2,0.362
+Miaoli,0,3,0.257
+Miaoli,0,4,0.195
+Miaoli,0,5,0.246
+Miaoli,0,6,0.037
+Miaoli,0,7,0.969
+Miaoli,0,8,0.975
+Miaoli,0,9,0.759
+Miaoli,0,10,0.555
+Miaoli,0,11,0.557
+Miaoli,0,12,0.522
+Miaoli,0,13,0.489
+Miaoli,0,14,0.481
+Miaoli,0,15,0.399
+Miaoli,0,16,0.522
+Miaoli,0,17,0.961
+Miaoli,0,18,0.934
+Miaoli,0,19,0.982
+Miaoli,0,20,0.349
+Miaoli,0,21,0.321
+Miaoli,0,22,0.204
+Miaoli,0,23,0.218
+Miaoli,1,0,0.345
+Miaoli,1,1,0.154
+Miaoli,1,2,0.335
+Miaoli,1,3,0.238
+Miaoli,1,4,0.349
+Miaoli,1,5,0.251
+Miaoli,1,6,0.122
+Miaoli,1,7,0.789
+Miaoli,1,8,0.87
+Miaoli,1,9,0.943
+Miaoli,1,10,0.447
+Miaoli,1,11,0.494
+Miaoli,1,12,0.493
+Miaoli,1,13,0.484
+Miaoli,1,14,0.504
+Miaoli,1,15,0.448
+Miaoli,1,16,0.586
+Miaoli,1,17,0.806
+Miaoli,1,18,0.699
+Miaoli,1,19,0.646
+Miaoli,1,20,0.391
+Miaoli,1,21,0.241
+Miaoli,1,22,0.117
+Miaoli,1,23,0.172
+Miaoli,2,0,0.23
+Miaoli,2,1,0.192
+Miaoli,2,2,0.265
+Miaoli,2,3,0.415
+Miaoli,2,4,0.141
+Miaoli,2,5,0.326
+Miaoli,2,6,0.436
+Miaoli,2,7,0.735
+Miaoli,2,8,0.932
+Miaoli,2,9,0.785
+Miaoli,2,10,0.508
+Miaoli,2,11,0.521
+Miaoli,2,12,0.449
+Miaoli,2,13,0.41
+Miaoli,2,14,0.431
+Miaoli,2,15,0.606
+Miaoli,2,16,0.445
+Miaoli,2,17,0.841
+Miaoli,2,18,0.867
+Miaoli,2,19,0.698
+Miaoli,2,20,0.185
+Miaoli,2,21,0.325
+Miaoli,2,22,0.216
+Miaoli,2,23,0.295
+Miaoli,3,0,0.193
+Miaoli,3,1,0.441
+Miaoli,3,2,0.324
+Miaoli,3,3,0.257
+Miaoli,3,4,0.165
+Miaoli,3,5,0.408
+Miaoli,3,6,0.341
+Miaoli,3,7,0.742
+Miaoli,3,8,0.898
+Miaoli,3,9,0.682
+Miaoli,3,10,0.553
+Miaoli,3,11,0.388
+Miaoli,3,12,0.443
+Miaoli,3,13,0.458
+Miaoli,3,14,0.498
+Miaoli,3,15,0.422
+Miaoli,3,16,0.431
+Miaoli,3,17,0.865
+Miaoli,3,18,0.946
+Miaoli,3,19,1.0
+Miaoli,3,20,0.304
+Miaoli,3,21,0.12
+Miaoli,3,22,0.066
+Miaoli,3,23,0.269
+Miaoli,4,0,0.135
+Miaoli,4,1,0.239
+Miaoli,4,2,0.065
+Miaoli,4,3,0.276
+Miaoli,4,4,0.254
+Miaoli,4,5,0.242
+Miaoli,4,6,0.156
+Miaoli,4,7,0.832
+Miaoli,4,8,0.949
+Miaoli,4,9,0.893
+Miaoli,4,10,0.461
+Miaoli,4,11,0.578
+Miaoli,4,12,0.525
+Miaoli,4,13,0.437
+Miaoli,4,14,0.303
+Miaoli,4,15,0.528
+Miaoli,4,16,0.301
+Miaoli,4,17,0.957
+Miaoli,4,18,0.702
+Miaoli,4,19,0.892
+Miaoli,4,20,0.304
+Miaoli,4,21,0.099
+Miaoli,4,22,0.268
+Miaoli,4,23,0.215
+Miaoli,5,0,0.215
+Miaoli,5,1,0.377
+Miaoli,5,2,0.187
+Miaoli,5,3,0.14
+Miaoli,5,4,0.327
+Miaoli,5,5,0.118
+Miaoli,5,6,0.288
+Miaoli,5,7,0.384
+Miaoli,5,8,0.301
+Miaoli,5,9,0.124
+Miaoli,5,10,0.169
+Miaoli,5,11,0.252
+Miaoli,5,12,0.558
+Miaoli,5,13,0.766
+Miaoli,5,14,0.539
+Miaoli,5,15,0.594
+Miaoli,5,16,0.486
+Miaoli,5,17,0.432
+Miaoli,5,18,0.457
+Miaoli,5,19,0.476
+Miaoli,5,20,0.409
+Miaoli,5,21,0.319
+Miaoli,5,22,0.301
+Miaoli,5,23,0.205
+Miaoli,6,0,0.223
+Miaoli,6,1,0.454
+Miaoli,6,2,0.1
+Miaoli,6,3,0.347
+Miaoli,6,4,0.265
+Miaoli,6,5,0.225
+Miaoli,6,6,0.293
+Miaoli,6,7,0.362
+Miaoli,6,8,0.178
+Miaoli,6,9,0.339
+Miaoli,6,10,0.246
+Miaoli,6,11,0.139
+Miaoli,6,12,0.451
+Miaoli,6,13,0.652
+Miaoli,6,14,0.666
+Miaoli,6,15,0.368
+Miaoli,6,16,0.631
+Miaoli,6,17,0.508
+Miaoli,6,18,0.669
+Miaoli,6,19,0.573
+Miaoli,6,20,0.306
+Miaoli,6,21,0.307
+Miaoli,6,22,0.195
+Miaoli,6,23,0.147
+Changhua,0,0,0.267
+Changhua,0,1,0.161
+Changhua,0,2,0.431
+Changhua,0,3,0.085
+Changhua,0,4,0.376
+Changhua,0,5,0.318
+Changhua,0,6,0.279
+Changhua,0,7,0.749
+Changhua,0,8,0.84
+Changhua,0,9,0.876
+Changhua,0,10,0.483
+Changhua,0,11,0.394
+Changhua,0,12,0.471
+Changhua,0,13,0.627
+Changhua,0,14,0.361
+Changhua,0,15,0.566
+Changhua,0,16,0.578
+Changhua,0,17,0.957
+Changhua,0,18,0.714
+Changhua,0,19,0.784
+Changhua,0,20,0.059
+Changhua,0,21,0.159
+Changhua,0,22,0.131
+Changhua,0,23,0.284
+Changhua,1,0,0.373
+Changhua,1,1,0.198
+Changhua,1,2,0.274
+Changhua,1,3,0.177
+Changhua,1,4,0.199
+Changhua,1,5,0.111
+Changhua,1,6,0.28
+Changhua,1,7,0.77
+Changhua,1,8,0.723
+Changhua,1,9,0.884
+Changhua,1,10,0.57
+Changhua,1,11,0.37
+Changhua,1,12,0.499
+Changhua,1,13,0.516
+Changhua,1,14,0.365
+Changhua,1,15,0.448
+Changhua,1,16,0.553
+Changhua,1,17,0.817
+Changhua,1,18,0.753
+Changhua,1,19,0.886
+Changhua,1,20,0.278
+Changhua,1,21,0.407
+Changhua,1,22,0.346
+Changhua,1,23,0.346
+Changhua,2,0,0.191
+Changhua,2,1,0.344
+Changhua,2,2,0.254
+Changhua,2,3,0.126
+Changhua,2,4,0.339
+Changhua,2,5,0.058
+Changhua,2,6,0.316
+Changhua,2,7,0.941
+Changhua,2,8,0.906
+Changhua,2,9,0.888
+Changhua,2,10,0.434
+Changhua,2,11,0.608
+Changhua,2,12,0.345
+Changhua,2,13,0.529
+Changhua,2,14,0.449
+Changhua,2,15,0.485
+Changhua,2,16,0.44
+Changhua,2,17,0.907
+Changhua,2,18,0.844
+Changhua,2,19,0.683
+Changhua,2,20,0.385
+Changhua,2,21,0.207
+Changhua,2,22,0.405
+Changhua,2,23,0.117
+Changhua,3,0,0.073
+Changhua,3,1,0.171
+Changhua,3,2,0.28
+Changhua,3,3,0.206
+Changhua,3,4,0.319
+Changhua,3,5,0.209
+Changhua,3,6,0.32
+Changhua,3,7,0.713
+Changhua,3,8,0.943
+Changhua,3,9,0.984
+Changhua,3,10,0.511
+Changhua,3,11,0.43
+Changhua,3,12,0.555
+Changhua,3,13,0.469
+Changhua,3,14,0.455
+Changhua,3,15,0.604
+Changhua,3,16,0.485
+Changhua,3,17,0.809
+Changhua,3,18,0.915
+Changhua,3,19,0.982
+Changhua,3,20,0.1
+Changhua,3,21,0.136
+Changhua,3,22,0.257
+Changhua,3,23,0.316
+Changhua,4,0,0.175
+Changhua,4,1,0.141
+Changhua,4,2,0.157
+Changhua,4,3,0.056
+Changhua,4,4,0.092
+Changhua,4,5,0.366
+Changhua,4,6,0.345
+Changhua,4,7,0.928
+Changhua,4,8,0.798
+Changhua,4,9,0.8
+Changhua,4,10,0.636
+Changhua,4,11,0.45
+Changhua,4,12,0.563
+Changhua,4,13,0.459
+Changhua,4,14,0.45
+Changhua,4,15,0.432
+Changhua,4,16,0.528
+Changhua,4,17,0.844
+Changhua,4,18,0.762
+Changhua,4,19,0.806
+Changhua,4,20,0.217
+Changhua,4,21,0.214
+Changhua,4,22,0.171
+Changhua,4,23,0.128
+Changhua,5,0,0.331
+Changhua,5,1,0.235
+Changhua,5,2,0.154
+Changhua,5,3,0.167
+Changhua,5,4,0.248
+Changhua,5,5,0.159
+Changhua,5,6,0.227
+Changhua,5,7,0.349
+Changhua,5,8,0.344
+Changhua,5,9,0.169
+Changhua,5,10,0.078
+Changhua,5,11,0.338
+Changhua,5,12,0.446
+Changhua,5,13,0.635
+Changhua,5,14,0.659
+Changhua,5,15,0.671
+Changhua,5,16,0.532
+Changhua,5,17,0.424
+Changhua,5,18,0.632
+Changhua,5,19,0.545
+Changhua,5,20,0.266
+Changhua,5,21,0.065
+Changhua,5,22,0.356
+Changhua,5,23,0.34
+Changhua,6,0,0.432
+Changhua,6,1,0.148
+Changhua,6,2,0.206
+Changhua,6,3,0.275
+Changhua,6,4,0.344
+Changhua,6,5,0.07
+Changhua,6,6,0.223
+Changhua,6,7,0.192
+Changhua,6,8,0.183
+Changhua,6,9,0.201
+Changhua,6,10,0.345
+Changhua,6,11,0.33
+Changhua,6,12,0.612
+Changhua,6,13,0.613
+Changhua,6,14,0.503
+Changhua,6,15,0.599
+Changhua,6,16,0.509
+Changhua,6,17,0.495
+Changhua,6,18,0.4
+Changhua,6,19,0.665
+Changhua,6,20,0.237
+Changhua,6,21,0.181
+Changhua,6,22,0.138
+Changhua,6,23,0.338
+Nantou,0,0,0.356
+Nantou,0,1,0.083
+Nantou,0,2,0.249
+Nantou,0,3,0.04
+Nantou,0,4,0.4
+Nantou,0,5,0.108
+Nantou,0,6,0.255
+Nantou,0,7,0.884
+Nantou,0,8,0.735
+Nantou,0,9,0.728
+Nantou,0,10,0.563
+Nantou,0,11,0.418
+Nantou,0,12,0.597
+Nantou,0,13,0.608
+Nantou,0,14,0.513
+Nantou,0,15,0.496
+Nantou,0,16,0.552
+Nantou,0,17,1.0
+Nantou,0,18,0.856
+Nantou,0,19,0.92
+Nantou,0,20,0.275
+Nantou,0,21,0.23
+Nantou,0,22,0.359
+Nantou,0,23,0.324
+Nantou,1,0,0.449
+Nantou,1,1,0.117
+Nantou,1,2,0.141
+Nantou,1,3,0.292
+Nantou,1,4,0.245
+Nantou,1,5,0.334
+Nantou,1,6,0.348
+Nantou,1,7,0.935
+Nantou,1,8,0.907
+Nantou,1,9,0.886
+Nantou,1,10,0.604
+Nantou,1,11,0.427
+Nantou,1,12,0.585
+Nantou,1,13,0.522
+Nantou,1,14,0.558
+Nantou,1,15,0.55
+Nantou,1,16,0.469
+Nantou,1,17,0.915
+Nantou,1,18,0.813
+Nantou,1,19,0.937
+Nantou,1,20,0.148
+Nantou,1,21,0.122
+Nantou,1,22,0.277
+Nantou,1,23,0.425
+Nantou,2,0,0.351
+Nantou,2,1,0.236
+Nantou,2,2,0.226
+Nantou,2,3,0.184
+Nantou,2,4,0.112
+Nantou,2,5,0.172
+Nantou,2,6,0.391
+Nantou,2,7,0.783
+Nantou,2,8,0.899
+Nantou,2,9,0.679
+Nantou,2,10,0.506
+Nantou,2,11,0.45
+Nantou,2,12,0.545
+Nantou,2,13,0.368
+Nantou,2,14,0.411
+Nantou,2,15,0.439
+Nantou,2,16,0.495
+Nantou,2,17,0.959
+Nantou,2,18,0.891
+Nantou,2,19,0.777
+Nantou,2,20,0.158
+Nantou,2,21,0.231
+Nantou,2,22,0.394
+Nantou,2,23,0.053
+Nantou,3,0,0.263
+Nantou,3,1,0.235
+Nantou,3,2,0.279
+Nantou,3,3,0.247
+Nantou,3,4,0.222
+Nantou,3,5,0.149
+Nantou,3,6,0.061
+Nantou,3,7,0.973
+Nantou,3,8,0.978
+Nantou,3,9,0.764
+Nantou,3,10,0.628
+Nantou,3,11,0.551
+Nantou,3,12,0.446
+Nantou,3,13,0.607
+Nantou,3,14,0.553
+Nantou,3,15,0.563
+Nantou,3,16,0.568
+Nantou,3,17,0.763
+Nantou,3,18,0.907
+Nantou,3,19,0.903
+Nantou,3,20,0.143
+Nantou,3,21,0.399
+Nantou,3,22,0.248
+Nantou,3,23,0.31
+Nantou,4,0,0.4
+Nantou,4,1,0.277
+Nantou,4,2,0.206
+Nantou,4,3,0.076
+Nantou,4,4,0.148
+Nantou,4,5,0.132
+Nantou,4,6,0.284
+Nantou,4,7,0.777
+Nantou,4,8,0.868
+Nantou,4,9,0.961
+Nantou,4,10,0.59
+Nantou,4,11,0.534
+Nantou,4,12,0.45
+Nantou,4,13,0.396
+Nantou,4,14,0.427
+Nantou,4,15,0.427
+Nantou,4,16,0.564
+Nantou,4,17,0.96
+Nantou,4,18,0.935
+Nantou,4,19,0.983
+Nantou,4,20,0.042
+Nantou,4,21,0.264
+Nantou,4,22,0.147
+Nantou,4,23,0.177
+Nantou,5,0,0.205
+Nantou,5,1,0.249
+Nantou,5,2,0.414
+Nantou,5,3,0.304
+Nantou,5,4,0.219
+Nantou,5,5,0.105
+Nantou,5,6,0.265
+Nantou,5,7,0.301
+Nantou,5,8,0.257
+Nantou,5,9,0.054
+Nantou,5,10,0.225
+Nantou,5,11,0.381
+Nantou,5,12,0.562
+Nantou,5,13,0.745
+Nantou,5,14,0.686
+Nantou,5,15,0.548
+Nantou,5,16,0.418
+Nantou,5,17,0.37
+Nantou,5,18,0.654
+Nantou,5,19,0.578
+Nantou,5,20,0.171
+Nantou,5,21,0.128
+Nantou,5,22,0.134
+Nantou,5,23,0.083
+Nantou,6,0,0.305
+Nantou,6,1,0.142
+Nantou,6,2,0.382
+Nantou,6,3,0.145
+Nantou,6,4,0.292
+Nantou,6,5,0.075
+Nantou,6,6,0.149
+Nantou,6,7,0.291
+Nantou,6,8,0.299
+Nantou,6,9,0.294
+Nantou,6,10,0.19
+Nantou,6,11,0.241
+Nantou,6,12,0.661
+Nantou,6,13,0.575
+Nantou,6,14,0.572
+Nantou,6,15,0.66
+Nantou,6,16,0.736
+Nantou,6,17,0.478
+Nantou,6,18,0.574
+Nantou,6,19,0.619
+Nantou,6,20,0.313
+Nantou,6,21,0.134
+Nantou,6,22,0.034
+Nantou,6,23,0.142
+Yunlin,0,0,0.238
+Yunlin,0,1,0.094
+Yunlin,0,2,0.267
+Yunlin,0,3,0.33
+Yunlin,0,4,0.253
+Yunlin,0,5,0.254
+Yunlin,0,6,0.226
+Yunlin,0,7,0.874
+Yunlin,0,8,0.865
+Yunlin,0,9,0.797
+Yunlin,0,10,0.528
+Yunlin,0,11,0.585
+Yunlin,0,12,0.608
+Yunlin,0,13,0.503
+Yunlin,0,14,0.522
+Yunlin,0,15,0.503
+Yunlin,0,16,0.462
+Yunlin,0,17,0.931
+Yunlin,0,18,0.964
+Yunlin,0,19,0.807
+Yunlin,0,20,0.156
+Yunlin,0,21,0.39
+Yunlin,0,22,0.426
+Yunlin,0,23,0.338
+Yunlin,1,0,0.386
+Yunlin,1,1,0.375
+Yunlin,1,2,0.438
+Yunlin,1,3,0.262
+Yunlin,1,4,0.229
+Yunlin,1,5,0.239
+Yunlin,1,6,0.237
+Yunlin,1,7,0.804
+Yunlin,1,8,0.727
+Yunlin,1,9,0.913
+Yunlin,1,10,0.462
+Yunlin,1,11,0.442
+Yunlin,1,12,0.447
+Yunlin,1,13,0.466
+Yunlin,1,14,0.528
+Yunlin,1,15,0.584
+Yunlin,1,16,0.526
+Yunlin,1,17,0.77
+Yunlin,1,18,0.975
+Yunlin,1,19,0.749
+Yunlin,1,20,0.363
+Yunlin,1,21,0.305
+Yunlin,1,22,0.334
+Yunlin,1,23,0.412
+Yunlin,2,0,0.294
+Yunlin,2,1,0.294
+Yunlin,2,2,0.237
+Yunlin,2,3,0.226
+Yunlin,2,4,0.44
+Yunlin,2,5,0.111
+Yunlin,2,6,0.289
+Yunlin,2,7,0.733
+Yunlin,2,8,0.839
+Yunlin,2,9,1.0
+Yunlin,2,10,0.53
+Yunlin,2,11,0.432
+Yunlin,2,12,0.415
+Yunlin,2,13,0.444
+Yunlin,2,14,0.444
+Yunlin,2,15,0.58
+Yunlin,2,16,0.485
+Yunlin,2,17,0.679
+Yunlin,2,18,0.743
+Yunlin,2,19,0.91
+Yunlin,2,20,0.276
+Yunlin,2,21,0.06
+Yunlin,2,22,0.137
+Yunlin,2,23,0.276
+Yunlin,3,0,0.084
+Yunlin,3,1,0.072
+Yunlin,3,2,0.056
+Yunlin,3,3,0.267
+Yunlin,3,4,0.146
+Yunlin,3,5,0.226
+Yunlin,3,6,0.101
+Yunlin,3,7,0.992
+Yunlin,3,8,0.938
+Yunlin,3,9,0.876
+Yunlin,3,10,0.544
+Yunlin,3,11,0.393
+Yunlin,3,12,0.616
+Yunlin,3,13,0.479
+Yunlin,3,14,0.559
+Yunlin,3,15,0.524
+Yunlin,3,16,0.511
+Yunlin,3,17,0.756
+Yunlin,3,18,0.787
+Yunlin,3,19,0.947
+Yunlin,3,20,0.215
+Yunlin,3,21,0.171
+Yunlin,3,22,0.203
+Yunlin,3,23,0.432
+Yunlin,4,0,0.217
+Yunlin,4,1,0.128
+Yunlin,4,2,0.304
+Yunlin,4,3,0.188
+Yunlin,4,4,0.378
+Yunlin,4,5,0.162
+Yunlin,4,6,0.164
+Yunlin,4,7,0.839
+Yunlin,4,8,0.815
+Yunlin,4,9,0.987
+Yunlin,4,10,0.455
+Yunlin,4,11,0.462
+Yunlin,4,12,0.6
+Yunlin,4,13,0.597
+Yunlin,4,14,0.611
+Yunlin,4,15,0.473
+Yunlin,4,16,0.562
+Yunlin,4,17,0.88
+Yunlin,4,18,0.992
+Yunlin,4,19,0.872
+Yunlin,4,20,0.148
+Yunlin,4,21,0.348
+Yunlin,4,22,0.3
+Yunlin,4,23,0.292
+Yunlin,5,0,0.228
+Yunlin,5,1,0.175
+Yunlin,5,2,0.235
+Yunlin,5,3,0.282
+Yunlin,5,4,0.274
+Yunlin,5,5,0.306
+Yunlin,5,6,0.121
+Yunlin,5,7,0.161
+Yunlin,5,8,0.176
+Yunlin,5,9,0.299
+Yunlin,5,10,0.241
+Yunlin,5,11,0.181
+Yunlin,5,12,0.523
+Yunlin,5,13,0.527
+Yunlin,5,14,0.551
+Yunlin,5,15,0.535
+Yunlin,5,16,0.566
+Yunlin,5,17,0.557
+Yunlin,5,18,0.546
+Yunlin,5,19,0.491
+Yunlin,5,20,0.298
+Yunlin,5,21,0.237
+Yunlin,5,22,0.162
+Yunlin,5,23,0.124
+Yunlin,6,0,0.149
+Yunlin,6,1,0.432
+Yunlin,6,2,0.08
+Yunlin,6,3,0.341
+Yunlin,6,4,0.279
+Yunlin,6,5,0.267
+Yunlin,6,6,0.138
+Yunlin,6,7,0.196
+Yunlin,6,8,0.202
+Yunlin,6,9,0.278
+Yunlin,6,10,0.299
+Yunlin,6,11,0.114
+Yunlin,6,12,0.626
+Yunlin,6,13,0.447
+Yunlin,6,14,0.425
+Yunlin,6,15,0.49
+Yunlin,6,16,0.651
+Yunlin,6,17,0.494
+Yunlin,6,18,0.691
+Yunlin,6,19,0.366
+Yunlin,6,20,0.185
+Yunlin,6,21,0.185
+Yunlin,6,22,0.269
+Yunlin,6,23,0.141
+Chiayi,0,0,0.327
+Chiayi,0,1,0.213
+Chiayi,0,2,0.302
+Chiayi,0,3,0.159
+Chiayi,0,4,0.28
+Chiayi,0,5,0.123
+Chiayi,0,6,0.367
+Chiayi,0,7,0.906
+Chiayi,0,8,0.858
+Chiayi,0,9,0.838
+Chiayi,0,10,0.474
+Chiayi,0,11,0.592
+Chiayi,0,12,0.432
+Chiayi,0,13,0.421
+Chiayi,0,14,0.625
+Chiayi,0,15,0.588
+Chiayi,0,16,0.43
+Chiayi,0,17,0.916
+Chiayi,0,18,0.889
+Chiayi,0,19,0.932
+Chiayi,0,20,0.325
+Chiayi,0,21,0.173
+Chiayi,0,22,0.284
+Chiayi,0,23,0.283
+Chiayi,1,0,0.04
+Chiayi,1,1,0.283
+Chiayi,1,2,0.257
+Chiayi,1,3,0.399
+Chiayi,1,4,0.236
+Chiayi,1,5,0.221
+Chiayi,1,6,0.209
+Chiayi,1,7,0.895
+Chiayi,1,8,0.873
+Chiayi,1,9,0.769
+Chiayi,1,10,0.537
+Chiayi,1,11,0.601
+Chiayi,1,12,0.573
+Chiayi,1,13,0.507
+Chiayi,1,14,0.427
+Chiayi,1,15,0.543
+Chiayi,1,16,0.437
+Chiayi,1,17,0.841
+Chiayi,1,18,1.0
+Chiayi,1,19,0.917
+Chiayi,1,20,0.298
+Chiayi,1,21,0.328
+Chiayi,1,22,0.125
+Chiayi,1,23,0.296
+Chiayi,2,0,0.332
+Chiayi,2,1,0.159
+Chiayi,2,2,0.168
+Chiayi,2,3,0.143
+Chiayi,2,4,0.452
+Chiayi,2,5,0.324
+Chiayi,2,6,0.264
+Chiayi,2,7,0.64
+Chiayi,2,8,0.738
+Chiayi,2,9,0.93
+Chiayi,2,10,0.404
+Chiayi,2,11,0.508
+Chiayi,2,12,0.37
+Chiayi,2,13,0.378
+Chiayi,2,14,0.42
+Chiayi,2,15,0.375
+Chiayi,2,16,0.544
+Chiayi,2,17,0.824
+Chiayi,2,18,0.969
+Chiayi,2,19,0.882
+Chiayi,2,20,0.177
+Chiayi,2,21,0.352
+Chiayi,2,22,0.259
+Chiayi,2,23,0.126
+Chiayi,3,0,0.429
+Chiayi,3,1,0.144
+Chiayi,3,2,0.371
+Chiayi,3,3,0.21
+Chiayi,3,4,0.176
+Chiayi,3,5,0.146
+Chiayi,3,6,0.276
+Chiayi,3,7,0.978
+Chiayi,3,8,0.807
+Chiayi,3,9,1.0
+Chiayi,3,10,0.586
+Chiayi,3,11,0.652
+Chiayi,3,12,0.515
+Chiayi,3,13,0.563
+Chiayi,3,14,0.491
+Chiayi,3,15,0.478
+Chiayi,3,16,0.541
+Chiayi,3,17,0.692
+Chiayi,3,18,0.947
+Chiayi,3,19,0.977
+Chiayi,3,20,0.086
+Chiayi,3,21,0.149
+Chiayi,3,22,0.296
+Chiayi,3,23,0.116
+Chiayi,4,0,0.074
+Chiayi,4,1,0.123
+Chiayi,4,2,0.246
+Chiayi,4,3,0.136
+Chiayi,4,4,0.343
+Chiayi,4,5,0.058
+Chiayi,4,6,0.215
+Chiayi,4,7,0.757
+Chiayi,4,8,0.825
+Chiayi,4,9,0.782
+Chiayi,4,10,0.551
+Chiayi,4,11,0.467
+Chiayi,4,12,0.586
+Chiayi,4,13,0.554
+Chiayi,4,14,0.417
+Chiayi,4,15,0.346
+Chiayi,4,16,0.411
+Chiayi,4,17,0.972
+Chiayi,4,18,0.987
+Chiayi,4,19,0.679
+Chiayi,4,20,0.31
+Chiayi,4,21,0.197
+Chiayi,4,22,0.217
+Chiayi,4,23,0.071
+Chiayi,5,0,0.306
+Chiayi,5,1,0.242
+Chiayi,5,2,0.173
+Chiayi,5,3,0.21
+Chiayi,5,4,0.174
+Chiayi,5,5,0.223
+Chiayi,5,6,0.275
+Chiayi,5,7,0.269
+Chiayi,5,8,0.386
+Chiayi,5,9,0.233
+Chiayi,5,10,0.403
+Chiayi,5,11,0.072
+Chiayi,5,12,0.595
+Chiayi,5,13,0.579
+Chiayi,5,14,0.679
+Chiayi,5,15,0.692
+Chiayi,5,16,0.489
+Chiayi,5,17,0.476
+Chiayi,5,18,0.574
+Chiayi,5,19,0.38
+Chiayi,5,20,0.21
+Chiayi,5,21,0.203
+Chiayi,5,22,0.448
+Chiayi,5,23,0.255
+Chiayi,6,0,0.152
+Chiayi,6,1,0.228
+Chiayi,6,2,0.179
+Chiayi,6,3,0.399
+Chiayi,6,4,0.265
+Chiayi,6,5,0.152
+Chiayi,6,6,0.3
+Chiayi,6,7,0.13
+Chiayi,6,8,0.261
+Chiayi,6,9,0.332
+Chiayi,6,10,0.202
+Chiayi,6,11,0.205
+Chiayi,6,12,0.645
+Chiayi,6,13,0.513
+Chiayi,6,14,0.596
+Chiayi,6,15,0.593
+Chiayi,6,16,0.429
+Chiayi,6,17,0.628
+Chiayi,6,18,0.638
+Chiayi,6,19,0.493
+Chiayi,6,20,0.216
+Chiayi,6,21,0.257
+Chiayi,6,22,0.358
+Chiayi,6,23,0.269
+Chiayi County,0,0,0.201
+Chiayi County,0,1,0.354
+Chiayi County,0,2,0.128
+Chiayi County,0,3,0.316
+Chiayi County,0,4,0.165
+Chiayi County,0,5,0.223
+Chiayi County,0,6,0.21
+Chiayi County,0,7,0.893
+Chiayi County,0,8,0.844
+Chiayi County,0,9,0.847
+Chiayi County,0,10,0.468
+Chiayi County,0,11,0.534
+Chiayi County,0,12,0.345
+Chiayi County,0,13,0.381
+Chiayi County,0,14,0.561
+Chiayi County,0,15,0.645
+Chiayi County,0,16,0.408
+Chiayi County,0,17,0.911
+Chiayi County,0,18,0.91
+Chiayi County,0,19,0.867
+Chiayi County,0,20,0.286
+Chiayi County,0,21,0.167
+Chiayi County,0,22,0.216
+Chiayi County,0,23,0.297
+Chiayi County,1,0,0.294
+Chiayi County,1,1,0.237
+Chiayi County,1,2,0.124
+Chiayi County,1,3,0.112
+Chiayi County,1,4,0.074
+Chiayi County,1,5,0.089
+Chiayi County,1,6,0.232
+Chiayi County,1,7,0.814
+Chiayi County,1,8,0.812
+Chiayi County,1,9,0.702
+Chiayi County,1,10,0.599
+Chiayi County,1,11,0.446
+Chiayi County,1,12,0.426
+Chiayi County,1,13,0.486
+Chiayi County,1,14,0.611
+Chiayi County,1,15,0.493
+Chiayi County,1,16,0.496
+Chiayi County,1,17,0.588
+Chiayi County,1,18,0.806
+Chiayi County,1,19,0.78
+Chiayi County,1,20,0.341
+Chiayi County,1,21,0.291
+Chiayi County,1,22,0.336
+Chiayi County,1,23,0.17
+Chiayi County,2,0,0.157
+Chiayi County,2,1,0.12
+Chiayi County,2,2,0.064
+Chiayi County,2,3,0.369
+Chiayi County,2,4,0.291
+Chiayi County,2,5,0.427
+Chiayi County,2,6,0.146
+Chiayi County,2,7,0.901
+Chiayi County,2,8,0.889
+Chiayi County,2,9,0.792
+Chiayi County,2,10,0.565
+Chiayi County,2,11,0.487
+Chiayi County,2,12,0.535
+Chiayi County,2,13,0.497
+Chiayi County,2,14,0.502
+Chiayi County,2,15,0.437
+Chiayi County,2,16,0.449
+Chiayi County,2,17,0.814
+Chiayi County,2,18,0.897
+Chiayi County,2,19,1.0
+Chiayi County,2,20,0.211
+Chiayi County,2,21,0.431
+Chiayi County,2,22,0.155
+Chiayi County,2,23,0.114
+Chiayi County,3,0,0.301
+Chiayi County,3,1,0.119
+Chiayi County,3,2,0.178
+Chiayi County,3,3,0.254
+Chiayi County,3,4,0.335
+Chiayi County,3,5,0.528
+Chiayi County,3,6,0.157
+Chiayi County,3,7,1.0
+Chiayi County,3,8,0.965
+Chiayi County,3,9,0.773
+Chiayi County,3,10,0.411
+Chiayi County,3,11,0.586
+Chiayi County,3,12,0.422
+Chiayi County,3,13,0.436
+Chiayi County,3,14,0.453
+Chiayi County,3,15,0.603
+Chiayi County,3,16,0.597
+Chiayi County,3,17,0.985
+Chiayi County,3,18,1.0
+Chiayi County,3,19,0.835
+Chiayi County,3,20,0.326
+Chiayi County,3,21,0.16
+Chiayi County,3,22,0.285
+Chiayi County,3,23,0.392
+Chiayi County,4,0,0.114
+Chiayi County,4,1,0.202
+Chiayi County,4,2,0.143
+Chiayi County,4,3,0.235
+Chiayi County,4,4,0.383
+Chiayi County,4,5,0.209
+Chiayi County,4,6,0.192
+Chiayi County,4,7,0.764
+Chiayi County,4,8,0.923
+Chiayi County,4,9,0.773
+Chiayi County,4,10,0.432
+Chiayi County,4,11,0.461
+Chiayi County,4,12,0.608
+Chiayi County,4,13,0.48
+Chiayi County,4,14,0.448
+Chiayi County,4,15,0.456
+Chiayi County,4,16,0.448
+Chiayi County,4,17,0.916
+Chiayi County,4,18,0.684
+Chiayi County,4,19,0.721
+Chiayi County,4,20,0.191
+Chiayi County,4,21,0.23
+Chiayi County,4,22,0.205
+Chiayi County,4,23,0.252
+Chiayi County,5,0,0.281
+Chiayi County,5,1,0.246
+Chiayi County,5,2,0.375
+Chiayi County,5,3,0.053
+Chiayi County,5,4,0.362
+Chiayi County,5,5,0.145
+Chiayi County,5,6,0.26
+Chiayi County,5,7,0.147
+Chiayi County,5,8,0.24
+Chiayi County,5,9,0.297
+Chiayi County,5,10,0.254
+Chiayi County,5,11,0.133
+Chiayi County,5,12,0.635
+Chiayi County,5,13,0.604
+Chiayi County,5,14,0.481
+Chiayi County,5,15,0.515
+Chiayi County,5,16,0.489
+Chiayi County,5,17,0.468
+Chiayi County,5,18,0.547
+Chiayi County,5,19,0.464
+Chiayi County,5,20,0.169
+Chiayi County,5,21,0.375
+Chiayi County,5,22,0.271
+Chiayi County,5,23,0.215
+Chiayi County,6,0,0.323
+Chiayi County,6,1,0.294
+Chiayi County,6,2,0.24
+Chiayi County,6,3,0.188
+Chiayi County,6,4,0.075
+Chiayi County,6,5,0.133
+Chiayi County,6,6,0.258
+Chiayi County,6,7,0.225
+Chiayi County,6,8,0.191
+Chiayi County,6,9,0.235
+Chiayi County,6,10,0.238
+Chiayi County,6,11,0.284
+Chiayi County,6,12,0.461
+Chiayi County,6,13,0.572
+Chiayi County,6,14,0.522
+Chiayi County,6,15,0.478
+Chiayi County,6,16,0.61
+Chiayi County,6,17,0.721
+Chiayi County,6,18,0.445
+Chiayi County,6,19,0.672
+Chiayi County,6,20,0.32
+Chiayi County,6,21,0.304
+Chiayi County,6,22,0.155
+Chiayi County,6,23,0.183
+Pingtung,0,0,0.202
+Pingtung,0,1,0.35
+Pingtung,0,2,0.192
+Pingtung,0,3,0.274
+Pingtung,0,4,0.015
+Pingtung,0,5,0.344
+Pingtung,0,6,0.195
+Pingtung,0,7,0.693
+Pingtung,0,8,0.829
+Pingtung,0,9,0.9
+Pingtung,0,10,0.478
+Pingtung,0,11,0.572
+Pingtung,0,12,0.436
+Pingtung,0,13,0.575
+Pingtung,0,14,0.601
+Pingtung,0,15,0.457
+Pingtung,0,16,0.604
+Pingtung,0,17,0.854
+Pingtung,0,18,0.904
+Pingtung,0,19,0.834
+Pingtung,0,20,0.199
+Pingtung,0,21,0.127
+Pingtung,0,22,0.321
+Pingtung,0,23,0.28
+Pingtung,1,0,0.18
+Pingtung,1,1,0.243
+Pingtung,1,2,0.135
+Pingtung,1,3,0.281
+Pingtung,1,4,0.331
+Pingtung,1,5,0.362
+Pingtung,1,6,0.367
+Pingtung,1,7,0.743
+Pingtung,1,8,0.756
+Pingtung,1,9,0.769
+Pingtung,1,10,0.454
+Pingtung,1,11,0.443
+Pingtung,1,12,0.455
+Pingtung,1,13,0.427
+Pingtung,1,14,0.439
+Pingtung,1,15,0.426
+Pingtung,1,16,0.498
+Pingtung,1,17,0.734
+Pingtung,1,18,0.849
+Pingtung,1,19,0.722
+Pingtung,1,20,0.358
+Pingtung,1,21,0.258
+Pingtung,1,22,0.451
+Pingtung,1,23,0.267
+Pingtung,2,0,0.114
+Pingtung,2,1,0.095
+Pingtung,2,2,0.116
+Pingtung,2,3,0.275
+Pingtung,2,4,0.287
+Pingtung,2,5,0.228
+Pingtung,2,6,0.361
+Pingtung,2,7,1.0
+Pingtung,2,8,0.729
+Pingtung,2,9,0.771
+Pingtung,2,10,0.471
+Pingtung,2,11,0.449
+Pingtung,2,12,0.489
+Pingtung,2,13,0.463
+Pingtung,2,14,0.385
+Pingtung,2,15,0.56
+Pingtung,2,16,0.591
+Pingtung,2,17,0.886
+Pingtung,2,18,0.658
+Pingtung,2,19,1.0
+Pingtung,2,20,0.161
+Pingtung,2,21,0.328
+Pingtung,2,22,0.243
+Pingtung,2,23,0.153
+Pingtung,3,0,0.21
+Pingtung,3,1,0.222
+Pingtung,3,2,0.308
+Pingtung,3,3,0.248
+Pingtung,3,4,0.225
+Pingtung,3,5,0.366
+Pingtung,3,6,0.186
+Pingtung,3,7,0.941
+Pingtung,3,8,0.98
+Pingtung,3,9,0.703
+Pingtung,3,10,0.438
+Pingtung,3,11,0.555
+Pingtung,3,12,0.526
+Pingtung,3,13,0.488
+Pingtung,3,14,0.4
+Pingtung,3,15,0.426
+Pingtung,3,16,0.579
+Pingtung,3,17,0.976
+Pingtung,3,18,0.858
+Pingtung,3,19,0.864
+Pingtung,3,20,0.215
+Pingtung,3,21,0.28
+Pingtung,3,22,0.353
+Pingtung,3,23,0.123
+Pingtung,4,0,0.133
+Pingtung,4,1,0.204
+Pingtung,4,2,0.179
+Pingtung,4,3,0.185
+Pingtung,4,4,0.132
+Pingtung,4,5,0.253
+Pingtung,4,6,0.392
+Pingtung,4,7,0.956
+Pingtung,4,8,0.758
+Pingtung,4,9,0.955
+Pingtung,4,10,0.638
+Pingtung,4,11,0.575
+Pingtung,4,12,0.407
+Pingtung,4,13,0.559
+Pingtung,4,14,0.41
+Pingtung,4,15,0.601
+Pingtung,4,16,0.498
+Pingtung,4,17,0.651
+Pingtung,4,18,0.74
+Pingtung,4,19,0.835
+Pingtung,4,20,0.083
+Pingtung,4,21,0.368
+Pingtung,4,22,0.11
+Pingtung,4,23,0.268
+Pingtung,5,0,0.197
+Pingtung,5,1,0.118
+Pingtung,5,2,0.335
+Pingtung,5,3,0.125
+Pingtung,5,4,0.122
+Pingtung,5,5,0.255
+Pingtung,5,6,0.354
+Pingtung,5,7,0.236
+Pingtung,5,8,0.113
+Pingtung,5,9,0.132
+Pingtung,5,10,0.416
+Pingtung,5,11,0.349
+Pingtung,5,12,0.448
+Pingtung,5,13,0.664
+Pingtung,5,14,0.681
+Pingtung,5,15,0.579
+Pingtung,5,16,0.534
+Pingtung,5,17,0.374
+Pingtung,5,18,0.445
+Pingtung,5,19,0.644
+Pingtung,5,20,0.273
+Pingtung,5,21,0.247
+Pingtung,5,22,0.263
+Pingtung,5,23,0.157
+Pingtung,6,0,0.421
+Pingtung,6,1,0.239
+Pingtung,6,2,0.144
+Pingtung,6,3,0.383
+Pingtung,6,4,0.316
+Pingtung,6,5,0.37
+Pingtung,6,6,0.38
+Pingtung,6,7,0.404
+Pingtung,6,8,0.468
+Pingtung,6,9,0.378
+Pingtung,6,10,0.027
+Pingtung,6,11,0.194
+Pingtung,6,12,0.425
+Pingtung,6,13,0.573
+Pingtung,6,14,0.555
+Pingtung,6,15,0.459
+Pingtung,6,16,0.393
+Pingtung,6,17,0.392
+Pingtung,6,18,0.571
+Pingtung,6,19,0.539
+Pingtung,6,20,0.217
+Pingtung,6,21,0.219
+Pingtung,6,22,0.16
+Pingtung,6,23,0.146
+Yilan,0,0,0.234
+Yilan,0,1,0.133
+Yilan,0,2,0.192
+Yilan,0,3,0.25
+Yilan,0,4,0.278
+Yilan,0,5,0.306
+Yilan,0,6,0.207
+Yilan,0,7,0.94
+Yilan,0,8,0.77
+Yilan,0,9,0.774
+Yilan,0,10,0.574
+Yilan,0,11,0.521
+Yilan,0,12,0.613
+Yilan,0,13,0.452
+Yilan,0,14,0.376
+Yilan,0,15,0.613
+Yilan,0,16,0.419
+Yilan,0,17,0.775
+Yilan,0,18,0.75
+Yilan,0,19,0.787
+Yilan,0,20,0.322
+Yilan,0,21,0.26
+Yilan,0,22,0.227
+Yilan,0,23,0.259
+Yilan,1,0,0.218
+Yilan,1,1,0.174
+Yilan,1,2,0.312
+Yilan,1,3,0.199
+Yilan,1,4,0.206
+Yilan,1,5,0.322
+Yilan,1,6,0.271
+Yilan,1,7,0.734
+Yilan,1,8,1.0
+Yilan,1,9,0.932
+Yilan,1,10,0.578
+Yilan,1,11,0.597
+Yilan,1,12,0.44
+Yilan,1,13,0.385
+Yilan,1,14,0.592
+Yilan,1,15,0.364
+Yilan,1,16,0.521
+Yilan,1,17,0.67
+Yilan,1,18,0.925
+Yilan,1,19,0.83
+Yilan,1,20,0.222
+Yilan,1,21,0.176
+Yilan,1,22,0.293
+Yilan,1,23,0.073
+Yilan,2,0,0.278
+Yilan,2,1,0.066
+Yilan,2,2,0.266
+Yilan,2,3,0.317
+Yilan,2,4,0.243
+Yilan,2,5,0.203
+Yilan,2,6,0.258
+Yilan,2,7,0.982
+Yilan,2,8,0.932
+Yilan,2,9,0.849
+Yilan,2,10,0.446
+Yilan,2,11,0.511
+Yilan,2,12,0.464
+Yilan,2,13,0.307
+Yilan,2,14,0.525
+Yilan,2,15,0.478
+Yilan,2,16,0.573
+Yilan,2,17,0.968
+Yilan,2,18,0.871
+Yilan,2,19,0.732
+Yilan,2,20,0.145
+Yilan,2,21,0.3
+Yilan,2,22,0.185
+Yilan,2,23,0.232
+Yilan,3,0,0.256
+Yilan,3,1,0.247
+Yilan,3,2,0.37
+Yilan,3,3,0.283
+Yilan,3,4,0.359
+Yilan,3,5,0.32
+Yilan,3,6,0.243
+Yilan,3,7,0.784
+Yilan,3,8,1.0
+Yilan,3,9,1.0
+Yilan,3,10,0.546
+Yilan,3,11,0.408
+Yilan,3,12,0.396
+Yilan,3,13,0.412
+Yilan,3,14,0.509
+Yilan,3,15,0.494
+Yilan,3,16,0.464
+Yilan,3,17,0.941
+Yilan,3,18,0.934
+Yilan,3,19,0.998
+Yilan,3,20,0.294
+Yilan,3,21,0.313
+Yilan,3,22,0.21
+Yilan,3,23,0.212
+Yilan,4,0,0.118
+Yilan,4,1,0.203
+Yilan,4,2,0.238
+Yilan,4,3,0.216
+Yilan,4,4,0.354
+Yilan,4,5,0.115
+Yilan,4,6,0.271
+Yilan,4,7,0.89
+Yilan,4,8,0.79
+Yilan,4,9,0.848
+Yilan,4,10,0.405
+Yilan,4,11,0.488
+Yilan,4,12,0.426
+Yilan,4,13,0.521
+Yilan,4,14,0.39
+Yilan,4,15,0.542
+Yilan,4,16,0.386
+Yilan,4,17,0.908
+Yilan,4,18,0.824
+Yilan,4,19,0.838
+Yilan,4,20,0.152
+Yilan,4,21,0.401
+Yilan,4,22,0.284
+Yilan,4,23,0.295
+Yilan,5,0,0.351
+Yilan,5,1,0.178
+Yilan,5,2,0.203
+Yilan,5,3,0.203
+Yilan,5,4,0.16
+Yilan,5,5,0.116
+Yilan,5,6,0.24
+Yilan,5,7,0.287
+Yilan,5,8,0.324
+Yilan,5,9,0.297
+Yilan,5,10,0.148
+Yilan,5,11,0.395
+Yilan,5,12,0.455
+Yilan,5,13,0.502
+Yilan,5,14,0.498
+Yilan,5,15,0.55
+Yilan,5,16,0.66
+Yilan,5,17,0.493
+Yilan,5,18,0.574
+Yilan,5,19,0.486
+Yilan,5,20,0.151
+Yilan,5,21,0.329
+Yilan,5,22,0.368
+Yilan,5,23,0.301
+Yilan,6,0,0.134
+Yilan,6,1,0.29
+Yilan,6,2,0.378
+Yilan,6,3,0.147
+Yilan,6,4,0.379
+Yilan,6,5,0.083
+Yilan,6,6,0.025
+Yilan,6,7,0.135
+Yilan,6,8,0.219
+Yilan,6,9,0.273
+Yilan,6,10,0.399
+Yilan,6,11,0.299
+Yilan,6,12,0.46
+Yilan,6,13,0.503
+Yilan,6,14,0.557
+Yilan,6,15,0.456
+Yilan,6,16,0.657
+Yilan,6,17,0.498
+Yilan,6,18,0.524
+Yilan,6,19,0.645
+Yilan,6,20,0.471
+Yilan,6,21,0.228
+Yilan,6,22,0.192
+Yilan,6,23,0.369
+Hualien,0,0,0.073
+Hualien,0,1,0.057
+Hualien,0,2,0.304
+Hualien,0,3,0.029
+Hualien,0,4,0.231
+Hualien,0,5,0.266
+Hualien,0,6,0.17
+Hualien,0,7,0.87
+Hualien,0,8,0.948
+Hualien,0,9,0.739
+Hualien,0,10,0.499
+Hualien,0,11,0.425
+Hualien,0,12,0.523
+Hualien,0,13,0.615
+Hualien,0,14,0.413
+Hualien,0,15,0.466
+Hualien,0,16,0.512
+Hualien,0,17,0.857
+Hualien,0,18,1.0
+Hualien,0,19,0.79
+Hualien,0,20,0.268
+Hualien,0,21,0.324
+Hualien,0,22,0.377
+Hualien,0,23,0.189
+Hualien,1,0,0.162
+Hualien,1,1,0.317
+Hualien,1,2,0.246
+Hualien,1,3,0.156
+Hualien,1,4,0.334
+Hualien,1,5,0.25
+Hualien,1,6,0.277
+Hualien,1,7,0.79
+Hualien,1,8,0.87
+Hualien,1,9,0.777
+Hualien,1,10,0.497
+Hualien,1,11,0.514
+Hualien,1,12,0.45
+Hualien,1,13,0.393
+Hualien,1,14,0.406
+Hualien,1,15,0.422
+Hualien,1,16,0.458
+Hualien,1,17,0.732
+Hualien,1,18,0.874
+Hualien,1,19,0.829
+Hualien,1,20,0.314
+Hualien,1,21,0.303
+Hualien,1,22,0.305
+Hualien,1,23,0.24
+Hualien,2,0,0.326
+Hualien,2,1,0.342
+Hualien,2,2,0.129
+Hualien,2,3,0.337
+Hualien,2,4,0.328
+Hualien,2,5,0.291
+Hualien,2,6,0.121
+Hualien,2,7,0.811
+Hualien,2,8,0.662
+Hualien,2,9,0.639
+Hualien,2,10,0.367
+Hualien,2,11,0.552
+Hualien,2,12,0.644
+Hualien,2,13,0.569
+Hualien,2,14,0.436
+Hualien,2,15,0.583
+Hualien,2,16,0.598
+Hualien,2,17,0.988
+Hualien,2,18,0.795
+Hualien,2,19,1.0
+Hualien,2,20,0.163
+Hualien,2,21,0.307
+Hualien,2,22,0.162
+Hualien,2,23,0.315
+Hualien,3,0,0.364
+Hualien,3,1,0.256
+Hualien,3,2,0.229
+Hualien,3,3,0.131
+Hualien,3,4,0.09
+Hualien,3,5,0.227
+Hualien,3,6,0.383
+Hualien,3,7,0.945
+Hualien,3,8,0.845
+Hualien,3,9,0.906
+Hualien,3,10,0.482
+Hualien,3,11,0.288
+Hualien,3,12,0.653
+Hualien,3,13,0.556
+Hualien,3,14,0.356
+Hualien,3,15,0.61
+Hualien,3,16,0.46
+Hualien,3,17,0.813
+Hualien,3,18,0.701
+Hualien,3,19,0.804
+Hualien,3,20,0.439
+Hualien,3,21,0.354
+Hualien,3,22,0.239
+Hualien,3,23,0.359
+Hualien,4,0,0.188
+Hualien,4,1,0.159
+Hualien,4,2,0.203
+Hualien,4,3,0.385
+Hualien,4,4,0.223
+Hualien,4,5,0.341
+Hualien,4,6,0.184
+Hualien,4,7,0.868
+Hualien,4,8,0.687
+Hualien,4,9,0.919
+Hualien,4,10,0.607
+Hualien,4,11,0.482
+Hualien,4,12,0.687
+Hualien,4,13,0.648
+Hualien,4,14,0.637
+Hualien,4,15,0.43
+Hualien,4,16,0.486
+Hualien,4,17,0.888
+Hualien,4,18,0.798
+Hualien,4,19,0.801
+Hualien,4,20,0.158
+Hualien,4,21,0.238
+Hualien,4,22,0.212
+Hualien,4,23,0.387
+Hualien,5,0,0.241
+Hualien,5,1,0.226
+Hualien,5,2,0.159
+Hualien,5,3,0.418
+Hualien,5,4,0.427
+Hualien,5,5,0.38
+Hualien,5,6,0.103
+Hualien,5,7,0.29
+Hualien,5,8,0.278
+Hualien,5,9,0.274
+Hualien,5,10,0.316
+Hualien,5,11,0.117
+Hualien,5,12,0.565
+Hualien,5,13,0.559
+Hualien,5,14,0.424
+Hualien,5,15,0.466
+Hualien,5,16,0.54
+Hualien,5,17,0.533
+Hualien,5,18,0.471
+Hualien,5,19,0.481
+Hualien,5,20,0.091
+Hualien,5,21,0.111
+Hualien,5,22,0.179
+Hualien,5,23,0.125
+Hualien,6,0,0.249
+Hualien,6,1,0.355
+Hualien,6,2,0.321
+Hualien,6,3,0.189
+Hualien,6,4,0.257
+Hualien,6,5,0.191
+Hualien,6,6,0.343
+Hualien,6,7,0.146
+Hualien,6,8,0.013
+Hualien,6,9,0.395
+Hualien,6,10,0.355
+Hualien,6,11,0.08
+Hualien,6,12,0.747
+Hualien,6,13,0.526
+Hualien,6,14,0.592
+Hualien,6,15,0.41
+Hualien,6,16,0.349
+Hualien,6,17,0.491
+Hualien,6,18,0.663
+Hualien,6,19,0.478
+Hualien,6,20,0.269
+Hualien,6,21,0.273
+Hualien,6,22,0.191
+Hualien,6,23,0.149
+Taitung,0,0,0.181
+Taitung,0,1,0.456
+Taitung,0,2,0.124
+Taitung,0,3,0.469
+Taitung,0,4,0.246
+Taitung,0,5,0.385
+Taitung,0,6,0.125
+Taitung,0,7,0.926
+Taitung,0,8,0.914
+Taitung,0,9,0.669
+Taitung,0,10,0.562
+Taitung,0,11,0.509
+Taitung,0,12,0.406
+Taitung,0,13,0.63
+Taitung,0,14,0.56
+Taitung,0,15,0.588
+Taitung,0,16,0.491
+Taitung,0,17,0.812
+Taitung,0,18,0.839
+Taitung,0,19,0.779
+Taitung,0,20,0.208
+Taitung,0,21,0.408
+Taitung,0,22,0.131
+Taitung,0,23,0.239
+Taitung,1,0,0.255
+Taitung,1,1,0.194
+Taitung,1,2,0.183
+Taitung,1,3,0.36
+Taitung,1,4,0.122
+Taitung,1,5,0.248
+Taitung,1,6,0.276
+Taitung,1,7,0.835
+Taitung,1,8,1.0
+Taitung,1,9,0.978
+Taitung,1,10,0.277
+Taitung,1,11,0.498
+Taitung,1,12,0.456
+Taitung,1,13,0.455
+Taitung,1,14,0.4
+Taitung,1,15,0.521
+Taitung,1,16,0.565
+Taitung,1,17,0.731
+Taitung,1,18,0.646
+Taitung,1,19,0.876
+Taitung,1,20,0.239
+Taitung,1,21,0.4
+Taitung,1,22,0.173
+Taitung,1,23,0.11
+Taitung,2,0,0.302
+Taitung,2,1,0.297
+Taitung,2,2,0.099
+Taitung,2,3,0.289
+Taitung,2,4,0.201
+Taitung,2,5,0.422
+Taitung,2,6,0.363
+Taitung,2,7,0.915
+Taitung,2,8,0.731
+Taitung,2,9,0.929
+Taitung,2,10,0.507
+Taitung,2,11,0.444
+Taitung,2,12,0.45
+Taitung,2,13,0.547
+Taitung,2,14,0.48
+Taitung,2,15,0.663
+Taitung,2,16,0.656
+Taitung,2,17,0.858
+Taitung,2,18,0.774
+Taitung,2,19,0.934
+Taitung,2,20,0.21
+Taitung,2,21,0.271
+Taitung,2,22,0.321
+Taitung,2,23,0.375
+Taitung,3,0,0.092
+Taitung,3,1,0.313
+Taitung,3,2,0.356
+Taitung,3,3,0.103
+Taitung,3,4,0.259
+Taitung,3,5,0.151
+Taitung,3,6,0.176
+Taitung,3,7,0.722
+Taitung,3,8,0.702
+Taitung,3,9,0.811
+Taitung,3,10,0.497
+Taitung,3,11,0.609
+Taitung,3,12,0.418
+Taitung,3,13,0.473
+Taitung,3,14,0.383
+Taitung,3,15,0.358
+Taitung,3,16,0.409
+Taitung,3,17,0.801
+Taitung,3,18,0.862
+Taitung,3,19,0.786
+Taitung,3,20,0.142
+Taitung,3,21,0.453
+Taitung,3,22,0.144
+Taitung,3,23,0.094
+Taitung,4,0,0.122
+Taitung,4,1,0.32
+Taitung,4,2,0.359
+Taitung,4,3,0.308
+Taitung,4,4,0.423
+Taitung,4,5,0.338
+Taitung,4,6,0.327
+Taitung,4,7,0.93
+Taitung,4,8,0.908
+Taitung,4,9,0.747
+Taitung,4,10,0.599
+Taitung,4,11,0.569
+Taitung,4,12,0.518
+Taitung,4,13,0.38
+Taitung,4,14,0.429
+Taitung,4,15,0.547
+Taitung,4,16,0.451
+Taitung,4,17,0.936
+Taitung,4,18,0.967
+Taitung,4,19,0.751
+Taitung,4,20,0.245
+Taitung,4,21,0.268
+Taitung,4,22,0.342
+Taitung,4,23,0.209
+Taitung,5,0,0.286
+Taitung,5,1,0.267
+Taitung,5,2,0.24
+Taitung,5,3,0.365
+Taitung,5,4,0.077
+Taitung,5,5,0.153
+Taitung,5,6,0.278
+Taitung,5,7,0.272
+Taitung,5,8,0.183
+Taitung,5,9,0.032
+Taitung,5,10,0.229
+Taitung,5,11,0.198
+Taitung,5,12,0.393
+Taitung,5,13,0.612
+Taitung,5,14,0.542
+Taitung,5,15,0.584
+Taitung,5,16,0.462
+Taitung,5,17,0.378
+Taitung,5,18,0.378
+Taitung,5,19,0.534
+Taitung,5,20,0.15
+Taitung,5,21,0.144
+Taitung,5,22,0.243
+Taitung,5,23,0.251
+Taitung,6,0,0.136
+Taitung,6,1,0.105
+Taitung,6,2,0.215
+Taitung,6,3,0.3
+Taitung,6,4,0.342
+Taitung,6,5,0.308
+Taitung,6,6,0.179
+Taitung,6,7,0.276
+Taitung,6,8,0.207
+Taitung,6,9,0.085
+Taitung,6,10,0.351
+Taitung,6,11,0.348
+Taitung,6,12,0.404
+Taitung,6,13,0.663
+Taitung,6,14,0.563
+Taitung,6,15,0.552
+Taitung,6,16,0.625
+Taitung,6,17,0.365
+Taitung,6,18,0.643
+Taitung,6,19,0.596
+Taitung,6,20,0.164
+Taitung,6,21,0.416
+Taitung,6,22,0.352
+Taitung,6,23,0.319
+Penghu,0,0,0.295
+Penghu,0,1,0.111
+Penghu,0,2,0.23
+Penghu,0,3,0.244
+Penghu,0,4,0.125
+Penghu,0,5,0.183
+Penghu,0,6,0.16
+Penghu,0,7,0.734
+Penghu,0,8,0.989
+Penghu,0,9,0.942
+Penghu,0,10,0.366
+Penghu,0,11,0.549
+Penghu,0,12,0.398
+Penghu,0,13,0.564
+Penghu,0,14,0.551
+Penghu,0,15,0.431
+Penghu,0,16,0.525
+Penghu,0,17,0.711
+Penghu,0,18,0.696
+Penghu,0,19,0.825
+Penghu,0,20,0.209
+Penghu,0,21,0.443
+Penghu,0,22,0.314
+Penghu,0,23,0.199
+Penghu,1,0,0.39
+Penghu,1,1,0.35
+Penghu,1,2,0.359
+Penghu,1,3,0.153
+Penghu,1,4,0.34
+Penghu,1,5,0.253
+Penghu,1,6,0.129
+Penghu,1,7,0.753
+Penghu,1,8,0.744
+Penghu,1,9,0.779
+Penghu,1,10,0.523
+Penghu,1,11,0.383
+Penghu,1,12,0.539
+Penghu,1,13,0.581
+Penghu,1,14,0.507
+Penghu,1,15,0.681
+Penghu,1,16,0.41
+Penghu,1,17,0.729
+Penghu,1,18,0.814
+Penghu,1,19,0.927
+Penghu,1,20,0.396
+Penghu,1,21,0.176
+Penghu,1,22,0.189
+Penghu,1,23,0.208
+Penghu,2,0,0.158
+Penghu,2,1,0.327
+Penghu,2,2,0.203
+Penghu,2,3,0.146
+Penghu,2,4,0.153
+Penghu,2,5,0.375
+Penghu,2,6,0.481
+Penghu,2,7,0.769
+Penghu,2,8,0.761
+Penghu,2,9,0.928
+Penghu,2,10,0.536
+Penghu,2,11,0.594
+Penghu,2,12,0.368
+Penghu,2,13,0.56
+Penghu,2,14,0.638
+Penghu,2,15,0.597
+Penghu,2,16,0.489
+Penghu,2,17,0.765
+Penghu,2,18,0.95
+Penghu,2,19,0.894
+Penghu,2,20,0.391
+Penghu,2,21,0.193
+Penghu,2,22,0.375
+Penghu,2,23,0.377
+Penghu,3,0,0.202
+Penghu,3,1,0.11
+Penghu,3,2,0.142
+Penghu,3,3,0.122
+Penghu,3,4,0.168
+Penghu,3,5,0.189
+Penghu,3,6,0.364
+Penghu,3,7,1.0
+Penghu,3,8,0.762
+Penghu,3,9,1.0
+Penghu,3,10,0.523
+Penghu,3,11,0.451
+Penghu,3,12,0.447
+Penghu,3,13,0.469
+Penghu,3,14,0.408
+Penghu,3,15,0.546
+Penghu,3,16,0.502
+Penghu,3,17,0.754
+Penghu,3,18,0.915
+Penghu,3,19,0.919
+Penghu,3,20,0.292
+Penghu,3,21,0.347
+Penghu,3,22,0.081
+Penghu,3,23,0.106
+Penghu,4,0,0.314
+Penghu,4,1,0.141
+Penghu,4,2,0.164
+Penghu,4,3,0.384
+Penghu,4,4,0.105
+Penghu,4,5,0.026
+Penghu,4,6,0.271
+Penghu,4,7,0.956
+Penghu,4,8,0.993
+Penghu,4,9,0.897
+Penghu,4,10,0.574
+Penghu,4,11,0.383
+Penghu,4,12,0.583
+Penghu,4,13,0.495
+Penghu,4,14,0.598
+Penghu,4,15,0.453
+Penghu,4,16,0.533
+Penghu,4,17,0.945
+Penghu,4,18,0.755
+Penghu,4,19,0.942
+Penghu,4,20,0.222
+Penghu,4,21,0.316
+Penghu,4,22,0.218
+Penghu,4,23,0.346
+Penghu,5,0,0.285
+Penghu,5,1,0.315
+Penghu,5,2,0.386
+Penghu,5,3,0.202
+Penghu,5,4,0.408
+Penghu,5,5,0.269
+Penghu,5,6,0.317
+Penghu,5,7,0.173
+Penghu,5,8,0.164
+Penghu,5,9,0.338
+Penghu,5,10,0.419
+Penghu,5,11,0.304
+Penghu,5,12,0.546
+Penghu,5,13,0.503
+Penghu,5,14,0.5
+Penghu,5,15,0.466
+Penghu,5,16,0.636
+Penghu,5,17,0.643
+Penghu,5,18,0.628
+Penghu,5,19,0.533
+Penghu,5,20,0.348
+Penghu,5,21,0.243
+Penghu,5,22,0.296
+Penghu,5,23,0.114
+Penghu,6,0,0.494
+Penghu,6,1,0.265
+Penghu,6,2,0.14
+Penghu,6,3,0.396
+Penghu,6,4,0.407
+Penghu,6,5,0.23
+Penghu,6,6,0.217
+Penghu,6,7,0.03
+Penghu,6,8,0.245
+Penghu,6,9,0.279
+Penghu,6,10,0.349
+Penghu,6,11,0.157
+Penghu,6,12,0.409
+Penghu,6,13,0.43
+Penghu,6,14,0.663
+Penghu,6,15,0.367
+Penghu,6,16,0.515
+Penghu,6,17,0.477
+Penghu,6,18,0.685
+Penghu,6,19,0.553
+Penghu,6,20,0.443
+Penghu,6,21,0.142
+Penghu,6,22,0.174
+Penghu,6,23,0.28
+Kinmen,0,0,0.39
+Kinmen,0,1,0.317
+Kinmen,0,2,0.431
+Kinmen,0,3,0.25
+Kinmen,0,4,0.237
+Kinmen,0,5,0.362
+Kinmen,0,6,0.161
+Kinmen,0,7,0.744
+Kinmen,0,8,0.796
+Kinmen,0,9,0.832
+Kinmen,0,10,0.524
+Kinmen,0,11,0.54
+Kinmen,0,12,0.657
+Kinmen,0,13,0.634
+Kinmen,0,14,0.407
+Kinmen,0,15,0.444
+Kinmen,0,16,0.452
+Kinmen,0,17,0.81
+Kinmen,0,18,0.773
+Kinmen,0,19,1.0
+Kinmen,0,20,0.256
+Kinmen,0,21,0.255
+Kinmen,0,22,0.32
+Kinmen,0,23,0.1
+Kinmen,1,0,0.193
+Kinmen,1,1,0.257
+Kinmen,1,2,0.216
+Kinmen,1,3,0.129
+Kinmen,1,4,0.333
+Kinmen,1,5,0.155
+Kinmen,1,6,0.064
+Kinmen,1,7,0.784
+Kinmen,1,8,0.711
+Kinmen,1,9,0.966
+Kinmen,1,10,0.412
+Kinmen,1,11,0.448
+Kinmen,1,12,0.457
+Kinmen,1,13,0.328
+Kinmen,1,14,0.516
+Kinmen,1,15,0.529
+Kinmen,1,16,0.366
+Kinmen,1,17,0.777
+Kinmen,1,18,0.641
+Kinmen,1,19,1.0
+Kinmen,1,20,0.171
+Kinmen,1,21,0.141
+Kinmen,1,22,0.278
+Kinmen,1,23,0.142
+Kinmen,2,0,0.274
+Kinmen,2,1,0.331
+Kinmen,2,2,0.274
+Kinmen,2,3,0.184
+Kinmen,2,4,0.313
+Kinmen,2,5,0.309
+Kinmen,2,6,0.345
+Kinmen,2,7,0.836
+Kinmen,2,8,0.841
+Kinmen,2,9,0.913
+Kinmen,2,10,0.62
+Kinmen,2,11,0.459
+Kinmen,2,12,0.579
+Kinmen,2,13,0.527
+Kinmen,2,14,0.393
+Kinmen,2,15,0.578
+Kinmen,2,16,0.462
+Kinmen,2,17,0.776
+Kinmen,2,18,0.743
+Kinmen,2,19,0.895
+Kinmen,2,20,0.306
+Kinmen,2,21,0.473
+Kinmen,2,22,0.342
+Kinmen,2,23,0.312
+Kinmen,3,0,0.384
+Kinmen,3,1,0.345
+Kinmen,3,2,0.339
+Kinmen,3,3,0.268
+Kinmen,3,4,0.125
+Kinmen,3,5,0.299
+Kinmen,3,6,0.387
+Kinmen,3,7,0.854
+Kinmen,3,8,0.911
+Kinmen,3,9,0.831
+Kinmen,3,10,0.652
+Kinmen,3,11,0.434
+Kinmen,3,12,0.469
+Kinmen,3,13,0.362
+Kinmen,3,14,0.426
+Kinmen,3,15,0.563
+Kinmen,3,16,0.414
+Kinmen,3,17,1.0
+Kinmen,3,18,0.775
+Kinmen,3,19,0.738
+Kinmen,3,20,0.221
+Kinmen,3,21,0.221
+Kinmen,3,22,0.351
+Kinmen,3,23,0.24
+Kinmen,4,0,0.169
+Kinmen,4,1,0.272
+Kinmen,4,2,0.372
+Kinmen,4,3,0.231
+Kinmen,4,4,0.348
+Kinmen,4,5,0.189
+Kinmen,4,6,0.274
+Kinmen,4,7,0.918
+Kinmen,4,8,0.922
+Kinmen,4,9,0.786
+Kinmen,4,10,0.543
+Kinmen,4,11,0.337
+Kinmen,4,12,0.493
+Kinmen,4,13,0.481
+Kinmen,4,14,0.602
+Kinmen,4,15,0.428
+Kinmen,4,16,0.566
+Kinmen,4,17,0.979
+Kinmen,4,18,0.705
+Kinmen,4,19,0.797
+Kinmen,4,20,0.217
+Kinmen,4,21,0.127
+Kinmen,4,22,0.282
+Kinmen,4,23,0.35
+Kinmen,5,0,0.258
+Kinmen,5,1,0.146
+Kinmen,5,2,0.298
+Kinmen,5,3,0.379
+Kinmen,5,4,0.033
+Kinmen,5,5,0.099
+Kinmen,5,6,0.192
+Kinmen,5,7,0.089
+Kinmen,5,8,0.131
+Kinmen,5,9,0.313
+Kinmen,5,10,0.196
+Kinmen,5,11,0.202
+Kinmen,5,12,0.526
+Kinmen,5,13,0.55
+Kinmen,5,14,0.657
+Kinmen,5,15,0.501
+Kinmen,5,16,0.678
+Kinmen,5,17,0.718
+Kinmen,5,18,0.569
+Kinmen,5,19,0.588
+Kinmen,5,20,0.196
+Kinmen,5,21,0.155
+Kinmen,5,22,0.208
+Kinmen,5,23,0.367
+Kinmen,6,0,0.29
+Kinmen,6,1,0.255
+Kinmen,6,2,0.249
+Kinmen,6,3,0.137
+Kinmen,6,4,0.143
+Kinmen,6,5,0.26
+Kinmen,6,6,0.205
+Kinmen,6,7,0.024
+Kinmen,6,8,0.329
+Kinmen,6,9,0.397
+Kinmen,6,10,0.189
+Kinmen,6,11,0.095
+Kinmen,6,12,0.387
+Kinmen,6,13,0.65
+Kinmen,6,14,0.664
+Kinmen,6,15,0.614
+Kinmen,6,16,0.49
+Kinmen,6,17,0.465
+Kinmen,6,18,0.473
+Kinmen,6,19,0.597
+Kinmen,6,20,0.11
+Kinmen,6,21,0.251
+Kinmen,6,22,0.165
+Kinmen,6,23,0.221
+Lienchiang,0,0,0.267
+Lienchiang,0,1,0.239
+Lienchiang,0,2,0.253
+Lienchiang,0,3,0.171
+Lienchiang,0,4,0.37
+Lienchiang,0,5,0.322
+Lienchiang,0,6,0.204
+Lienchiang,0,7,0.732
+Lienchiang,0,8,0.846
+Lienchiang,0,9,0.714
+Lienchiang,0,10,0.525
+Lienchiang,0,11,0.433
+Lienchiang,0,12,0.454
+Lienchiang,0,13,0.466
+Lienchiang,0,14,0.529
+Lienchiang,0,15,0.437
+Lienchiang,0,16,0.596
+Lienchiang,0,17,0.867
+Lienchiang,0,18,0.929
+Lienchiang,0,19,0.787
+Lienchiang,0,20,0.324
+Lienchiang,0,21,0.093
+Lienchiang,0,22,0.318
+Lienchiang,0,23,0.246
+Lienchiang,1,0,0.17
+Lienchiang,1,1,0.126
+Lienchiang,1,2,0.216
+Lienchiang,1,3,0.134
+Lienchiang,1,4,0.169
+Lienchiang,1,5,0.107
+Lienchiang,1,6,0.136
+Lienchiang,1,7,0.742
+Lienchiang,1,8,0.701
+Lienchiang,1,9,0.82
+Lienchiang,1,10,0.509
+Lienchiang,1,11,0.594
+Lienchiang,1,12,0.535
+Lienchiang,1,13,0.437
+Lienchiang,1,14,0.429
+Lienchiang,1,15,0.337
+Lienchiang,1,16,0.479
+Lienchiang,1,17,0.771
+Lienchiang,1,18,0.935
+Lienchiang,1,19,1.0
+Lienchiang,1,20,0.401
+Lienchiang,1,21,0.175
+Lienchiang,1,22,0.115
+Lienchiang,1,23,0.169
+Lienchiang,2,0,0.338
+Lienchiang,2,1,0.314
+Lienchiang,2,2,0.382
+Lienchiang,2,3,0.178
+Lienchiang,2,4,0.324
+Lienchiang,2,5,0.396
+Lienchiang,2,6,0.232
+Lienchiang,2,7,0.679
+Lienchiang,2,8,0.993
+Lienchiang,2,9,0.794
+Lienchiang,2,10,0.451
+Lienchiang,2,11,0.53
+Lienchiang,2,12,0.296
+Lienchiang,2,13,0.407
+Lienchiang,2,14,0.511
+Lienchiang,2,15,0.496
+Lienchiang,2,16,0.396
+Lienchiang,2,17,0.745
+Lienchiang,2,18,0.777
+Lienchiang,2,19,1.0
+Lienchiang,2,20,0.096
+Lienchiang,2,21,0.352
+Lienchiang,2,22,0.307
+Lienchiang,2,23,0.221
+Lienchiang,3,0,0.318
+Lienchiang,3,1,0.178
+Lienchiang,3,2,0.108
+Lienchiang,3,3,0.343
+Lienchiang,3,4,0.038
+Lienchiang,3,5,0.214
+Lienchiang,3,6,0.237
+Lienchiang,3,7,0.756
+Lienchiang,3,8,0.852
+Lienchiang,3,9,0.758
+Lienchiang,3,10,0.608
+Lienchiang,3,11,0.537
+Lienchiang,3,12,0.447
+Lienchiang,3,13,0.488
+Lienchiang,3,14,0.534
+Lienchiang,3,15,0.628
+Lienchiang,3,16,0.474
+Lienchiang,3,17,0.792
+Lienchiang,3,18,0.863
+Lienchiang,3,19,0.73
+Lienchiang,3,20,0.205
+Lienchiang,3,21,0.123
+Lienchiang,3,22,0.298
+Lienchiang,3,23,0.212
+Lienchiang,4,0,0.191
+Lienchiang,4,1,0.194
+Lienchiang,4,2,0.292
+Lienchiang,4,3,0.329
+Lienchiang,4,4,0.392
+Lienchiang,4,5,0.326
+Lienchiang,4,6,0.229
+Lienchiang,4,7,1.0
+Lienchiang,4,8,0.79
+Lienchiang,4,9,1.0
+Lienchiang,4,10,0.448
+Lienchiang,4,11,0.557
+Lienchiang,4,12,0.435
+Lienchiang,4,13,0.583
+Lienchiang,4,14,0.459
+Lienchiang,4,15,0.52
+Lienchiang,4,16,0.643
+Lienchiang,4,17,0.919
+Lienchiang,4,18,0.69
+Lienchiang,4,19,0.725
+Lienchiang,4,20,0.258
+Lienchiang,4,21,0.457
+Lienchiang,4,22,0.171
+Lienchiang,4,23,0.412
+Lienchiang,5,0,0.276
+Lienchiang,5,1,0.077
+Lienchiang,5,2,0.265
+Lienchiang,5,3,0.292
+Lienchiang,5,4,0.305
+Lienchiang,5,5,0.295
+Lienchiang,5,6,0.074
+Lienchiang,5,7,0.287
+Lienchiang,5,8,0.257
+Lienchiang,5,9,0.272
+Lienchiang,5,10,0.219
+Lienchiang,5,11,0.401
+Lienchiang,5,12,0.446
+Lienchiang,5,13,0.533
+Lienchiang,5,14,0.57
+Lienchiang,5,15,0.714
+Lienchiang,5,16,0.602
+Lienchiang,5,17,0.478
+Lienchiang,5,18,0.664
+Lienchiang,5,19,0.671
+Lienchiang,5,20,0.301
+Lienchiang,5,21,0.303
+Lienchiang,5,22,0.125
+Lienchiang,5,23,0.117
+Lienchiang,6,0,0.186
+Lienchiang,6,1,0.392
+Lienchiang,6,2,0.168
+Lienchiang,6,3,0.105
+Lienchiang,6,4,0.041
+Lienchiang,6,5,0.165
+Lienchiang,6,6,0.106
+Lienchiang,6,7,0.256
+Lienchiang,6,8,0.212
+Lienchiang,6,9,0.199
+Lienchiang,6,10,0.096
+Lienchiang,6,11,0.081
+Lienchiang,6,12,0.426
+Lienchiang,6,13,0.355
+Lienchiang,6,14,0.565
+Lienchiang,6,15,0.657
+Lienchiang,6,16,0.46
+Lienchiang,6,17,0.598
+Lienchiang,6,18,0.551
+Lienchiang,6,19,0.426
+Lienchiang,6,20,0.233
+Lienchiang,6,21,0.302
+Lienchiang,6,22,0.276
+Lienchiang,6,23,0.389
