@@ -123,7 +123,7 @@
     padding-right: 10px;
 }
 
-#Favorite:hover, #Cart:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover{
+#Favorite:hover, #order:hover, #CurrentOrder:hover, #msgToggle:hover, #Menu:hover, #UserCurrentOrder:hover, #DeliveryEstimate:hover, #Rankings:hover, #Kart:hover, #Account:hover{
     background-color: navajowhite;
     cursor: pointer;
 }
