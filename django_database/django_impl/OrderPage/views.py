@@ -12,7 +12,7 @@ from django.templatetags.static import static
 import numpy as np
 import pandas as pd
 import requests
-from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox, VideoFrame # type: ignore
+from database.models import Customer, Vendor, DeliveryP, Favorite,RestaurantTag, Tag, Item, Restaurant, Order, User, Inbox # type: ignore
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -99,15 +99,16 @@ def front(request):
     
     if role == 'vendor':
         tags = Tag.objects.raw("SELECT * FROM tag")
+        vendor_user = Vendor.objects.get(user_id = test_user.user_id)
         T_tags = []
         for t in tags:
             T_tags.append({
                 "id":t.id,
                 "Name":t.name,
             })
-        if test_user.store_id is None:
+        if vendor_user.store_id is None:
             return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg, "NoRes": True, "Tags": T_tags})
-        pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [test_user.store_id])
+        pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [vendor_user.store_id])
         order_inc = []
         for o in pending:
             Customer_obj = User.objects.get(user_id=o.user_id)
@@ -260,12 +261,13 @@ def fav(request, userid):
 
 def orderUser(request, userid):
     orders = Order.objects.raw("""
-        SELECT 
+       SELECT 
             o.id,
             o.price,
             o.created_at,
             o.destination,
             o.status,
+            o.completed,
             o.items,
             o.user_id,
             o.delivery_person_id,
@@ -276,6 +278,7 @@ def orderUser(request, userid):
         LEFT JOIN "user" u ON o.delivery_person_id = u.user_id
         INNER JOIN restaurant r ON o.restaurant_id = r.Rid
         WHERE o.user_id = %s AND o.status = 'Complete'
+        ORDER BY o.completed DESC;
     """, [userid])
     
     UserOrders = []
@@ -293,6 +296,7 @@ def orderUser(request, userid):
             "id": o.id,
             "price": o.price,
             "created": o.created_at,
+            "completed": o.completed,
             "destination": o.destination,
             "delivery_person_name": o.delivery_person_name or "Not Assigned",
             "restaurant": o.restaurant_name,
@@ -535,7 +539,10 @@ def CompOrder(request, Orderid, Userid):
 
 
 def updateInbox(request, userid):
-    msgs = Inbox.objects.raw("SELECT * FROM inbox WHERE user_id = %s", [userid])
+    msgs = Inbox.objects.raw(
+        "SELECT * FROM inbox WHERE user_id = %s ORDER BY timestamp DESC LIMIT 3", 
+        [userid]
+    )
     data = []
     for m in msgs:
             match = re.search(r"#(\d+)#", m.message)
@@ -563,6 +570,7 @@ def ViewInbox(request, userid):
     data = []
     for m in msgs:
             data.append({
+            "id": m.id,
             "message": m.message,
             "timestamp": m.timestamp
         })
@@ -648,58 +656,121 @@ def force_trim_to_road_name(address): #force address to match specifications
     # If not match, return as-is (may be already trimmed or malformed)
     return address
 
+# @csrf_exempt
+# def AddRestaurant(request, user):
+#     print("Path:", request.path)
+#     print("User param:", user)
+#     if request.method == "POST":
+#         name = request.POST.get("RestName")
+#         desc = request.POST.get("RestDesc")
+#         address = request.POST.get("RestAddress")
+#         pic_file = request.FILES.get("RestPic")
+#         #if pic_file:
+#          #   filename = pic_file.name
+#          #   filepath = os.path.join("static/assets", filename)
+#           #  with open(filepath, 'wb+') as destination:
+#            #     for chunk in pic_file.chunks():
+#            #         destination.write(chunk)
+#            #         pic_path = f"assets/{filename}"
+#         #else:
+#            # pic_path = ""
+#         opening = request.POST.get("OpeningTime")
+#         closing = request.POST.get("ClosingTime")
+#         tag_ids = request.POST.getlist("ResTags")
+#         opening_time = datetime.datetime.strptime(opening, "%H:%M").time()
+#         closing_time = datetime.datetime.strptime(closing, "%H:%M").time()
+#         if Restaurant.objects.filter(name=name, address=address).exists():
+#             return JsonResponse({
+#                 "status": "error",
+#                 "message": "A restaurant with the same name and address already exists."
+#             }, status=400)
+#         restaurant = Restaurant.objects.create(
+#             name=name,
+#             desc=desc,
+#             address=address,
+#             picture=pic_file, #replace this if saving to static
+#             opening_time=opening_time,
+#             closing_time=closing_time
+#         )
+#         print(user)
+#         vendor = Vendor.objects.get(user_id = user)
+#         vendor.store = restaurant
+#         vendor.save()
+#         for t in tag_ids:
+#             tag = Tag.objects.get(id = t)
+#             RestaurantTag.objects.create(
+#                 restaurant = restaurant,
+#                 tag = tag,
+#             )
+#         return JsonResponse({
+#             "status": "success",
+#             "restaurant_id": restaurant.Rid
+#         })
+
+#     return JsonResponse({"error": "Invalid request method"}, status=405)
+
 @csrf_exempt
 def AddRestaurant(request, user):
-    print("Path:", request.path)
-    print("User param:", user)
     if request.method == "POST":
         name = request.POST.get("RestName")
         desc = request.POST.get("RestDesc")
         address = request.POST.get("RestAddress")
         pic_file = request.FILES.get("RestPic")
-        #if pic_file:
-         #   filename = pic_file.name
-         #   filepath = os.path.join("static/assets", filename)
-          #  with open(filepath, 'wb+') as destination:
-           #     for chunk in pic_file.chunks():
-           #         destination.write(chunk)
-           #         pic_path = f"assets/{filename}"
-        #else:
-           # pic_path = ""
+
+        # Save the picture using Django's file system
+        if pic_file:
+            filename = pic_file.name
+            filepath = os.path.join("static/assets", filename)
+            with open(filepath, 'wb+') as destination:
+               for chunk in pic_file.chunks():
+                   destination.write(chunk)
+            pic_path = f"assets/{filename}"
+        else:
+           pic_path = ""
+        
+
         opening = request.POST.get("OpeningTime")
         closing = request.POST.get("ClosingTime")
         tag_ids = request.POST.getlist("ResTags")
+
         opening_time = datetime.datetime.strptime(opening, "%H:%M").time()
         closing_time = datetime.datetime.strptime(closing, "%H:%M").time()
-        if Restaurant.objects.filter(name=name, address=address).exists():
-            return JsonResponse({
-                "status": "error",
-                "message": "A restaurant with the same name and address already exists."
-            }, status=400)
-        restaurant = Restaurant.objects.create(
-            name=name,
-            desc=desc,
-            address=address,
-            picture=pic_file, #replace this if saving to static
-            opening_time=opening_time,
-            closing_time=closing_time
-        )
-        print(user)
-        vendor = Vendor.objects.get(user_id = user)
-        vendor.store = restaurant
-        vendor.save()
-        for t in tag_ids:
-            tag = Tag.objects.get(id = t)
-            RestaurantTag.objects.create(
-                restaurant = restaurant,
-                tag = tag,
-            )
+
+        with connection.cursor() as cursor:
+          
+            cursor.execute("SELECT 1 FROM restaurant WHERE name = ? AND address = ?", [name, address])
+            if cursor.fetchone():
+                return JsonResponse({
+                    "status": "error",
+                    "message": "A restaurant with the same name and address already exists."
+                }, status=400)
+
+         
+            cursor.execute("""
+                INSERT INTO restaurant (name, desc, address, picture, opening_time, closing_time)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, [name, desc, address, pic_path, opening_time, closing_time])
+
+            cursor.execute("SELECT last_insert_rowid()")
+            restaurant_id = cursor.fetchone()[0]
+
+          
+            cursor.execute("UPDATE vendor SET store_id = ? WHERE user_id = ?", [restaurant_id, user])
+
+       
+            for tag_id in tag_ids:
+                cursor.execute("""
+                    INSERT INTO restauranttag (restaurant_id, tag_id)
+                    VALUES (?, ?)
+                """, [restaurant_id, tag_id])
+
         return JsonResponse({
             "status": "success",
-            "restaurant_id": restaurant.Rid
+            "restaurant_id": restaurant_id
         })
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
 
 
 @csrf_exempt
@@ -1228,4 +1299,195 @@ def GetInbox(request, userid):
         except json.JSONDecodeError:
             return JsonResponse({"error": "Invalid JSON"}, status=400)
 
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+def GetAccount(request, userid, role):  
+    account = None
+    Can_delete_Restaurant = False
+    if role == 'customer':
+        account = Customer.objects.get(user_id = userid)
+        details = {
+            "name": account.name,
+            "email": account.email,
+            "passwd": account.password,
+        }
+    elif role == 'vendor':
+        account = Vendor.objects.get(user_id=userid)
+        restaurant = account.store
+
+        details = {
+            "name": account.name,
+            "email": account.email,
+            "passwd": account.password,
+        }
+
+        if restaurant:  
+            details.update({
+                "restaurant_Name": restaurant.name,
+                "restaurant_address": restaurant.address,
+                "restaurant_desc": restaurant.desc,
+                "opening_time": restaurant.opening_time,
+                "closing_time": restaurant.closing_time,
+                "status": restaurant.status,
+                "image": restaurant.picture,
+                "Rid": restaurant.Rid
+            })
+            Can_delete_Restaurant = True
+
+    else:
+        account = DeliveryP.objects.get(user_id=userid)
+        details = {
+            "name": account.name,
+            "email": account.email,
+            "passwd": account.password,
+            "last": account.last_delivery_time,
+            "score": account.Score
+        }
+    return render(request, "Account_Info.html", {"user": userid, "UserDetails": details, "Permisson": Can_delete_Restaurant, "role": role})
+
+
+
+@csrf_exempt
+def updateAccount(request, userid, role):
+    if request.method == "POST":
+        try:
+            
+            name = request.POST.get("name")
+            email = request.POST.get("email")
+            passwd = request.POST.get("passwd")
+            if role == 'customer':
+                cu = Customer.objects.get(user_id = userid)
+                cu.name = name
+                cu.email = email
+                cu.password = passwd
+                cu.save()
+            elif role == 'delivery':
+                de = DeliveryP.objects.get(user_id = userid)
+                de.name = name
+                de.email = email
+                de.password = passwd
+            else:
+                restaurant_name = request.POST.get("restaurant_name")
+               
+                restaurant_desc = request.POST.get("restaurant_desc")
+                opening_time = request.POST.get("opening_time")
+                closing_time = request.POST.get("closing_time")
+                status = request.POST.get("status")
+                image_file = request.FILES.get("image")  
+                ve = Vendor.objects.get(user_id = userid)
+                ve.name = name
+                ve.email = email
+                ve.password = passwd
+                ve.save()
+                rest = ve.store
+                rest.name = restaurant_name
+            
+                rest.desc = restaurant_desc
+                rest.opening_time = opening_time or None
+                rest.closing_time = closing_time or None
+                rest.status = status
+
+                if image_file:
+                    rest.picture = image_file 
+
+                rest.save()
+
+
+            return JsonResponse({"status": "success"}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def DeleteRest(request, userid, rest):
+    if request.method == "POST":
+        try:
+            
+
+            with connection.cursor() as cursor:
+                
+                cursor.execute("UPDATE vendor SET store_id = NULL WHERE user_id = %s", [userid])
+
+                cursor.execute("DELETE FROM item WHERE store_id = %s", [rest])
+                cursor.execute("DELETE FROM restaurant_tag WHERE restaurant_id = %s", [rest])
+                cursor.execute("DELETE FROM restaurant WHERE Rid = %s", [rest])
+
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+@csrf_exempt
+def DelMsg(request, Mid):
+    if request.method == "POST":
+        try:
+        
+            with connection.cursor() as cursor:
+                
+                cursor.execute("DELETE FROM inbox WHERE id = %s", [Mid])
+
+            return JsonResponse({"status": "success"}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def GetByDate(request, date, user):
+    if request.method == "POST":
+        try:
+            orders = Order.objects.raw("""
+            SELECT 
+                    o.id,
+                    o.price,
+                    o.created_at,
+                    o.destination,
+                    o.status,
+                    o.completed,
+                    o.items,
+                    o.user_id,
+                    o.delivery_person_id,
+                    o.restaurant_id,
+                    u.name AS delivery_person_name,
+                    r.name AS restaurant_name
+                FROM "order" o
+                LEFT JOIN "user" u ON o.delivery_person_id = u.user_id
+                INNER JOIN restaurant r ON o.restaurant_id = r.Rid
+                WHERE o.user_id = %s AND o.status = 'Complete' AND o.completed LIKE %s
+                ORDER BY o.completed DESC;
+            """, [user, date + "%"])
+            
+            UserOrders = []
+            for o in orders:
+                itemId = o.items.split(",")
+                itms = []
+                for i in itemId:
+                    item = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [i]))[0]
+                    itms.append({
+                        "name": item.name,
+                        "price":item.price,
+                        "desc": item.desc,
+                    }) 
+                ord = {
+                    "id": o.id,
+                    "price": o.price,
+                    "created": o.created_at,
+                    "completed": o.completed,
+                    "destination": o.destination,
+                    "delivery_person_name": o.delivery_person_name or "Not Assigned",
+                    "restaurant": o.restaurant_name,
+                    "status": o.status,
+                    "items": json.dumps(itms)
+                }
+                UserOrders.append(ord)
+            return JsonResponse({"status": "success", "Result": UserOrders}, status=200)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=500)
     return JsonResponse({"error": "Invalid request method"}, status=405)

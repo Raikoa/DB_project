@@ -61,13 +61,13 @@ class Favorite(models.Model):
         unique_together = ('user', 'restaurant')
         db_table = "favorite"
 
-class FreqAddr(models.Model):
-    user = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='frequent_addresses')
-    address = models.CharField(max_length=100)
+# class FreqAddr(models.Model):
+#     user = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='frequent_addresses')
+#     address = models.CharField(max_length=100)
 
-    class Meta:
-        unique_together = ('user', 'address')
-        db_table = "frequent_address"
+#     class Meta:
+#         unique_together = ('user', 'address')
+#         db_table = "frequent_address"
 
 class Tag(models.Model):
     name = models.CharField(max_length=100) 
@@ -124,11 +124,11 @@ class Inbox(models.Model):
 
 
 
-class VideoFrame(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='RouteVideo')
-    latitude = models.FloatField(null=True)
-    longitude = models.FloatField(null=True)
-    captured_at = models.DateTimeField(auto_now_add=True)
-    frame = models.ImageField(upload_to='VideoFrames/', blank=True)
-    class Meta:
-        db_table = "videoframe"
+# class VideoFrame(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='RouteVideo')
+#     latitude = models.FloatField(null=True)
+#     longitude = models.FloatField(null=True)
+#     captured_at = models.DateTimeField(auto_now_add=True)
+#     frame = models.ImageField(upload_to='VideoFrames/', blank=True)
+#     class Meta:
+#         db_table = "videoframe"

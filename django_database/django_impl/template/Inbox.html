@@ -23,6 +23,7 @@
             <div class="msgTab">
                 {{ m.message }} "  :"
                 {{ m.timestamp }}
+                <button class="DeleteMsg" data-id = "{{m.id}}">Delete</button>
             </div>
             {% empty %}
             <h1>
