@@ -10,17 +10,9 @@
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
-      
         {% if restaurant.img %}
         <img src="{{restaurant.img.url}}" id="RestBanner" />
-        {% if fvr %}
-            <button id="notFvrBtn" style="float: right; margin: 10px; padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Remove from Favorite
-            </button>
-        {% else %}
-            <button id="fvrBtn" style="float: right; margin: 10px; padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                Add to Favorite
-            </button>
+     
         {% endif %}
         <div id="FoodBar">
             {% for i in restaurant.menu %}
@@ -55,22 +47,4 @@
         {% load static %}
         <script src="{% static 'addToCart.js' %}"></script>
     </body>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const addBtn = document.getElementById("fvrBtn");
-            const removeBtn = document.getElementById("notFvrBtn");
-
-            if (addBtn) {
-                addBtn.addEventListener("click", function () {
-                    window.location.href = '/fvrclick/';
-                });
-            }
-
-            if (removeBtn) {
-                removeBtn.addEventListener("click", function () {
-                    window.location.href = '/remclick/';
-                });
-            }
-        });
-    </script>
 </html>

@@ -4,7 +4,7 @@ const viewCartBtn = document.getElementById('viewCartBtn');
 const cartItemCountSpan = document.getElementById('cartItemCount');
 let cartItemCount = 0; // Initialize cart count
 let cartItems = []; // Array to store food items, quantity, and price
-const placeOrderLink = document.getElementById('addToOrder');
+const placeOrderLink = document.querySelector('a[href="/checkout/"]');
 function updateCartButton() {
     if (cartItemCount > 0 && viewCartBtn) {
         viewCartBtn.style.display = 'inline-block'; // Show the button
@@ -190,7 +190,9 @@ foodTabs.forEach(tab => {
 
 if(placeOrderLink){
 placeOrderLink.addEventListener('click', function(event) {
+    event.preventDefault();
     localStorage.clear();
+    window.location.href = '/checkout/';
 });
 }
 

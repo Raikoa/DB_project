@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function(){
             tabs.forEach(tab => {
                 tab.addEventListener("click", function(){
                     const id = tab.dataset.id;
-                    localStorage.clear();
                     window.location.href = "/pages/" + parseInt(id) +"/"
                 })
             })
@@ -213,12 +212,6 @@ document.addEventListener("DOMContentLoaded", function(){
             fav.addEventListener("click", function(){
                 const userID = fav.dataset.id
                 window.location.href = "/"  + parseInt(userID) + "/" + "favorite/"
-            })
-        }
-        let cart = document.querySelector("#Cart")
-        if(cart){
-            cart.addEventListener("click", function (){
-                window.location.href = "/your_django_cart_view/"
             })
         }
         let order = document.querySelector("#order")
@@ -1253,9 +1246,9 @@ document.addEventListener("DOMContentLoaded", function(){
                                         const restDiv = document.createElement("div");
                                         restDiv.className = "restaurant_tab";
                                         restDiv.setAttribute("data-id", restaurant.id);
-
+                                        const imgSrc = restaurant.picture === "" ? "/media/item_pics/default.jpg" : restaurant.picture;
                                         restDiv.innerHTML = `
-                                            <img src="${restaurant.picture}" class="display" alt="${restaurant.name}" />
+                                            <img src="${imgSrc}" class="display" alt="${restaurant.name}" />
                                             <p>${restaurant.name}</p>
                                         `;
 
@@ -1344,11 +1337,12 @@ document.addEventListener("DOMContentLoaded", function(){
             if(deleteRest){
                 deleteRest.addEventListener("click", function(){
                     userid = deleteRest.dataset.user
+                    console.log(userid)
                     Rid = deleteRest.dataset.restaurant
                     const confirmed = window.confirm("Are you sure you want to delete this restaurant? This action cannot be undone.");
                      if (confirmed) {
                     
-                    fetch(`/DeleteRestaurant/${parseInt(userid)}/${parseInt(Rid)}/`, {
+                    fetch("/DeleteRestaurant/" + parseInt(userid) + "/" + parseInt(Rid), {
                         method: 'POST',
                         headers: {
                             'X-CSRFToken': getCookie('csrftoken'),
@@ -1361,7 +1355,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     .then(data => {
                         if (data.status === "success") {
                             alert("Restaurant deleted successfully");
-                            window.location.href = "index/";
+                            window.location.href = "/index/";
                         } else {
                             alert("Error deleting restaurant");
                             console.error(data);

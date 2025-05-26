@@ -1,6 +1,7 @@
 import datetime
 import os
 import re
+from django.conf import settings
 from django.shortcuts import render, redirect
 import uuid
 from django.db import connection
@@ -24,6 +25,7 @@ from geopy.exc import GeocoderTimedOut, GeocoderServiceError # type: ignore
 import osmnx as ox
 from .form import UserRegistrationForm, UserLoginForm
 from django.utils import timezone
+import traceback
 # Create your views here.
 
 def give_exp_func():
@@ -155,9 +157,7 @@ def front(request):
 def page(request, id):
 
     request.session['rid'] = id
-    uid = request.session.get('user_id')
     rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
-    fvr = list(Favorite.objects.raw("SELECT * FROM favorite WHERE user_id = %s and restaurant_id = %s", [uid, id]))
     menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s and avaliable = True", [id])
     menus = []
     for i in menu:
@@ -175,7 +175,7 @@ def page(request, id):
     "address": rest.address,
     "img": rest.picture,
     }
-    return render(request, "pages.html", {"restaurant": restaurant_info, "fvr": fvr})
+    return render(request, "pages.html", {"restaurant": restaurant_info})
 
 
 def your_django_cart_view(request):
@@ -234,50 +234,27 @@ def checkout(request):
 def orderplaced(request):
     return render(request, 'orderplaced.html')
 
-def addFvr(request):
-    last = Favorite.objects.raw('SELECT * FROM "favorite" ORDER BY id DESC LIMIT 1;')
-    if last:
-        lastid = int(last[0].id)
-        fid = lastid + 1
-    else:
-        fid = 1
-    rid = request.session.get('rid')
-    uid = request.session.get('user_id')
-    with connection.cursor() as cursor:
-        cursor.execute('INSERT INTO "favorite" (id, restaurant_id, user_id) VALUES(%s, %s, %s)', (fid, rid, uid))
-
-    return redirect('pages', id = rid)
-
-def remFvr(request):
-    rid = request.session.get('rid')
-    uid = request.session.get('user_id')
-    with connection.cursor() as cursor:
-        cursor.execute('DELETE FROM "favorite" WHERE restaurant_id = %s and user_id = %s', [rid, uid])
-
-    return redirect('pages', id=rid)
-
 def fav(request, userid):
-    rows = Favorite.objects.raw('SELECT * FROM favorite WHERE user_id = %s', [userid])
+    rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])
 
     fav_re = []
     for row in rows:
-        # tags = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
-        # tag = []
-        # for t in tags:
-        #     tag.append(t.name)
-        # menus = []
-        # Items = Item.objects.raw("SELECT * FROM item WHERE restaurant_id = %s", [row.Rid])
-        # for m in Items:
-        #     menus.append({"name": m.name, "price": m.price, "pic": static(m.picture), "desc": m.desc})
-        tempRes = Restaurant.objects.raw('SELECT * FROM "restaurant" WHERE Rid = %s', [row.restaurant_id])
+        tags = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
+        tag = []
+        for t in tags:
+            tag.append(t.name)
+        menus = []
+        Items = Item.objects.raw("SELECT * FROM item WHERE restaurant_id = %s", [row.Rid])
+        for m in Items:
+            menus.append({"name": m.name, "price": m.price, "pic": static(m.picture), "desc": m.desc})
         fav_re.append({
-            "id": tempRes[0].Rid,
-            "name": tempRes[0].name,
-            # "tags": tag,
-            # "description": row.desc,
-            # "menu": menus,
-            # "address": row.address,
-            "img": static(tempRes[0].picture),
+            "id": row.Rid,
+                "name": row.name,
+                "tags": tag,
+                "description": row.desc,
+                "menu": menus,
+                "address": row.address,
+                "img": static(row.picture),
         })
 
     return render(request, "favorite.html",{'favs':fav_re})
@@ -742,14 +719,15 @@ def AddRestaurant(request, user):
         address = request.POST.get("RestAddress")
         pic_file = request.FILES.get("RestPic")
 
-        # Save the picture using Django's file system
+    
         if pic_file:
             filename = pic_file.name
-            filepath = os.path.join("static/assets", filename)
-            with open(filepath, 'wb+') as destination:
-               for chunk in pic_file.chunks():
-                   destination.write(chunk)
-            pic_path = f"assets/{filename}"
+            save_path = os.path.join(settings.MEDIA_ROOT, "item_pics", filename)
+            if not os.path.exists(save_path):
+                with open(save_path, 'wb+') as destination:
+                    for chunk in pic_file.chunks():
+                        destination.write(chunk)
+            pic_path = f"item_pics/{filename}"
         else:
            pic_path = ""
         
@@ -757,36 +735,43 @@ def AddRestaurant(request, user):
         opening = request.POST.get("OpeningTime")
         closing = request.POST.get("ClosingTime")
         tag_ids = request.POST.getlist("ResTags")
-
-        opening_time = datetime.datetime.strptime(opening, "%H:%M").time()
-        closing_time = datetime.datetime.strptime(closing, "%H:%M").time()
+        if(opening and closing):
+            opening_time = datetime.strptime(opening, "%H:%M").time()
+            closing_time = datetime.strptime(closing, "%H:%M").time()
+        else:
+            opening = None
+            closing = None
 
         with connection.cursor() as cursor:
           
-            cursor.execute("SELECT 1 FROM restaurant WHERE name = ? AND address = ?", [name, address])
+            cursor.execute("SELECT 1 FROM restaurant WHERE name = %s AND address = %s", [name, address])
             if cursor.fetchone():
                 return JsonResponse({
                     "status": "error",
                     "message": "A restaurant with the same name and address already exists."
                 }, status=400)
 
-         
-            cursor.execute("""
-                INSERT INTO restaurant (name, desc, address, picture, opening_time, closing_time)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, [name, desc, address, pic_path, opening_time, closing_time])
-
+            if opening and closing:
+                cursor.execute("""
+                    INSERT INTO restaurant (name, desc, address, picture, opening_time, closing_time, status)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                """, [name, desc, address, pic_path, opening_time, closing_time, "closed"])
+            else:
+                cursor.execute("""
+                    INSERT INTO restaurant (name, desc, address, picture, status)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, [name, desc, address, pic_path, "closed"])
             cursor.execute("SELECT last_insert_rowid()")
             restaurant_id = cursor.fetchone()[0]
 
           
-            cursor.execute("UPDATE vendor SET store_id = ? WHERE user_id = ?", [restaurant_id, user])
+            cursor.execute("UPDATE vendor SET store_id = %s WHERE user_ptr_id = %s", [restaurant_id, user])
 
        
             for tag_id in tag_ids:
                 cursor.execute("""
-                    INSERT INTO restauranttag (restaurant_id, tag_id)
-                    VALUES (?, ?)
+                    INSERT INTO restaurant_tag (restaurant_id, tag_id)
+                    VALUES (%s, %s)
                 """, [restaurant_id, tag_id])
 
         return JsonResponse({
@@ -1187,16 +1172,38 @@ def add_points_to_deli(Oid, points):
 
 
 
+# def Rankings(request):
+#     data = DeliveryP.objects.raw("SELECT * FROM delivery_person ORDER BY score DESC")
+#     delis = []
+#     for d in data:
+#         delis.append({
+#             "id": d.user_id,
+#             "name": d.name,
+#             "score": d.Score
+#         })
+#     return render(request, "Rankings.html", {"delis": delis})
+
 def Rankings(request):
-    data = DeliveryP.objects.raw("SELECT * FROM delivery_person ORDER BY score DESC")
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT u.user_id, u.name, dp.Score
+            FROM user u
+            JOIN delivery_person dp ON dp.user_ptr_id = u.user_id
+            ORDER BY dp.Score DESC
+        """)
+        rows = cursor.fetchall()
+
     delis = []
-    for d in data:
+    for row in rows:
         delis.append({
-            "id": d.user_id,
-            "name": d.name,
-            "score": d.Score
+            "id": row[0],
+            "name": row[1],
+            "score": row[2]
         })
+
     return render(request, "Rankings.html", {"delis": delis})
+
+
 
 @csrf_exempt
 def checkReviewed(request, Oid):
@@ -1373,57 +1380,124 @@ def GetAccount(request, userid, role):
 
 
 
+# @csrf_exempt
+# def updateAccount(request, userid, role):
+#     if request.method == "POST":
+#         try:
+            
+#             name = request.POST.get("name")
+#             email = request.POST.get("email")
+#             passwd = request.POST.get("passwd")
+#             if role == 'customer':
+#                 cu = Customer.objects.get(user_id = userid)
+#                 cu.name = name
+#                 cu.email = email
+#                 cu.password = passwd
+#                 cu.save()
+#             elif role == 'delivery':
+#                 de = DeliveryP.objects.get(user_id = userid)
+#                 de.name = name
+#                 de.email = email
+#                 de.password = passwd
+#             else:
+#                 restaurant_name = request.POST.get("restaurant_name")
+               
+#                 restaurant_desc = request.POST.get("restaurant_desc")
+#                 opening_time = request.POST.get("opening_time")
+#                 closing_time = request.POST.get("closing_time")
+#                 status = request.POST.get("status")
+#                 image_file = request.FILES.get("image")  
+#                 ve = Vendor.objects.get(user_id = userid)
+#                 ve.name = name
+#                 ve.email = email
+#                 ve.password = passwd
+#                 ve.save()
+#                 rest = ve.store
+#                 rest.name = restaurant_name
+            
+#                 rest.desc = restaurant_desc
+#                 rest.opening_time = opening_time or None
+#                 rest.closing_time = closing_time or None
+#                 rest.status = status
+
+#                 if image_file:
+#                     rest.picture = image_file 
+
+#                 rest.save()
+
+
+#             return JsonResponse({"status": "success"}, status=200)
+#         except json.JSONDecodeError:
+#             return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+#     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
 @csrf_exempt
 def updateAccount(request, userid, role):
     if request.method == "POST":
         try:
-            
             name = request.POST.get("name")
             email = request.POST.get("email")
             passwd = request.POST.get("passwd")
-            if role == 'customer':
-                cu = Customer.objects.get(user_id = userid)
-                cu.name = name
-                cu.email = email
-                cu.password = passwd
-                cu.save()
-            elif role == 'delivery':
-                de = DeliveryP.objects.get(user_id = userid)
-                de.name = name
-                de.email = email
-                de.password = passwd
-            else:
-                restaurant_name = request.POST.get("restaurant_name")
-               
-                restaurant_desc = request.POST.get("restaurant_desc")
-                opening_time = request.POST.get("opening_time")
-                closing_time = request.POST.get("closing_time")
-                status = request.POST.get("status")
-                image_file = request.FILES.get("image")  
-                ve = Vendor.objects.get(user_id = userid)
-                ve.name = name
-                ve.email = email
-                ve.password = passwd
-                ve.save()
-                rest = ve.store
-                rest.name = restaurant_name
-            
-                rest.desc = restaurant_desc
-                rest.opening_time = opening_time or None
-                rest.closing_time = closing_time or None
-                rest.status = status
 
-                if image_file:
-                    rest.picture = image_file 
+            with connection.cursor() as cursor:
+                if role == 'customer':
+                    cursor.execute("""
+                        UPDATE user
+                        SET name = %s, email = %s, password = %s
+                        WHERE user_id = %s
+                    """, [name, email, passwd, userid])
 
-                rest.save()
+                elif role == 'delivery':
+                    cursor.execute("""
+                        UPDATE user
+                        SET name = %s, email = %s, password = %s
+                        WHERE user_id = %s
+                    """, [name, email, passwd, userid])
 
+                else:
+                  
+                    cursor.execute("""
+                        UPDATE user
+                        SET name = %s, email = %s, password = %s
+                        WHERE user_id = %s
+                    """, [name, email, passwd, userid])
+
+                   
+                    ve = Vendor.objects.get(user_id=userid)
+                    store_id = ve.store_id 
+                    if(store_id):
+                    
+                        restaurant_name = request.POST.get("restaurant_name")
+                        restaurant_desc = request.POST.get("restaurant_desc")
+                        opening_time = request.POST.get("opening_time") or None
+                        closing_time = request.POST.get("closing_time") or None
+                        status = request.POST.get("status")
+                        image_file = request.FILES.get("image")
+
+                    
+                        cursor.execute("""
+                            UPDATE restaurant
+                            SET name = %s, desc = %s, opening_time = %s, closing_time = %s, status = %s
+                            WHERE Rid = %s
+                        """, [restaurant_name, restaurant_desc, opening_time, closing_time, status, store_id])
+
+                    
+                        if image_file:
+                            store = ve.store
+                            store.picture = image_file
+                            store.save()
 
             return JsonResponse({"status": "success"}, status=200)
-        except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+        except Exception as e:
+            print(traceback.format_exc())
+            return JsonResponse({"error": str(e)}, status=400)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
 
 
 @csrf_exempt
@@ -1433,8 +1507,17 @@ def DeleteRest(request, userid, rest):
             
 
             with connection.cursor() as cursor:
-                
-                cursor.execute("UPDATE vendor SET store_id = NULL WHERE user_id = %s", [userid])
+                cursor.execute("SELECT picture FROM restaurant WHERE Rid = %s", [rest])
+                row = cursor.fetchone()
+                if row and row[0]:  
+                    picture_path = row[0]
+                    full_path = os.path.join(settings.MEDIA_ROOT, picture_path)
+                    if os.path.exists(full_path):
+                        os.remove(full_path)
+                        print(f"Deleted file: {full_path}")
+                    else:
+                        print(f"File not found: {full_path}")
+                cursor.execute("UPDATE vendor SET store_id = NULL WHERE user_ptr_id = %s", [userid])
 
                 cursor.execute("DELETE FROM item WHERE store_id = %s", [rest])
                 cursor.execute("DELETE FROM restaurant_tag WHERE restaurant_id = %s", [rest])
@@ -1442,6 +1525,8 @@ def DeleteRest(request, userid, rest):
 
             return JsonResponse({"status": "success"}, status=200)
         except Exception as e:
+           
+            print(traceback.format_exc())
             return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
     return JsonResponse({"error": "Invalid request method"}, status=405)

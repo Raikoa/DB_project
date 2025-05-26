@@ -10,9 +10,7 @@
     <form method="POST" action={% url 'checkout' %}>
         {% csrf_token %}
         <input type="text" name="dest" placeholder="Enter Destination">
-        <button type="submit" id="addToOrder">Place Order</button>
+        <button type="submit">Place Order</button>
     </form>
-    {% load static %}
-    <script src="{% static 'addToCart.js' %}"></script>
 </body>
 </html>
