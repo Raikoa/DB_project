@@ -1246,9 +1246,9 @@ document.addEventListener("DOMContentLoaded", function(){
                                         const restDiv = document.createElement("div");
                                         restDiv.className = "restaurant_tab";
                                         restDiv.setAttribute("data-id", restaurant.id);
-
+                                        const imgSrc = restaurant.picture === "" ? "/media/item_pics/default.jpg" : restaurant.picture;
                                         restDiv.innerHTML = `
-                                            <img src="${restaurant.picture}" class="display" alt="${restaurant.name}" />
+                                            <img src="${imgSrc}" class="display" alt="${restaurant.name}" />
                                             <p>${restaurant.name}</p>
                                         `;
 
@@ -1337,11 +1337,12 @@ document.addEventListener("DOMContentLoaded", function(){
             if(deleteRest){
                 deleteRest.addEventListener("click", function(){
                     userid = deleteRest.dataset.user
+                    console.log(userid)
                     Rid = deleteRest.dataset.restaurant
                     const confirmed = window.confirm("Are you sure you want to delete this restaurant? This action cannot be undone.");
                      if (confirmed) {
                     
-                    fetch(`/DeleteRestaurant/${parseInt(userid)}/${parseInt(Rid)}/`, {
+                    fetch("/DeleteRestaurant/" + parseInt(userid) + "/" + parseInt(Rid), {
                         method: 'POST',
                         headers: {
                             'X-CSRFToken': getCookie('csrftoken'),
@@ -1354,7 +1355,7 @@ document.addEventListener("DOMContentLoaded", function(){
                     .then(data => {
                         if (data.status === "success") {
                             alert("Restaurant deleted successfully");
-                            window.location.href = "index/";
+                            window.location.href = "/index/";
                         } else {
                             alert("Error deleting restaurant");
                             console.error(data);
