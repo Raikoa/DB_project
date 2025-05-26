@@ -10,6 +10,8 @@
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
+      
+        {% if restaurant.img %}
         <img src="{{restaurant.img.url}}" id="RestBanner" />
         {% if fvr %}
             <button id="notFvrBtn" style="float: right; margin: 10px; padding: 10px 15px; background-color: #007BFF; color: white; border: none; border-radius: 4px; cursor: pointer;">
@@ -23,8 +25,11 @@
         <div id="FoodBar">
             {% for i in restaurant.menu %}
                 <div class="FoodTab Items">
-
+                    {% if i.pic %}
                     <img src= "{{i.pic.url}}"  class="display"/>
+                    {% else %}
+                    <img src="/media/item_pics/default.jpg" class="display" />
+                    {% endif %}
                     <p>{{i.name}}</p>
                     <p>{{i.price}}</p>
                 </div>

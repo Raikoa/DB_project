@@ -681,58 +681,121 @@ def force_trim_to_road_name(address): #force address to match specifications
     # If not match, return as-is (may be already trimmed or malformed)
     return address
 
+# @csrf_exempt
+# def AddRestaurant(request, user):
+#     print("Path:", request.path)
+#     print("User param:", user)
+#     if request.method == "POST":
+#         name = request.POST.get("RestName")
+#         desc = request.POST.get("RestDesc")
+#         address = request.POST.get("RestAddress")
+#         pic_file = request.FILES.get("RestPic")
+#         #if pic_file:
+#          #   filename = pic_file.name
+#          #   filepath = os.path.join("static/assets", filename)
+#           #  with open(filepath, 'wb+') as destination:
+#            #     for chunk in pic_file.chunks():
+#            #         destination.write(chunk)
+#            #         pic_path = f"assets/{filename}"
+#         #else:
+#            # pic_path = ""
+#         opening = request.POST.get("OpeningTime")
+#         closing = request.POST.get("ClosingTime")
+#         tag_ids = request.POST.getlist("ResTags")
+#         opening_time = datetime.datetime.strptime(opening, "%H:%M").time()
+#         closing_time = datetime.datetime.strptime(closing, "%H:%M").time()
+#         if Restaurant.objects.filter(name=name, address=address).exists():
+#             return JsonResponse({
+#                 "status": "error",
+#                 "message": "A restaurant with the same name and address already exists."
+#             }, status=400)
+#         restaurant = Restaurant.objects.create(
+#             name=name,
+#             desc=desc,
+#             address=address,
+#             picture=pic_file, #replace this if saving to static
+#             opening_time=opening_time,
+#             closing_time=closing_time
+#         )
+#         print(user)
+#         vendor = Vendor.objects.get(user_id = user)
+#         vendor.store = restaurant
+#         vendor.save()
+#         for t in tag_ids:
+#             tag = Tag.objects.get(id = t)
+#             RestaurantTag.objects.create(
+#                 restaurant = restaurant,
+#                 tag = tag,
+#             )
+#         return JsonResponse({
+#             "status": "success",
+#             "restaurant_id": restaurant.Rid
+#         })
+
+#     return JsonResponse({"error": "Invalid request method"}, status=405)
+
 @csrf_exempt
 def AddRestaurant(request, user):
-    print("Path:", request.path)
-    print("User param:", user)
     if request.method == "POST":
         name = request.POST.get("RestName")
         desc = request.POST.get("RestDesc")
         address = request.POST.get("RestAddress")
         pic_file = request.FILES.get("RestPic")
-        #if pic_file:
-         #   filename = pic_file.name
-         #   filepath = os.path.join("static/assets", filename)
-          #  with open(filepath, 'wb+') as destination:
-           #     for chunk in pic_file.chunks():
-           #         destination.write(chunk)
-           #         pic_path = f"assets/{filename}"
-        #else:
-           # pic_path = ""
+
+        # Save the picture using Django's file system
+        if pic_file:
+            filename = pic_file.name
+            filepath = os.path.join("static/assets", filename)
+            with open(filepath, 'wb+') as destination:
+               for chunk in pic_file.chunks():
+                   destination.write(chunk)
+            pic_path = f"assets/{filename}"
+        else:
+           pic_path = ""
+        
+
         opening = request.POST.get("OpeningTime")
         closing = request.POST.get("ClosingTime")
         tag_ids = request.POST.getlist("ResTags")
+
         opening_time = datetime.datetime.strptime(opening, "%H:%M").time()
         closing_time = datetime.datetime.strptime(closing, "%H:%M").time()
-        if Restaurant.objects.filter(name=name, address=address).exists():
-            return JsonResponse({
-                "status": "error",
-                "message": "A restaurant with the same name and address already exists."
-            }, status=400)
-        restaurant = Restaurant.objects.create(
-            name=name,
-            desc=desc,
-            address=address,
-            picture=pic_file, #replace this if saving to static
-            opening_time=opening_time,
-            closing_time=closing_time
-        )
-        print(user)
-        vendor = Vendor.objects.get(user_id = user)
-        vendor.store = restaurant
-        vendor.save()
-        for t in tag_ids:
-            tag = Tag.objects.get(id = t)
-            RestaurantTag.objects.create(
-                restaurant = restaurant,
-                tag = tag,
-            )
+
+        with connection.cursor() as cursor:
+          
+            cursor.execute("SELECT 1 FROM restaurant WHERE name = ? AND address = ?", [name, address])
+            if cursor.fetchone():
+                return JsonResponse({
+                    "status": "error",
+                    "message": "A restaurant with the same name and address already exists."
+                }, status=400)
+
+         
+            cursor.execute("""
+                INSERT INTO restaurant (name, desc, address, picture, opening_time, closing_time)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, [name, desc, address, pic_path, opening_time, closing_time])
+
+            cursor.execute("SELECT last_insert_rowid()")
+            restaurant_id = cursor.fetchone()[0]
+
+          
+            cursor.execute("UPDATE vendor SET store_id = ? WHERE user_id = ?", [restaurant_id, user])
+
+       
+            for tag_id in tag_ids:
+                cursor.execute("""
+                    INSERT INTO restauranttag (restaurant_id, tag_id)
+                    VALUES (?, ?)
+                """, [restaurant_id, tag_id])
+
         return JsonResponse({
             "status": "success",
-            "restaurant_id": restaurant.Rid
+            "restaurant_id": restaurant_id
         })
 
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
 
 
 @csrf_exempt
