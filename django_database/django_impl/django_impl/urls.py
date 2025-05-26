@@ -30,6 +30,8 @@ urlpatterns = [
     path("contShop/", views.contShop),
     path('checkout/', views.checkout),
     path('orderplaced/', views.orderplaced),
+    path('fvrclick/', views.addFvr),
+    path('remclick/', views.remFvr),
     path('<int:userid>/favorite/', views.fav),
     path("order/<int:userid>", views.orderUser),
     #path("login/", views.login)

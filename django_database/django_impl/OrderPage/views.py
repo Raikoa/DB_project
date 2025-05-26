@@ -155,7 +155,9 @@ def front(request):
 def page(request, id):
 
     request.session['rid'] = id
+    uid = request.session.get('user_id')
     rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
+    fvr = list(Favorite.objects.raw("SELECT * FROM favorite WHERE user_id = %s and restaurant_id = %s", [uid, id]))
     menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s and avaliable = True", [id])
     menus = []
     for i in menu:
@@ -173,7 +175,7 @@ def page(request, id):
     "address": rest.address,
     "img": rest.picture,
     }
-    return render(request, "pages.html", {"restaurant": restaurant_info})
+    return render(request, "pages.html", {"restaurant": restaurant_info, "fvr": fvr})
 
 
 def your_django_cart_view(request):
@@ -232,27 +234,50 @@ def checkout(request):
 def orderplaced(request):
     return render(request, 'orderplaced.html')
 
+def addFvr(request):
+    last = Favorite.objects.raw('SELECT * FROM "favorite" ORDER BY id DESC LIMIT 1;')
+    if last:
+        lastid = int(last[0].id)
+        fid = lastid + 1
+    else:
+        fid = 1
+    rid = request.session.get('rid')
+    uid = request.session.get('user_id')
+    with connection.cursor() as cursor:
+        cursor.execute('INSERT INTO "favorite" (id, restaurant_id, user_id) VALUES(%s, %s, %s)', (fid, rid, uid))
+
+    return redirect('pages', id = rid)
+
+def remFvr(request):
+    rid = request.session.get('rid')
+    uid = request.session.get('user_id')
+    with connection.cursor() as cursor:
+        cursor.execute('DELETE FROM "favorite" WHERE restaurant_id = %s and user_id = %s', [rid, uid])
+
+    return redirect('pages', id=rid)
+
 def fav(request, userid):
-    rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])
+    rows = Favorite.objects.raw('SELECT * FROM favorite WHERE user_id = %s', [userid])
 
     fav_re = []
     for row in rows:
-        tags = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
-        tag = []
-        for t in tags:
-            tag.append(t.name)
-        menus = []
-        Items = Item.objects.raw("SELECT * FROM item WHERE restaurant_id = %s", [row.Rid])
-        for m in Items:
-            menus.append({"name": m.name, "price": m.price, "pic": static(m.picture), "desc": m.desc})
+        # tags = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
+        # tag = []
+        # for t in tags:
+        #     tag.append(t.name)
+        # menus = []
+        # Items = Item.objects.raw("SELECT * FROM item WHERE restaurant_id = %s", [row.Rid])
+        # for m in Items:
+        #     menus.append({"name": m.name, "price": m.price, "pic": static(m.picture), "desc": m.desc})
+        tempRes = Restaurant.objects.raw('SELECT * FROM "restaurant" WHERE Rid = %s', [row.restaurant_id])
         fav_re.append({
-            "id": row.Rid,
-                "name": row.name,
-                "tags": tag,
-                "description": row.desc,
-                "menu": menus,
-                "address": row.address,
-                "img": static(row.picture),
+            "id": tempRes[0].Rid,
+            "name": tempRes[0].name,
+            # "tags": tag,
+            # "description": row.desc,
+            # "menu": menus,
+            # "address": row.address,
+            "img": static(tempRes[0].picture),
         })
 
     return render(request, "favorite.html",{'favs':fav_re})
