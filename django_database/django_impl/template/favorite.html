@@ -6,16 +6,24 @@
         <link rel="stylesheet" href="{% static 'style.css' %}">
         {% load static %}
         <script src="{% static 'script.js' %}"></script>
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
-        <div id="Menus">
+         <h2>Favorites</h2>
+        <div id="FavoriteMenus">
+           
             {%if not favs %}
             <h1>NO FAVORITES</h1>
             {% else %}
             {% for i in favs %}
-            <div class="restaurant_tab" data-id="{{ i.id }}">
+            <div class="restaurant_Tab" data-id="{{ i.id }}">
                 {% load static %}
-                <img src= "{{i.img}}"  class="display"/>
+                {% if i.img %}
+                <img src= "{{i.img.url}}"  class="display"/>
+                {% else %}
+                <img src= "/media/item_pics/default.jpg"  class="display"/>
+                {%endif%}
                 <p>{{i.name}}</p>
             </div>
             {% endfor %}

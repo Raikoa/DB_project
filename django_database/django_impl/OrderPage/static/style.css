@@ -18,7 +18,7 @@
     margin-left: 20px;
 }
 
-.restaurant_tab {
+.restaurant_tab, .restaurant_Tab {
     display: flex;
     flex-direction: column;
     width: 150px;
@@ -31,7 +31,7 @@
     flex-shrink: 0; /* Prevent shrinking in scroll */
     overflow: hidden; /* Prevent internal scrollbars */
 }
-.restaurant_tab:hover{
+.restaurant_tab:hover, .restaurant_Tab{
     cursor: pointer;
 }
 
@@ -80,7 +80,7 @@
     flex-direction: column;
     width: 200px;
     height: 300px;
-    overflow: auto;
+    
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: solid 2px gray;
@@ -128,17 +128,31 @@
     cursor: pointer;
 }
 
-
+#OrdersHistory{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
 .OrdersTab{
     display: flex;
     gap: 10px;
     width: 100%;
-    border-bottom: dotted 2px gray;
+    border: black dashed 2px
 }
 
-/* .OrdersTab:hover{
+
+.Orderstab{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    border: black dashed 2px
+}
+
+.OrdersTab:hover{
     cursor: pointer;
-} */
+} 
 
 #Orders, #deliverys{
     display: flex;
@@ -355,4 +369,13 @@
     width: 100%;
     height: 180px;
     object-fit: cover;
+}
+
+
+
+#FavoriteMenus{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }

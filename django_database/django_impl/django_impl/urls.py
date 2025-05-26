@@ -28,7 +28,7 @@ urlpatterns = [
     path('your_django_cart_view/', views.your_django_cart_view, name='your_django_cart_view'),
     path("cart/", views.view_cart),
     path("contShop/", views.contShop),
-    path('checkout/', views.checkout),
+    
     path('orderplaced/', views.orderplaced),
     path('<int:userid>/favorite/', views.fav),
     path("order/<int:userid>", views.orderUser),
@@ -77,6 +77,10 @@ urlpatterns = [
     path("DeleteRestaurant/<int:userid>/<int:rest>", views.DeleteRest),
     path("DeleteInbox/<int:Mid>", views.DelMsg),
     path("GetOrderByDate/<str:date>/<int:user>", views.GetByDate),
+    path('fvrclick/', views.addFvr),
+    path('remclick/', views.remFvr),
+    path('vieworder/', views.vieworder),
+    path('checkout/', views.checkout, name='checkout'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

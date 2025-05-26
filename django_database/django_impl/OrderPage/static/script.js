@@ -22,6 +22,15 @@ let Predmarker
 let RestPredMarker
 let have_dest = false
 document.addEventListener("DOMContentLoaded", function(){
+        let fav_tabs = document.querySelectorAll(".restaurant_Tab")
+        if(fav_tabs.length > 0){
+            fav_tabs.forEach(tab => {
+                tab.addEventListener("click", function(){
+                    const id = tab.dataset.id;
+                    window.location.href = "/pages/" + parseInt(id) +"/"
+                })
+            })
+        }
         
         let tabs = document.querySelectorAll(".restaurant_tab")
         if(tabs.length > 0){
@@ -1026,6 +1035,15 @@ document.addEventListener("DOMContentLoaded", function(){
                     Predictmap.setView(Predmarker.getLatLng(), 11);
                     have_dest = true
                     document.getElementById("weatherControl").style.display = "none"
+                    document.getElementById("dateField").style.display = "none"
+                    const now = new Date();
+                    console.log(now)
+                   
+                    weekday = now.getDay();
+
+                    time = now.getHours();
+                    console.log(weekday)
+                    console.log(time)
                     
                     
                 }
@@ -1038,14 +1056,13 @@ document.addEventListener("DOMContentLoaded", function(){
                 subHeat.addEventListener("click", function(){
                     subHeat.disabled = true;
                     oid = subHeat.dataset.oid
-                    weekday = document.getElementById("weekDays").value
-                    time = document.getElementById("timeOfDay").value
+                   
                     //weather = document.getElementById("weather").value
                     if(rest_lat != null && dest_lat != null){
                         socket.send(JSON.stringify({
                         "type": "Prediction_info",
-                        "weekday": weekday,
-                        "time": time,
+                        "weekday": parseInt(weekday) - 1,
+                        "time": parseInt(time),
                         //"weather": weather,
                         // "temp": parseFloat(document.getElementById("temp").value),
                         // "rain": parseFloat(document.getElementById("rain").value),
@@ -1058,6 +1075,8 @@ document.addEventListener("DOMContentLoaded", function(){
                         "oid": oid
                     }));
                     }else{
+                        weekday = document.getElementById("weekDays").value
+                        time = document.getElementById("timeOfDay").value
                         socket.send(JSON.stringify({
                         "type": "Prediction_info",
                         "weekday": weekday,
@@ -1635,18 +1654,18 @@ function handleLocation(pos, OrderId) {
         console.log(" Ignoring redundant update");
         return;
     }
-
+    lastPosition = pos;
+    lastSent = now;
     const { latitude, longitude, accuracy } = pos.coords;
+    marker.setLatLng([latitude, longitude]);
+    map.setView([latitude, longitude]);
+    
     if (accuracy > 50) {
         console.log(" Skipping due to poor accuracy:", accuracy);
         return;
     }
 
-    lastPosition = pos;
-    lastSent = now;
-
-    marker.setLatLng([latitude, longitude]);
-    map.setView([latitude, longitude]);
+   
 
     const locationDisplay = document.getElementById("locationDisplay");
     locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;

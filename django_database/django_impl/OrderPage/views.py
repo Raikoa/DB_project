@@ -26,6 +26,7 @@ import osmnx as ox
 from .form import UserRegistrationForm, UserLoginForm
 from django.utils import timezone
 import traceback
+from django.contrib import messages
 # Create your views here.
 
 def give_exp_func():
@@ -155,9 +156,10 @@ def front(request):
 
 
 def page(request, id):
-
+    uid = request.session.get('user_id')
     request.session['rid'] = id
     rest = list(Restaurant.objects.raw("SELECT * FROM restaurant WHERE Rid = %s", [id]))[0]
+    fvr = list(Favorite.objects.raw("SELECT * FROM favorite WHERE user_id = %s and restaurant_id = %s", [uid, id]))
     menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s and avaliable = True", [id])
     menus = []
     for i in menu:
@@ -175,7 +177,9 @@ def page(request, id):
     "address": rest.address,
     "img": rest.picture,
     }
-    return render(request, "pages.html", {"restaurant": restaurant_info})
+    return render(request, "pages.html", {"restaurant": restaurant_info, "fvr": fvr})
+
+
 
 
 def your_django_cart_view(request):
@@ -208,28 +212,35 @@ def contShop(request):
     return redirect('pages', id=rid)
 
 def checkout(request):
-    last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
-    lastid = int(last[0].id)
-    oid = lastid + 1
-    rid = int(request.session.get('rid'))
-    uid = int(request.session.get('uid'))
-    cart_data = request.session.get('cart', [])
-    dtime = 0
-    price = 0
-    amount = 0
-    for i in cart_data:
-        p = int(i['price'])
-        q = int(i['quantity'])
-        amount += q
-        price += p * q
-    placetime = datetime.now()
-    dest = 'address'
-    status = 'on route'
-    location = '22.6300545:120.2639648'
-    with connection.cursor() as cursor:
-        cursor.execute('INSERT INTO "order" (id, items, price, created_at, user_id, restaurant_id, destination, status, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (oid, amount, price, placetime, uid, rid, dest, status, dtime, location))
+   last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
+   lastid = int(last[0].id)
+   oid = lastid + 1
+   rid = int(request.session.get('rid'))
+   uid = int(request.session.get('user_id'))
+   cart_data = request.session.get('cart', [])
+   dtime = 0
+   price = 0
+   amount = 0
+   for i in cart_data:
+       p = int(i['price'])
+       q = int(i['quantity'])
+       amount += q
+       price += p * q
+   placetime = datetime.now()
+   dest = request.POST.get('dest')
+   status = 'not started'
+   location = '22.6300545:120.2639648'
+   pattern = r"^\d{3}(?:台|新北|高雄|台中|台南|基隆|桃園|新竹|嘉義|屏東|宜蘭|花蓮|台東|苗栗|彰化|南投|雲林|嘉義|澎湖|金門|連江)市(?:[^\d]{1,3}區)?[^\d]{1,5}\d+號$"
+   if re.match(pattern, dest):
+       with connection.cursor() as cursor:
+           cursor.execute('INSERT INTO "order" (id, items, price, created_at, user_id, restaurant_id, destination, status, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (oid, amount, price, placetime, uid, rid, dest, status, dtime, location))
 
-    return redirect('/orderplaced/')
+
+       return redirect('/orderplaced/')
+   else:
+       messages.error(request, "地址格式不正確，請重新輸入。")
+       return redirect('/vieworder/')
+
 
 def orderplaced(request):
     return render(request, 'orderplaced.html')
@@ -1601,3 +1612,93 @@ def GetByDate(request, date, user):
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)}, status=500)
     return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+
+
+def addFvr(request):
+   last = Favorite.objects.raw('SELECT * FROM "favorite" ORDER BY id DESC LIMIT 1;')
+   if last:
+       lastid = int(last[0].id)
+       fid = lastid + 1
+   else:
+       fid = 1
+   rid = request.session.get('rid')
+   uid = request.session.get('user_id')
+   with connection.cursor() as cursor:
+       cursor.execute('INSERT INTO "favorite" (id, restaurant_id, user_id) VALUES(%s, %s, %s)', (fid, rid, uid))
+
+
+   return redirect('pages', id = rid)
+
+
+def remFvr(request):
+   rid = request.session.get('rid')
+   uid = request.session.get('user_id')
+   with connection.cursor() as cursor:
+       cursor.execute('DELETE FROM "favorite" WHERE restaurant_id = %s and user_id = %s', [rid, uid])
+
+
+   return redirect('pages', id=rid)
+
+
+# def fav(request, userid):
+#    rows = Favorite.objects.raw('SELECT * FROM favorite WHERE user_id = %s', [userid])
+
+
+#    fav_re = []
+#    for row in rows:
+#        # tags = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
+#        # tag = []
+#        # for t in tags:
+#        #     tag.append(t.name)
+#        # menus = []
+#        # Items = Item.objects.raw("SELECT * FROM item WHERE restaurant_id = %s", [row.Rid])
+#        # for m in Items:
+#        #     menus.append({"name": m.name, "price": m.price, "pic": static(m.picture), "desc": m.desc})
+#        tempRes = Restaurant.objects.raw('SELECT * FROM "restaurant" WHERE Rid = %s', [row.restaurant_id])
+#        print(tempRes[0].picture)
+#        fav_re.append({
+#            "id": tempRes[0].Rid,
+#            "name": tempRes[0].name,
+#            # "tags": tag,
+#            # "description": row.desc,
+#            # "menu": menus,
+#            # "address": row.address,
+#            "img": tempRes[0].picture,
+#        })
+
+
+#    return render(request, "favorite.html",{'favs':fav_re})
+
+def fav(request, userid):
+    query = '''
+        SELECT r.Rid, r.name, r.picture
+        FROM favorite f
+        JOIN restaurant r ON f.restaurant_id = r.Rid
+        WHERE f.user_id = %s
+    '''
+    rows = Restaurant.objects.raw(query, [userid])
+
+    fav_re = []
+    for row in rows:
+        fav_re.append({
+            "id": row.Rid,
+            "name": row.name,
+            "img": row.picture,
+        })
+
+    return render(request, "favorite.html", {'favs': fav_re})
+
+
+
+
+
+def vieworder(request):
+   cart_data = request.session.get('cart', [])
+   price = 0
+   for i in cart_data:
+       p = int(i['price'])
+       q = int(i['quantity'])
+       price += p * q
+   return render(request, "vieworder.html", {'price': price})
