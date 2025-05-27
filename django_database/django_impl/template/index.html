@@ -139,8 +139,12 @@
              {% for i in Orders %}
              <div class="OrdersTab" data-id="{{i.id}}" data-user = "{{userid}}">
                 <p>{{i.id}}</p>
-                <p>{{i.items}}</p>
-                <p>{{i.price}}</p>
+                <div class="item_area">
+                    {% for it in i.items%}
+                    <p>{{it.name}}: price: {{it.price}}: amount: {{it.amount}}</p>
+                    {% endfor%}
+                </div>
+                <p>total price: {{i.price}}</p>
                 <p>{{i.created}}</p>
                 <p>{{i.customer}}</p>
                 <p>{{i.delivery}}</p>

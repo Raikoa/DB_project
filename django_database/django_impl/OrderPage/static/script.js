@@ -22,6 +22,22 @@ let Predmarker
 let RestPredMarker
 let have_dest = false
 document.addEventListener("DOMContentLoaded", function(){
+        let fav_tabs = document.querySelectorAll(".restaurant_Tab")
+        if(fav_tabs.length > 0){
+            fav_tabs.forEach(tab => {
+                tab.addEventListener("click", function(){
+                    const id = tab.dataset.id;
+                    window.location.href = "/pages/" + parseInt(id) +"/"
+                })
+            })
+        }
+        let kart = document.getElementById("Kart")
+        if(kart){
+            kart.addEventListener("click", function(){
+                 window.location.href="/cart/"
+            })
+           
+        }
         
         let tabs = document.querySelectorAll(".restaurant_tab")
         if(tabs.length > 0){
@@ -392,7 +408,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                 items.forEach(item => {
                 const p = document.createElement("p");
-                p.textContent = item.name + ":" + item.price;
+                p.textContent = item.name + ":" + item.price + ":" + item.amount;
                 co.appendChild(p);
                 });
                 mo.style.display = "flex"
@@ -1026,6 +1042,15 @@ document.addEventListener("DOMContentLoaded", function(){
                     Predictmap.setView(Predmarker.getLatLng(), 11);
                     have_dest = true
                     document.getElementById("weatherControl").style.display = "none"
+                    document.getElementById("dateField").style.display = "none"
+                    const now = new Date();
+                    console.log(now)
+                   
+                    weekday = now.getDay();
+
+                    time = now.getHours();
+                    console.log(weekday)
+                    console.log(time)
                     
                     
                 }
@@ -1038,14 +1063,13 @@ document.addEventListener("DOMContentLoaded", function(){
                 subHeat.addEventListener("click", function(){
                     subHeat.disabled = true;
                     oid = subHeat.dataset.oid
-                    weekday = document.getElementById("weekDays").value
-                    time = document.getElementById("timeOfDay").value
+                   
                     //weather = document.getElementById("weather").value
                     if(rest_lat != null && dest_lat != null){
                         socket.send(JSON.stringify({
                         "type": "Prediction_info",
-                        "weekday": weekday,
-                        "time": time,
+                        "weekday": parseInt(weekday) - 1,
+                        "time": parseInt(time),
                         //"weather": weather,
                         // "temp": parseFloat(document.getElementById("temp").value),
                         // "rain": parseFloat(document.getElementById("rain").value),
@@ -1058,6 +1082,8 @@ document.addEventListener("DOMContentLoaded", function(){
                         "oid": oid
                     }));
                     }else{
+                        weekday = document.getElementById("weekDays").value
+                        time = document.getElementById("timeOfDay").value
                         socket.send(JSON.stringify({
                         "type": "Prediction_info",
                         "weekday": weekday,
@@ -1446,6 +1472,165 @@ if (Datesearch) {
                 });
             });
         }         
+        let SearchFavoriteRestaurant = document.getElementById("SearchFavoriteRestaurant")
+            if(SearchFavoriteRestaurant){
+                let userid = SearchFavoriteRestaurant.dataset.userid
+                let mo = document.querySelector("#SearchModal")
+                let co = document.querySelector("#SearchModalContent")
+                let close = mo.querySelector(".close");
+                if(close){
+
+                    close.addEventListener("click", function(){
+
+                    mo.style.display = "none"
+                })
+                }
+
+                
+                SearchFavoriteRestaurant.addEventListener("click", function(){
+             
+               
+                mo.style.display = "flex"
+                let but = document.getElementById("SearchWithTags")
+                if(but){
+                    but.addEventListener("click", function () {
+                    let name = document.getElementById("Restaname").value;
+
+                    // Get checked tag checkboxes
+                    let checkedBoxes = document.querySelectorAll('input[name="tagsSearch"]:checked');
+                    let selectedTagIds = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+
+                    // Send POST request with both name and tag IDs
+                    fetch('/SearchFavoriteRestaurantsWithTag/' + parseInt(userid), {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            tags: selectedTagIds
+                        })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                             if (data.restaurants && data.restaurants.length > 0) {
+                                    let mo2 = document.querySelector("#ResultModal")
+                                    let co2 = document.querySelector("#ResultModalContent")
+                                    let close = mo2.querySelector(".close");
+                                    co2.innerHTML = "";
+                                    if(close){
+
+                                        close.addEventListener("click", function(){
+
+                                        mo2.style.display = "none"
+                                    })
+                                    }
+                                     const menusDiv = document.createElement("div");
+                                        menusDiv.id = "Menus";
+                                        menusDiv.dataset.user = but.dataset.userid;
+
+
+                                    data.restaurants.forEach(restaurant => {
+                                        const restDiv = document.createElement("div");
+                                        restDiv.className = "restaurant_tab";
+                                        restDiv.setAttribute("data-id", restaurant.id);
+                                        const imgSrc = restaurant.picture === "" ? "/media/item_pics/default.jpg" : restaurant.picture;
+                                        restDiv.innerHTML = `
+                                            <img src="${imgSrc}" class="display" alt="${restaurant.name}" />
+                                            <p>${restaurant.name}</p>
+                                        `;
+
+                                        
+                                        restDiv.addEventListener("click", () => {
+                                            window.location.href = "/pages/" + restaurant.id +"/"
+                                          
+                                        });
+
+                                        menusDiv.appendChild(restDiv);
+                                    });
+                                     co2.appendChild(menusDiv);
+                                     mo2.style.display = "flex"
+                                     
+                                     window.onclick = (e) => {
+                                    if (e.target == mo) {
+                                    mo2.style.display = "none";
+                                    }
+                                    };
+                             }else{
+                                 alert("No restaurants found with that search.");
+                             }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+                });
+
+                }
+              
+                window.onclick = (e) => {
+                if (e.target == mo) {
+                mo.style.display = "none";
+                }
+                };
+                    
+            })
+            }
+            let SearchDeli = document.getElementById("SeachDeli")
+            if(SearchDeli){
+                SearchDeli.addEventListener("click", function(){
+                    const name = document.getElementById("DeliverySearch").value.trim();
+                    const id = document.getElementById("DeliveryIDSearch").value.trim();
+                     fetch("/SearchDelivery/", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": getCookie("csrftoken")  
+                        },
+                        body: JSON.stringify({ name, id })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const modal = document.getElementById("ResultDeliModal");
+                        const content = document.getElementById("ResultDeliModalContent");
+                        let close = modal.querySelector(".close")
+                        if(close){
+                                close.addEventListener("click", function(){
+                                modal.style.display = "none"
+                            })
+                        }
+
+                        if (data.error) {
+                            content.innerHTML = `<p style="color:red;">Error: ${data.error}</p>`;
+                        } else if (data.users.length === 0) {
+                            content.innerHTML = `<p>No delivery person found.</p>`;
+                        } else {
+                            content.innerHTML = data.users.map((user, index) => `
+                                <div style="margin-bottom: 10px;">
+                                   
+                                    <div>ID: ${user.id}</div>
+                                    <div>Name: ${user.name}</div>
+                                    <div>Score: ${user.score !== null ? user.score : "N/A"}</div>
+                                </div>
+                            `).join('');
+                        }
+
+                        modal.style.display = "flex";
+                         window.onclick = (e) => {
+                                    if (e.target == modal) {
+                                    modal.style.display = "none";
+                                    }
+                                };
+
+                    })
+                    .catch(error => console.error("Error:", error));
+                            })
+                        }
 })
 
 function getCookie(name) {
@@ -1635,18 +1820,18 @@ function handleLocation(pos, OrderId) {
         console.log(" Ignoring redundant update");
         return;
     }
-
+    lastPosition = pos;
+    lastSent = now;
     const { latitude, longitude, accuracy } = pos.coords;
+    marker.setLatLng([latitude, longitude]);
+    map.setView([latitude, longitude]);
+    
     if (accuracy > 50) {
         console.log(" Skipping due to poor accuracy:", accuracy);
         return;
     }
 
-    lastPosition = pos;
-    lastSent = now;
-
-    marker.setLatLng([latitude, longitude]);
-    map.setView([latitude, longitude]);
+   
 
     const locationDisplay = document.getElementById("locationDisplay");
     locationDisplay.textContent = `Lat: ${latitude.toFixed(6)}, Lng: ${longitude.toFixed(6)}, Accuracy: ${accuracy.toFixed(1)}m, Time: ${new Date(now).toLocaleTimeString()}`;

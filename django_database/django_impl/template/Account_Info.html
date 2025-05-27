@@ -40,10 +40,10 @@
         <textarea id="restaurant_desc" name="restaurant_desc">{{ UserDetails.restaurant_desc }}</textarea>
 
         <label for="opening_time">Opening Time:</label>
-        <input type="time" id="opening_time" name="opening_time" value="{{ UserDetails.opening_time }}" />
+        <input type="time" id="opening_time" name="opening_time" value="{{ UserDetails.opening_time|time:'H:i' }}" />
 
         <label for="closing_time">Closing Time:</label>
-        <input type="time" id="closing_time" name="closing_time" value="{{ UserDetails.closing_time }}" />
+        <input type="time" id="closing_time" name="closing_time" value="{{ UserDetails.closing_time|time:'H:i' }}" />
 
         <label for="status">Status:</label>
         <select id="status" name="status">

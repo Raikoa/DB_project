@@ -1,16 +1,27 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+   <meta charset="UTF-8">
+   <title>Title</title>
 </head>
 <body>
-    <h1>Place Your Order</h1>
-    <p>Total price: {{ price }}</p>
-    <form method="POST" action={% url 'checkout' %}>
-        {% csrf_token %}
-        <input type="text" name="dest" placeholder="Enter Destination">
-        <button type="submit">Place Order</button>
-    </form>
+   <h1>Place Your Order</h1>
+   <p>Total price: {{ price }}</p>
+   <form method="POST" action="{% url 'checkout' %}">
+       {% csrf_token %}
+       <input type="text" name="dest" placeholder="Enter Destination">
+       {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li style="color: red;">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+       <button type="submit" id="addToOrder">Place Order</button>
+   </form>
+   {% load static %}
+   <script src="{% static 'addToCart.js' %}"></script>
 </body>
 </html>

@@ -143,7 +143,9 @@ class DeliveryTracker(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
         data = json.loads(text_data)
+        print("in tracker")
         if data['type'] == 'location.update':
+            print("in route")
             latitude = data['latitude']
             longitude = data['longitude']
             order_id = data['oid']
@@ -291,7 +293,7 @@ class DeliveryTracker(AsyncWebsocketConsumer):
                 normalize(r["weather_score"]),
                 normalize(r["building_score"]),
             ])
-            print(f"{i}: ({lat}, {lng}:{r["congestion"]}, {r["elevation"]}, {r["road_complexity"]}, {r["weather_score"]}, {r["building_score"]}, {intensity}")
+            print(f"{i}: ({lat}, {lng}:{r['congestion']}, {r['elevation']}, {r['road_complexity']}, {r['weather_score']}, {r['building_score']}, {intensity}")
             heatmap.append({
                 "lat": r["lat"],
                 "lng": r["lng"],
@@ -426,7 +428,7 @@ class DeliveryTracker(AsyncWebsocketConsumer):
                         normalize(diff["weather_score"]) +
                         normalize(diff["building_score"])
                     )
-                    if score > 0.7:
+                    if score > 3.5:
                         dangerous_nodes.append(node)
                     if dangerous_nodes:
                         print(f"[get_route] Attempting to reroute around nodes: {dangerous_nodes}")
@@ -1268,13 +1270,16 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
                         normalize(Rest_diff["weather_score"]) +
                         normalize(Rest_diff["building_score"])
                     )
-                avg = dest_score + Rest_score
+                avg = (dest_score + Rest_score) / 2
+                print(Rest_score)
+                print(dest_score) 
                 point = 0
-                if avg <= 0.5:
+                print(avg)
+                if avg <= 2:
                     point = 1
-                elif avg > 0.5 and avg <= 1:
+                elif avg > 2 and avg <= 3:
                     point = 2
-                elif avg >1 and avg <= 1.5:
+                elif avg >3 and avg <= 4:
                     point = 3
                 else:
                     point = 4
@@ -1303,7 +1308,7 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
                 weather = get_weather_data_point(dest_lat, dest_lng, key)
             else:
                 weather = {
-                    "temp": data.get("temp", 25),  # Example fallback values
+                    "temp": data.get("temp", 25), 
                     "rain": data.get("rain", 0),
                     "wind_speed": data.get("wind_speed", 2),
                     "visibility": data.get("visibility", 10),
@@ -1315,7 +1320,8 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
 
             weekday = data['weekday']
             time = data['time']
-
+            print(weekday)
+            print(time)
             congestion_Record = pd.read_csv("data/taiwan_simulated_congestion_by_time.csv")
             avg_elevation = pd.read_csv("data/taiwan_city_average_elevations.csv")
             
@@ -1325,13 +1331,13 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
                 (congestion_Record["day_of_week"] == weekday)
             ]
 
-            congestion_score = filtered["congestion"].mean() if not filtered.empty else 0
+            congestion_score = filtered["congestion_level"].mean() if not filtered.empty else 0
             print(f"[INFO] Congestion score: {congestion_score}")
             preload_graph()
             print("[INFO] Starting asynchronous feature computation for all points...")
             results = await process_in_batches(
-                grid,                # your DataFrame of points
-                batch_size=30,       # you can tweak this to 20–50 for performance
+                grid,                
+                batch_size=30,      
                 city=city,
                 avg_elevation=avg_elevation,
                 weather_score=weather_score,
@@ -1369,13 +1375,13 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
                     )
                 print(dest_score)
                 print(Rest_score)
-                avg = dest_score + Rest_score
+                avg = (dest_score + Rest_score) / 2
                 point = 0
-                if avg <= 0.5:
+                if avg <= 2:
                     point = 1
-                elif avg > 0.5 and avg <= 1:
+                elif avg > 2 and avg <= 3:
                     point = 2
-                elif avg >1 and avg <= 1.5:
+                elif avg >3 and avg <= 4:
                     point = 3
                 else:
                     point = 4
@@ -1549,14 +1555,21 @@ async def compute_road_complexity_async(lat, lng):
 #     return candidates.iloc[distances.idxmin()]["road_complexity"]
 
 def get_cached_road_complexity(lat, lng, city):
-   
+    try:
+        lat = float(lat)
+        lng = float(lng)
+    except ValueError:
+        print(f"[RC][ERROR] Invalid lat/lng values: lat={lat}, lng={lng}")
+        return 0.5
 
     # Check if the city is in the dataset at all
     available_cities = road_complexity_df["city"].unique()
     if city not in available_cities:
         print(f"[RC][WARNING] City '{city}' not found in road_complexity_df. Available cities: {list(available_cities)}")
         return 0.5
-
+    # road_complexity_df["lat"] = pd.to_numeric(road_complexity_df["lat"], errors="coerce")
+    # road_complexity_df["lng"] = pd.to_numeric(road_complexity_df["lng"], errors="coerce")
+    # road_complexity_df.dropna(subset=["lat", "lng"], inplace=True)
     # Filter for matching city
     candidates = road_complexity_df[road_complexity_df["city"] == city]
  
@@ -1566,6 +1579,7 @@ def get_cached_road_complexity(lat, lng, city):
         return 0.5
 
     # Compute closest point
+    
     distances = (candidates["lat"] - lat)**2 + (candidates["lng"] - lng)**2
     idx_closest = distances.idxmin()
 
@@ -1697,7 +1711,7 @@ def score_node(node, G):
             normalize(diff["weather_score"]) +
             normalize(diff["building_score"])
         )
-        return node if score > 0.7 else None
+        return node if score > 3.5 else None
     except Exception as e:
         print(f"[score_node] Error scoring node {node}: {e}")
         return None
@@ -1729,7 +1743,12 @@ def get_cached_road_complexity_by_location(lat, lng):
     if road_complexity_df.empty:
         print("[RC][ERROR] road_complexity_df is empty.")
         return 0.5
-
+    try:
+        lat = float(lat)
+        lng = float(lng)
+    except ValueError:
+        print(f"[RC][ERROR] Invalid lat/lng values: lat={lat}, lng={lng}")
+        return 0.5
     # Compute squared distance from all points
     distances = (road_complexity_df["lat"] - lat) ** 2 + (road_complexity_df["lng"] - lng) ** 2
     idx_closest = distances.idxmin()
