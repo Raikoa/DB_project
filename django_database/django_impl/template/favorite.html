@@ -10,7 +10,9 @@
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
+         <button id="SearchFavoriteRestaurant" data-userid="{{user}}">Search</button>
          <h2>Favorites</h2>
+  
         <div id="FavoriteMenus">
            
             {%if not favs %}
@@ -28,6 +30,40 @@
             </div>
             {% endfor %}
             {% endif %}
+        </div>
+        <div id="SearchModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Search Restaurants</h2>
+            <div id="SearchModalContent">
+            <form method="POST" id="SearchPost">
+                <label for="name">Restaurant Name:</label>
+                <input type="text" id="Restaname" name="name" placeholder="Enter restaurant name" />
+
+                <label for="tags">Tags:</label>
+                <div id="tag-checkboxes">
+                   
+                {% for tag in tgs %}
+                    <label>
+                    <input type="checkbox" name="tagsSearch" value="{{ tag.id }}">
+                    {{ tag.name }}
+                    </label><br>
+                {% endfor %}
+               </div>
+               
+            </form>
+             <button id="SearchWithTags">Search</button>
+            </div>
+        </div>
+        </div>
+        <div id="ResultModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Results</h2>
+            <div id="ResultModalContent">
+            
+            </div>
+        </div>
         </div>
     </body>
 </html>

@@ -111,20 +111,33 @@ def front(request):
             })
         if vendor_user.store_id is None:
             return render(request, "index.html", {'Role': role, 'Username': test_user.name, 'userid': test_user.user_id, 'msg': msg, "NoRes": True, "Tags": T_tags})
-        pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending'", [vendor_user.store_id])
+        pending = Order.objects.raw("SELECT * FROM 'order' WHERE restaurant_id = %s and status = 'pending' and delivery_person_id IS NOT NULL", [vendor_user.store_id])
         order_inc = []
         for o in pending:
             Customer_obj = User.objects.get(user_id=o.user_id)
 
             itemId = o.items.split(",")
             itms = []
+            amount = o.amount.split(",")
+            amount = [a for a in o.amount.split(",") if a.strip()]
+            amount_index = 0
             for i in itemId:
-                item = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [i]))[0]
-                itms.append({
-                    "name": item.name,
-                    "price":item.price,
-                    "desc": item.desc,
-                }) 
+                i = i.strip()
+                if not i:
+                    continue
+                item_query = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [i]))
+                if item_query:
+                    item = item_query[0]
+                    itms.append({
+                        "name": item.name,
+                        "price": item.price,
+                        "desc": item.desc,
+                        "amount": amount[amount_index]
+                    })
+                    amount_index += 1
+                else:
+                    # Optional: handle missing item gracefully or log it
+                    print(f"Item with id {i} not found.")
             order_inc.append({
                 "id": o.id,
                 "items": itms,
@@ -163,7 +176,7 @@ def page(request, id):
     menu  = Item.objects.raw("SELECT * FROM item WHERE store_id = %s and avaliable = True", [id])
     menus = []
     for i in menu:
-        menus.append({"name": i.name,"price": i.price, "desc": i.desc,"pic": i.picture})
+        menus.append({"name": i.name,"price": i.price, "desc": i.desc,"pic": i.picture, "id": i.id})
     tag = Tag.objects.raw("SELECT t.id, t.name FROM tag t JOIN restaurant_tag r ON r.tag_id = t.id WHERE r.restaurant_id = %s;", [id])
     tags = []
     for t in tag:
@@ -181,7 +194,7 @@ def page(request, id):
 
 
 
-
+@csrf_exempt
 def your_django_cart_view(request):
     if request.method == 'POST':
         try:
@@ -212,28 +225,38 @@ def contShop(request):
     return redirect('pages', id=rid)
 
 def checkout(request):
-   last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
-   lastid = int(last[0].id)
-   oid = lastid + 1
+#    last = Order.objects.raw('SELECT * FROM "order" ORDER BY id DESC LIMIT 1;')
+#    lastid = int(last[0].id)
+#    oid = lastid + 1
    rid = int(request.session.get('rid'))
    uid = int(request.session.get('user_id'))
-   cart_data = request.session.get('cart', [])
-   dtime = 0
+   cart_data = request.session.get('cart', [])   
+ 
    price = 0
-   amount = 0
+   items = ""
+   amount = ""
    for i in cart_data:
-       p = int(i['price'])
-       q = int(i['quantity'])
-       amount += q
-       price += p * q
+        id = int(i['id'])
+        p = int(i['price'])
+        q = int(i['quantity'])
+        
+        amount += str(q)
+        amount += ","
+        
+        price += p * q
+        
+        items += str(id)
+        items += ","
    placetime = datetime.now()
    dest = request.POST.get('dest')
    status = 'not started'
-   location = '22.6300545:120.2639648'
+   location = "-"
+   point = 0
+   review = "-"
    pattern = r"^\d{3}(?:台|新北|高雄|台中|台南|基隆|桃園|新竹|嘉義|屏東|宜蘭|花蓮|台東|苗栗|彰化|南投|雲林|嘉義|澎湖|金門|連江)市(?:[^\d]{1,3}區)?[^\d]{1,5}\d+號$"
    if re.match(pattern, dest):
        with connection.cursor() as cursor:
-           cursor.execute('INSERT INTO "order" (id, items, price, created_at, user_id, restaurant_id, destination, status, time, location) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (oid, amount, price, placetime, uid, rid, dest, status, dtime, location))
+           cursor.execute('INSERT INTO "order" (items,amount, price, created_at, user_id, restaurant_id, destination, status, location, points, Review) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (items, amount, price, placetime, uid, rid, dest, status, location, point, review))
 
 
        return redirect('/orderplaced/')
@@ -247,15 +270,22 @@ def orderplaced(request):
 
 def fav(request, userid):
     rows = Restaurant.objects.raw("SELECT r.* FROM favorite f JOIN restaurant r ON f.restaurant_id = r.Rid WHERE f.user_id = %s;", [userid])
-
+    ts = Tag.objects.raw("SELECT * FROM tag")
+    tgs = []
+    for t in ts:
+        tgs.append({
+            "id": t.id,
+            "name": t.name
+        })
+ 
     fav_re = []
     for row in rows:
-        tags = Tag.objects.raw("SELECT t.name FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
+        tags = Tag.objects.raw("SELECT * FROM tag t JOIN restaurant_tag r ON t.id = r.tag_id WHERE r.restaurant_id = %s;", [row.Rid])
         tag = []
         for t in tags:
             tag.append(t.name)
         menus = []
-        Items = Item.objects.raw("SELECT * FROM item WHERE restaurant_id = %s", [row.Rid])
+        Items = Item.objects.raw("SELECT * FROM item WHERE store_id = %s", [row.Rid])
         for m in Items:
             menus.append({"name": m.name, "price": m.price, "pic": static(m.picture), "desc": m.desc})
         fav_re.append({
@@ -265,10 +295,10 @@ def fav(request, userid):
                 "description": row.desc,
                 "menu": menus,
                 "address": row.address,
-                "img": static(row.picture),
+                "img": row.picture,
         })
 
-    return render(request, "favorite.html",{'favs':fav_re})
+    return render(request, "favorite.html",{'favs':fav_re, 'user': userid, "tgs": tgs})
 
 
 
@@ -371,11 +401,16 @@ def login_view(request):
 def ShowOrderDetails(request, OrderID, DeliID):
     order = list(Order.objects.raw("SELECT * FROM 'order' WHERE id = %s", [OrderID]))[0]
     orderItemsId = order.items.split(",")
+    orderItemsId = [id for id in order.items.split(",") if id.strip()]
     foods = []
+    amount = order.amount.split(",")
+    amount = [a for a in order.amount.split(",") if a.strip()]
+    amount_index = 0
     for id in orderItemsId:
         food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
 
-        foods.append({"name":food.name, "price": food.price})
+        foods.append({"name":food.name, "price": food.price, "amount": amount[amount_index]})
+        amount_index += 1
     restaurant = Restaurant.objects.get(Rid=order.restaurant_id)
     restaurant_name = restaurant.name
     restaurant_address = restaurant.address
@@ -444,15 +479,20 @@ def vendor_orders_api(request,Rid):
 
 
 def ShowCurrentOrder(request, deliID):
-    Current = Order.objects.raw("SELECT * FROM 'order' WHERE delivery_person_id = %s AND status = 'pending' OR status='on route' OR status='Food Done'", [deliID]) 
+    Current = Order.objects.raw("SELECT * FROM 'order' WHERE delivery_person_id = %s AND status = 'pending' OR status='on route'", [deliID]) 
     CurrentOrders = []
     for c in Current:
         foods = []
         orderItemsId = c.items.split(",")
+        orderItemsId = [id for id in c.items.split(",") if id.strip()]
+        amount = c.amount.split(",")
+        amount = [a for a in c.amount.split(",") if a.strip()]
+        amount_index = 0
         for id in orderItemsId:
             food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
 
-            foods.append({"name":food.name, "price": food.price})
+            foods.append({"name":food.name, "price": food.price, "amount": amount[amount_index]})
+            amount_index += 1
         restaurant = Restaurant.objects.get(Rid=c.restaurant_id)
         restaurant_name = restaurant.name
         restaurant_address = restaurant.address
@@ -482,11 +522,16 @@ def ShowCurrentOrder(request, deliID):
 def ShowVendorOrder(request, Oid, VendorID):
     order = list(Order.objects.raw("SELECT * FROM 'order' WHERE id=%s",[Oid]))[0]
     orderItemsId = order.items.split(",")
+    orderItemsId = [id for id in order.items.split(",") if id.strip()]
+    amount = order.amount.split(",")
+    amount = [a for a in order.amount.split(",") if a.strip()]
+    amount_index = 0
     foods = []
     for id in orderItemsId:
         food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
 
-        foods.append({"name":food.name, "price": food.price})
+        foods.append({"name":food.name, "price": food.price, "amount": amount[amount_index]})
+        amount_index += 1
     customer = Customer.objects.get(user_id = order.user_id)
     
     details = {
@@ -506,7 +551,7 @@ def PrepOrder(request, Oid):
      
         try:
             order = Order.objects.get(id=Oid)
-            order.status = 'Food Done'
+            order.status = 'on route'
             order.save()
             return JsonResponse({'success': True})
         except order.DoesNotExist:
@@ -539,10 +584,10 @@ def CompOrder(request, Orderid, Userid):
             f"user_{Userid}",
         {
             'type': 'send_order_complete',
-            'message': f"Your order #{Orderid} has been marked as completed by delivery ({delivery.id})"
+            'message': f"Your order #{Orderid} has been marked as completed by delivery ({delivery.user_id})"
         }
             )
-            Inbox.objects.create(message = f"Your order #{Orderid}# has been marked as completed by delivery ({delivery.id})", user_id = Userid)
+            Inbox.objects.create(message = f"Your order #{Orderid}# has been marked as completed by delivery ({delivery.user_id})", user_id = Userid)
 
             return JsonResponse({'success': True})
         except order.DoesNotExist:
@@ -746,9 +791,10 @@ def AddRestaurant(request, user):
         opening = request.POST.get("OpeningTime")
         closing = request.POST.get("ClosingTime")
         tag_ids = request.POST.getlist("ResTags")
-        if(opening and closing):
-            opening_time = datetime.strptime(opening, "%H:%M").time()
-            closing_time = datetime.strptime(closing, "%H:%M").time()
+        if opening and closing:
+            opening_time = datetime.strptime(opening, "%H:%M").time().strftime("%H:%M:%S")
+            closing_time = datetime.strptime(closing, "%H:%M").time().strftime("%H:%M:%S")
+
         else:
             opening = None
             closing = None
@@ -875,10 +921,15 @@ def ShowUserCurrent(request,user):
     for c in CurrentOrder:
         foods = []
         orderItemsId = c.items.split(",")
+        orderItemsId = [id for id in c.items.split(",") if id.strip()]
+        amount = c.amount.split(",")
+        amount = [a for a in c.amount.split(",") if a.strip()]
+        amount_index = 0
         for id in orderItemsId:
             food = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [id]))[0]
 
-            foods.append({"name":food.name, "price": food.price})
+            foods.append({"name":food.name, "price": food.price, "amount": amount[amount_index]})
+            amount_index += 1
         restaurant = Restaurant.objects.get(Rid=c.restaurant_id)
         restaurant_name = restaurant.name
 
@@ -1377,6 +1428,8 @@ def GetAccount(request, userid, role):
                 "Rid": restaurant.Rid
             })
             Can_delete_Restaurant = True
+            print(restaurant.opening_time)
+            print(restaurant.closing_time)
 
     else:
         account = DeliveryP.objects.get(user_id=userid)
@@ -1671,24 +1724,24 @@ def remFvr(request):
 
 #    return render(request, "favorite.html",{'favs':fav_re})
 
-def fav(request, userid):
-    query = '''
-        SELECT r.Rid, r.name, r.picture
-        FROM favorite f
-        JOIN restaurant r ON f.restaurant_id = r.Rid
-        WHERE f.user_id = %s
-    '''
-    rows = Restaurant.objects.raw(query, [userid])
+# def fav(request, userid):
+#     query = '''
+#         SELECT r.Rid, r.name, r.picture
+#         FROM favorite f
+#         JOIN restaurant r ON f.restaurant_id = r.Rid
+#         WHERE f.user_id = %s
+#     '''
+#     rows = Restaurant.objects.raw(query, [userid])
 
-    fav_re = []
-    for row in rows:
-        fav_re.append({
-            "id": row.Rid,
-            "name": row.name,
-            "img": row.picture,
-        })
+#     fav_re = []
+#     for row in rows:
+#         fav_re.append({
+#             "id": row.Rid,
+#             "name": row.name,
+#             "img": row.picture,
+#         })
 
-    return render(request, "favorite.html", {'favs': fav_re})
+#     return render(request, "favorite.html", {'favs': fav_re})
 
 
 
@@ -1702,3 +1755,164 @@ def vieworder(request):
        q = int(i['quantity'])
        price += p * q
    return render(request, "vieworder.html", {'price': price})
+
+
+
+@csrf_exempt
+def SearchFavRest(request, user):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            name = data.get("name", "").strip()
+            tags = data.get("tags", [])
+
+            sql = """
+                    SELECT DISTINCT 
+                        r.Rid, 
+                        r.name, 
+                        r.desc, 
+                        r.status, 
+                        r.picture, 
+                        r.address
+                    FROM favorite f
+                    JOIN restaurant r ON r.Rid = f.restaurant_id
+                    LEFT JOIN restaurant_tag rt ON r.Rid = rt.restaurant_id
+                    LEFT JOIN tag t ON rt.tag_id = t.id
+                    WHERE f.user_id = %s
+            """
+            params = [user]
+
+            if name:
+                sql += " AND r.name LIKE %s"
+                params.append(f"%{name}%")
+
+            if tags:
+                tag_count = len(tags)
+                sql += f"""
+                    AND r.Rid IN (
+                        SELECT restaurant_id
+                        FROM restaurant_tag
+                        WHERE tag_id IN ({','.join(['%s'] * tag_count)})
+                        GROUP BY restaurant_id
+                        HAVING COUNT(DISTINCT tag_id) = %s
+                    )
+                """
+                params.extend(tags)
+                params.append(tag_count)
+
+            with connection.cursor() as cursor:
+                cursor.execute(sql, params)
+                rows = cursor.fetchall()
+
+            results = []
+            restaurant_ids = []
+
+            for row in rows:
+                rest_id, rest_name, desc, status, picture, address= row
+                restaurant_ids.append(rest_id)
+                results.append({
+                    "id": rest_id,
+                    "name": rest_name,
+                    "desc": desc,
+                    "status": status,
+                    "picture": f"/media/{picture}" if picture else "",
+                    "address": address,
+                    "tags": []  # will be filled in next step
+                })
+
+            # Get all tags for the listed restaurants
+            if restaurant_ids:
+                with connection.cursor() as cursor:
+                    format_ids = ','.join(['%s'] * len(restaurant_ids))
+                    tag_sql = f"""
+                        SELECT rt.restaurant_id, t.name
+                        FROM restaurant_tag rt
+                        JOIN tag t ON rt.tag_id = t.id
+                        WHERE rt.restaurant_id IN ({format_ids})
+                    """
+                    cursor.execute(tag_sql, restaurant_ids)
+                    tag_rows = cursor.fetchall()
+
+                # Organize tags by restaurant_id
+                tags_map = {}
+                for rest_id, tag_name in tag_rows:
+                    tags_map.setdefault(rest_id, []).append(tag_name)
+
+                # Attach tags to results
+                for rest in results:
+                    rest["tags"] = tags_map.get(rest["id"], [])
+
+            return JsonResponse({"restaurants": results}, status=200)
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+
+@csrf_exempt
+def searchDelivery(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            name = data.get("name", "").strip()
+            user_id = data.get("id", "").strip()
+
+            result = []
+
+            if user_id:
+                # Search by ID (and optionally name), join with delivery_person
+                sql = """
+                    SELECT u.user_id, u.name, d.Score
+                    FROM user u
+                    JOIN delivery_person d ON u.user_id = d.user_ptr_id
+                    WHERE d.user_ptr_id = %s
+                """
+                params = [user_id]
+
+                if name:
+                    sql += " AND u.name LIKE %s"
+                    params.append(f"%{name}%")
+
+                with connection.cursor() as cursor:
+                    cursor.execute(sql, params)
+                    rows = cursor.fetchall()
+
+                for row in rows:
+                    uid, uname, score = row
+                    result.append({
+                        "id": uid,
+                        "name": uname,
+                        "score": score
+                    })
+
+            elif name:
+                # Step 1: Get users matching name
+                sql = "SELECT user_id, name FROM user WHERE name LIKE %s"
+                params = [f"%{name}%"]
+
+                with connection.cursor() as cursor:
+                    cursor.execute(sql, params)
+                    users = cursor.fetchall()
+
+                for uid, uname in users:
+                    # Step 2: Check if user is a delivery person
+                    with connection.cursor() as cursor:
+                        cursor.execute(
+                            "SELECT Score FROM delivery_person WHERE user_ptr_id = %s", [uid]
+                        )
+                        row = cursor.fetchone()
+                        score = row[0] if row else None
+
+                    result.append({
+                        "id": uid,
+                        "name": uname,
+                        "score": score
+                    })
+            else:
+                return JsonResponse({"error": "No search criteria provided"}, status=400)
+
+            return JsonResponse({"users": result}, status=200)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)

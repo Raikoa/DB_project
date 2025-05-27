@@ -10,6 +10,13 @@
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
+        <form>
+            <label for="DeliverySearch">Name</label>
+            <input type="text" id="DeliverySearch" name="DeliverySearch">
+            <label for="DeliveryIDSearch">Id</label>
+            <input type="text" id="DeliveryIDSearch" name="DeliveryIDSearch">
+        </form>
+        <button id="SeachDeli">Search for a delivery man</button>
         <h2>Delivery Man Ranking</h2>
         <div id="ranks">
             {% for d in delis%}
@@ -20,6 +27,15 @@
             <div>Score: {{ d.score }}</div>
             </div>
             {% endfor %}
+        </div>
+         <div id="ResultDeliModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Results</h2>
+            <div id="ResultDeliModalContent">
+            
+            </div>
+        </div>
         </div>
     </body>
 </html>

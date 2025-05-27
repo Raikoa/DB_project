@@ -4,7 +4,7 @@ const viewCartBtn = document.getElementById('viewCartBtn');
 const cartItemCountSpan = document.getElementById('cartItemCount');
 let cartItemCount = 0; // Initialize cart count
 let cartItems = []; // Array to store food items, quantity, and price
-const placeOrderLink = document.querySelector('a[href="/checkout/"]');
+const placeOrderLink = document.getElementById("addToOrder")
 function updateCartButton() {
     if (cartItemCount > 0 && viewCartBtn) {
         viewCartBtn.style.display = 'inline-block'; // Show the button
@@ -26,6 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
         cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
         updateCartButton();
     }
+    const cartList = document.querySelector('ul');
+        if (cartList) {
+            cartList.innerHTML = '';
+            cartItems.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.dataset.itemName = item.name;
+                listItem.textContent = `${item.quantity} x ${item.name} - $${item.price}`;
+                const deleteButton = document.createElement('button');
+                deleteButton.classList.add('delete-item-btn');
+                deleteButton.textContent = 'Delete';
+                listItem.appendChild(deleteButton);
+                cartList.appendChild(listItem);
+            });
+
+            attachDeleteListeners(); 
+        }
 });
 
 
@@ -42,9 +58,14 @@ if(viewCartBtn){
         },
         body: JSON.stringify(cartItems), // Sending the cartItems array
     })
-    .then(response => response.json())
+    .then(response => {
+    if (!response.ok) {
+        throw new Error(`HTTP status ${response.status}`);
+    }
+    return response.json();
+    })
     .then(data => {
-        // Handle the response from your Django view
+     
         console.log(data);
         window.location.href = '/cart/';
     })
@@ -95,6 +116,7 @@ function addToOrder() {
         } else {
             // If it's a new item, add it to the cart
             cartItems.push({
+                id: currentFoodItem.id,
                 name: currentFoodItem.name,
                 quantity: quantity,
                 price: currentFoodItem.price
@@ -156,7 +178,7 @@ function removeItemFromCart(itemName) {
     }
 
     // Re-attach event listeners to the newly created delete buttons
-    attachDeleteListeners();
+    // attachDeleteListeners();
 }
 
 function attachDeleteListeners() {
@@ -175,11 +197,13 @@ function attachDeleteListeners() {
 const foodTabs = document.querySelectorAll('.FoodTab.Items');
 foodTabs.forEach(tab => {
     tab.addEventListener('click', function() {
+        let id = tab.dataset.iid
         const foodName = this.querySelector('p:nth-child(2)').textContent;
         const foodPrice = this.querySelector('p:nth-child(3)').textContent;
         const foodPic = this.querySelector('img').src;
 
         const foodItem = {
+            id: id,
             name: foodName,
             price: foodPrice,
             pic: foodPic
@@ -190,9 +214,10 @@ foodTabs.forEach(tab => {
 
 if(placeOrderLink){
 placeOrderLink.addEventListener('click', function(event) {
-    event.preventDefault();
+   
+    console.log("cleared")
     localStorage.clear();
-    window.location.href = '/checkout/';
+
 });
 }
 
@@ -200,3 +225,20 @@ placeOrderLink.addEventListener('click', function(event) {
 //End of Cart Functions End of Cart Functions
 //End of Cart Functions End of Cart Functions
 //End of Cart Functions End of Cart Functions
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

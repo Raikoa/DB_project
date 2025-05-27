@@ -26,7 +26,7 @@
 
         <div id="FoodBar">
             {% for i in restaurant.menu %}
-                <div class="FoodTab Items">
+                <div class="FoodTab Items" data-iid = "{{i.id}}">
                     {% if i.pic %}
                     <img src= "{{i.pic.url}}"  class="display"/>
                     {% else %}

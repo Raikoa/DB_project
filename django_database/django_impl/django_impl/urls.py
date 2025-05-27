@@ -81,6 +81,8 @@ urlpatterns = [
     path('remclick/', views.remFvr),
     path('vieworder/', views.vieworder),
     path('checkout/', views.checkout, name='checkout'),
+    path("SearchFavoriteRestaurantsWithTag/<int:user>", views.SearchFavRest),
+    path("SearchDelivery/", views.searchDelivery),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

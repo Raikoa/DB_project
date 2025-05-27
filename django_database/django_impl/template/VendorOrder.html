@@ -13,7 +13,7 @@
         <div class="detailsVendorTab">
         <p>{{d.id}}</p>
         {%for i in d.items%}
-        <p>{{i.name}} : {{i.price}}</p>
+        <p>{{i.name}} : price : {{i.price}} : amount : {{i.amount}}</p>
         {% endfor %}
         <p>{{d.price}}</p>
         <p>{{d.created}}</p>
@@ -21,7 +21,7 @@
         <p>{{d.delivery}}</p>
         </div>
         {%if complete %}
-        <button class="CompleteFoodBtn" data-order-id="{{ d.id }}" data-user = "{{vendor}}">Take Order</button>
+        <button class="CompleteFoodBtn" data-order-id="{{ d.id }}" data-user = "{{vendor}}">Complete Order</button>
         {% endif %}
         {% endfor %}
         </div>

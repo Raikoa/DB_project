@@ -428,7 +428,7 @@ class DeliveryTracker(AsyncWebsocketConsumer):
                         normalize(diff["weather_score"]) +
                         normalize(diff["building_score"])
                     )
-                    if score > 0.7:
+                    if score > 3.5:
                         dangerous_nodes.append(node)
                     if dangerous_nodes:
                         print(f"[get_route] Attempting to reroute around nodes: {dangerous_nodes}")
@@ -1270,13 +1270,16 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
                         normalize(Rest_diff["weather_score"]) +
                         normalize(Rest_diff["building_score"])
                     )
-                avg = dest_score + Rest_score
+                avg = (dest_score + Rest_score) / 2
+                print(Rest_score)
+                print(dest_score) 
                 point = 0
-                if avg <= 0.5:
+                print(avg)
+                if avg <= 2:
                     point = 1
-                elif avg > 0.5 and avg <= 1:
+                elif avg > 2 and avg <= 3:
                     point = 2
-                elif avg >1 and avg <= 1.5:
+                elif avg >3 and avg <= 4:
                     point = 3
                 else:
                     point = 4
@@ -1372,13 +1375,13 @@ class HeatMapConsumer(AsyncWebsocketConsumer):
                     )
                 print(dest_score)
                 print(Rest_score)
-                avg = dest_score + Rest_score
+                avg = (dest_score + Rest_score) / 2
                 point = 0
-                if avg <= 0.5:
+                if avg <= 2:
                     point = 1
-                elif avg > 0.5 and avg <= 1:
+                elif avg > 2 and avg <= 3:
                     point = 2
-                elif avg >1 and avg <= 1.5:
+                elif avg >3 and avg <= 4:
                     point = 3
                 else:
                     point = 4
@@ -1708,7 +1711,7 @@ def score_node(node, G):
             normalize(diff["weather_score"]) +
             normalize(diff["building_score"])
         )
-        return node if score > 0.7 else None
+        return node if score > 3.5 else None
     except Exception as e:
         print(f"[score_node] Error scoring node {node}: {e}")
         return None
