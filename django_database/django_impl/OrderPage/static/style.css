@@ -379,3 +379,8 @@
     flex-wrap: wrap;
     gap: 5px;
 }
+
+
+#ResultInboxModalContent{
+    overflow: auto;
+}

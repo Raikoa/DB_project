@@ -56,10 +56,12 @@ def load_graph_once():
 
     # Fast path: if already loaded, no locking needed
     if _graph_cache is not None:
+        print("[INFO] Loading graph from cache (gpickle)...")
         return _graph_cache
 
     # If another thread is already loading the graph, wait until it's done
     if _graph_loaded.is_set():
+        print("[INFO] Loading graph from cahce (gpickle)...")
         return _graph_cache
 
     with _graph_lock:
@@ -1167,7 +1169,7 @@ def generate_grid(city_name, step=0.01, jitter=0):
     return pd.DataFrame(grid_points)
 
 
-def generate_random_points(city_name, num_points=300):
+def generate_random_points(city_name, num_points=200):
     city_bounds = get_bounds(city_name)
  
     print(f"[DEBUG] Bounds for {city_name}: {city_bounds}")

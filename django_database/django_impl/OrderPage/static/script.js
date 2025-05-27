@@ -173,6 +173,11 @@ document.addEventListener("DOMContentLoaded", function(){
                                 co.appendChild(msgDiv);
                             });
                                 mo.style.display = "flex"
+                                window.onclick = (e) => {
+                                    if (e.target == mo) {
+                                    mo.style.display = "none";
+                                    }
+                                };
                             }else{
                                 alert("No messages found.");
                             }
@@ -180,11 +185,7 @@ document.addEventListener("DOMContentLoaded", function(){
                                 .catch(error => {
                                     console.error('Fetch error:', error);
                                 });
-                                window.onclick = (e) => {
-                                    if (e.target == mo) {
-                                    mo.style.display = "none";
-                                    }
-                                };
+                                
                         }
                 })
             }
@@ -256,7 +257,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
                     items.forEach(item => {
                     const p = document.createElement("p");
-                    p.textContent = item.name + ":" + item.price;
+                    p.textContent = item.name + ":" + item.price + ":" + item.amount;
                     co.appendChild(p);
                     });
                     mo.style.display = "flex"
@@ -1144,14 +1145,14 @@ document.addEventListener("DOMContentLoaded", function(){
                             // }
                             }
                             if(data.Rest_score && data.Dest_score){
-                                let avg = (data.Rest_score + data.Dest_score)
+                                let avg = (data.Rest_score + data.Dest_score) /2 
                                 diff = document.getElementById("difficulties")
-                                if(avg <= 0.5){
+                                if(avg <= 2){
                                     diff.innerText = "Easy"
                                     
-                                }else if(avg <= 1 && avg > 0.5){
+                                }else if(avg <= 3 && avg > 2){
                                     diff.innerText = "Normal"
-                                }else if(avg <= 1.5 && avg > 1){
+                                }else if(avg <= 4 && avg > 4){
                                     diff.innerText = "Expert"
                                 }else{
                                     diff.innerText = "Hard"
@@ -1631,6 +1632,12 @@ if (Datesearch) {
                     .catch(error => console.error("Error:", error));
                             })
                         }
+            let back = document.getElementById("BackTo")
+            if(back){
+                back.addEventListener("click", function(){
+                    window.location.href = "/index/"
+                })
+            }
 })
 
 function getCookie(name) {

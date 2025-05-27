@@ -327,14 +327,20 @@ def orderUser(request, userid):
     UserOrders = []
     for o in orders:
         itemId = o.items.split(",")
+        itemId = [id for id in o.items.split(",") if id.strip()]
         itms = []
+        amount = o.amount.split(",")
+        amount = [a for a in o.amount.split(",") if a.strip()]
+        amount_index = 0
         for i in itemId:
             item = list(Item.objects.raw("SELECT * FROM item WHERE id = %s", [i]))[0]
             itms.append({
                 "name": item.name,
                 "price":item.price,
                 "desc": item.desc,
+                "amount": amount[amount_index]
             }) 
+            amount_index += 1
         ord = {
             "id": o.id,
             "price": o.price,
@@ -1583,7 +1589,7 @@ def DeleteRest(request, userid, rest):
                         print(f"File not found: {full_path}")
                 cursor.execute("UPDATE vendor SET store_id = NULL WHERE user_ptr_id = %s", [userid])
 
-                cursor.execute("DELETE FROM item WHERE store_id = %s", [rest])
+                # cursor.execute("DELETE FROM item WHERE store_id = %s", [rest])
                 cursor.execute("DELETE FROM restaurant_tag WHERE restaurant_id = %s", [rest])
                 cursor.execute("DELETE FROM restaurant WHERE Rid = %s", [rest])
 
